@@ -1449,12 +1449,25 @@ async function fetchOnlineResults(isBackground = false) {
             if (!home || !away) continue;
             
             const finished = String(apiMatch.finished || "").toLowerCase();
-            const timeElapsed = String(apiMatch.time_elapsed || "").toLowerCase();
-            const isFinished = finished === "true" || timeElapsed === "finished" || 
-                              String(apiMatch.status || "").toLowerCase().includes("finish");
-            
-            let s1 = apiMatch.home_score !== undefined ? parseInt(apiMatch.home_score) : null;
-            let s2 = apiMatch.away_score !== undefined ? parseInt(apiMatch.away_score) : null;
+const timeElapsed = String(apiMatch.time_elapsed || "").toLowerCase();
+const statusStr = String(apiMatch.status || apiMatch.match_status || apiMatch.state || "").toLowerCase();
+const isFinished = finished === "true" || finished === "1" || timeElapsed === "finished" || 
+                   statusStr.includes("finish") || statusStr === "ft" || statusStr === "full_time";
+
+function getScore(apiMatch, isHome) {
+    const keys = isHome 
+        ? ['home_score', 'homeScore', 'score1', 'intHomeScore', 'home_score_fulltime']
+        : ['away_score', 'awayScore', 'score2', 'intAwayScore', 'away_score_fulltime'];
+    for (const k of keys) {
+        if (apiMatch[k] !== undefined && apiMatch[k] !== null) {
+            const val = parseInt(apiMatch[k], 10);
+            if (!isNaN(val)) return val;
+        }
+    }
+    return null;
+}
+let s1 = getScore(apiMatch, true);
+let s2 = getScore(apiMatch, false);
             
             const match = appData.fixtures.find(f => 
                 (f.team1 === home && f.team2 === away) || 
