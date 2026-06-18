@@ -1,5 +1,6 @@
 const fs = require('fs');
 const https = require('https');
+const path = require('path');
 
 // Try multiple proxies in order
 const SOURCE_URLS = [
@@ -8,7 +9,12 @@ const SOURCE_URLS = [
   'https://api.allorigins.win/raw?url=https://worldcup26.ir/get/games'
 ];
 
-const OUTPUT_PATH = './data/live.json';
+const OUTPUT_PATH = path.join(__dirname, 'data', 'live.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(path.dirname(OUTPUT_PATH))) {
+  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
+}
 
 function fetchURL(url) {
   return new Promise((resolve, reject) => {
@@ -31,8 +37,21 @@ async function main() {
     try {
       const raw = await fetchURL(url);
       const json = JSON.parse(raw);
-      fs.writeFileSync(OUTPUT_PATH, JSON.stringify(json, null, 2));
+      // Ensure we have a games array
+      let output = json;
+      if (!Array.isArray(json) && json.games) {
+        output = json.games;
+      } else if (!Array.isArray(json) && json.matches) {
+        output = json.matches;
+      } else if (!Array.isArray(json) && json.fixtures) {
+        output = json.fixtures;
+      } else if (!Array.isArray(json) && json.response) {
+        output = json.response;
+      }
+      // Write as array of matches
+      fs.writeFileSync(OUTPUT_PATH, JSON.stringify({ games: output, lastUpdated: new Date().toISOString() }, null, 2));
       console.log(`✅ Success via: ${url}`);
+      console.log(`   Saved ${output.length} matches to ${OUTPUT_PATH}`);
       return;
     } catch (e) {
       lastError = e.message;
