@@ -2,25 +2,76 @@ name: Scrape live results
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # every 30 minutes
-  workflow_dispatch:         # manual trigger
+    - cron: '*/30 * * * *'   # Every 30 minutes
+  workflow_dispatch:         # Manual trigger
+
+# Prevent overlapping runs from creating git push races
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: 18
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Run scraper
+        id: scraper
         run: node scraper.js
-        continue-on-error: true   # Don't fail the workflow if scraper fails
-      - name: Commit and push if changed
+        continue-on-error: true
+
+      - name: Upload debug artifact on failure
+        if: steps.scraper.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-failure-debug
+          path: |
+            data/live.json
+          retention-days: 3
+
+      - name: Validate JSON output
+        if: always()
+        run: |
+          if [ -f data/live.json ]; then
+            node -e "JSON.parse(require('fs').readFileSync('data/live.json'))" && echo "✅ JSON valid"
+          else
+            echo '{"meta":{"lastUpdated":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","success":false,"error":"File missing"},"games":[]}' > data/live.json
+          fi
+
+      - name: Commit and push results
+        if: always()
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull origin main --rebase || true   # Pull latest changes first
+          
+          # Pull latest with rebase to avoid "behind" rejections
+          git pull origin ${{ github.ref_name }} --rebase || true
+          
           git add data/live.json
-          git diff --staged --quiet || git commit -m "Update live results [skip ci]"
-          git push origin main || true   # Don't fail if push fails
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
+            # Retry push up to 3 times if another workflow committed in between
+            for i in 1 2 3; do
+              git push origin ${{ github.ref_name }} && break
+              echo "Push attempt $i failed, pulling and retrying..."
+              sleep 2
+              git pull origin ${{ github.ref_name }} --rebase || true
+            done
+          fi
