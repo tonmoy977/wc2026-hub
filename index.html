@@ -1540,7 +1540,88 @@ async function fetchOnlineResults(isBackground = false) {
     syncState.lastSync = new Date().toISOString();
     saveData();
 }
-function mapTeamName(apiName) {
+// ==================== ONLINE SYNC ====================
+const API_BASE = "https://tonmoy977.github.io/wc2026-hub/data/live.json";
+
+async function fetchOnlineResults(isBackground = false) {
+    if (!navigator.onLine) {
+        if (!isBackground) showNotif("You are offline. Using saved results.", "warning");
+        return;
+    }
+    const now = new Date();
+    if (now > WC_END_DATE) {
+        if (!isBackground) showNotif("World Cup 2026 has concluded.", "info");
+        return;
+    }
+    if (!isBackground) showNotif("Fetching live results...", "info");
+    
+    let totalImported = 0;
+    try {
+        const resp = await fetch(API_BASE, { cache: "no-store" });
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        const json = await resp.json();
+        
+        // Handle worldcup26.ir format specifically
+        let matches = [];
+        if (json.games && Array.isArray(json.games)) matches = json.games;
+        else if (Array.isArray(json)) matches = json;
+        else if (Array.isArray(json.matches)) matches = json.matches;
+        else if (Array.isArray(json.fixtures)) matches = json.fixtures;
+        
+        for (let apiMatch of matches) {
+            // Team names from worldcup26.ir format
+            const homeRaw = apiMatch.home_team_name_en || apiMatch.homeTeam || apiMatch.home_team || apiMatch.team1 || apiMatch.home || apiMatch.homeName;
+            const awayRaw = apiMatch.away_team_name_en || apiMatch.awayTeam || apiMatch.away_team || apiMatch.team2 || apiMatch.away || apiMatch.awayName;
+            
+            const home = mapTeamName(homeRaw);
+            const away = mapTeamName(awayRaw);
+            if (!home || !away) continue;
+            
+            // Check if match is finished (worldcup26.ir uses "finished": "TRUE")
+            const finished = String(apiMatch.finished || "").toLowerCase();
+            const timeElapsed = String(apiMatch.time_elapsed || "").toLowerCase();
+            const isFinished = finished === "true" || timeElapsed === "finished" || 
+                              String(apiMatch.status || "").toLowerCase().includes("finish");
+            
+            // Get scores (worldcup26.ir uses home_score, away_score as strings)
+            let s1 = apiMatch.home_score !== undefined ? parseInt(apiMatch.home_score) : null;
+            let s2 = apiMatch.away_score !== undefined ? parseInt(apiMatch.away_score) : null;
+            
+            const match = appData.fixtures.find(f => 
+                (f.team1 === home && f.team2 === away) || 
+                (f.team1 === away && f.team2 === home)
+            );
+            
+            if (match && !match.syncFinalized) {
+                if (s1 !== null && s2 !== null && isFinished) {
+                    match.score1 = s1;
+                    match.score2 = s2;
+                    match.completed = true;
+                    match.syncFinalized = true;
+                    syncState.finalized[match.id] = true;
+                    totalImported++;
+                }
+            }
+        }
+    } catch (e) {
+        console.error("Fetch failed:", e);
+        if (!isBackground) showNotif("Update failed. " + e.message, "error");
+        return;
+    }
+    
+    if (totalImported > 0 || !isBackground) {
+        saveData();
+        renderGroupStage();
+        renderStandings();
+        updateKnockoutSlots();
+        if (document.getElementById("knockoutView").classList.contains("active")) renderKnockout();
+        if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
+        if (!isBackground) showNotif(`Updated ${totalImported} matches`, totalImported > 0 ? "success" : "info");
+    }
+    syncState.lastSync = new Date().toISOString();
+    saveData();
+}
+
 function mapTeamName(apiName) {
     if (!apiName) return null;
     const map = {
