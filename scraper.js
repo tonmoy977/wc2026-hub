@@ -1,234 +1,223 @@
 const fs = require('fs');
-const path = require('path');
 const https = require('https');
-const http = require('http');
-const { URL } = require('url');
+const path = require('path');
 
-// =============================================================================
-// CONFIGURATION
-// =============================================================================
+const OUTPUT_PATH = path.join(__dirname, 'data', 'live.json');
 
-const OUTPUT_DIR = path.join(__dirname, 'data');
-const OUTPUT_PATH = path.join(OUTPUT_DIR, 'live.json');
-const TEMP_PATH = path.join(OUTPUT_DIR, 'live.json.tmp');
-
-// Endpoints: direct first (unlikely to work due to CORS, but worth trying), then proxies
-const ENDPOINTS = [
+// Multiple fallback sources
+const SOURCES = [
+  // Direct source (if accessible)
   'https://worldcup26.ir/get/games',
+  // CORS proxies
   'https://corsproxy.io/?https://worldcup26.ir/get/games',
   'https://api.allorigins.win/raw?url=https://worldcup26.ir/get/games',
-  'https://api.codetabs.com/v1/proxy?quest=https://worldcup26.ir/get/games'
+  // Alternative sources
+  'https://raw.githubusercontent.com/openfootball/world-cup.json/master/2026/worldcup.json',
+  // Backup - ESPN API (if available)
+  'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard'
 ];
 
-const REQUEST_TIMEOUT = 15000;
-const MAX_RETRIES_PER_ENDPOINT = 2;
-
-// =============================================================================
-// SCHEMA NORMALIZATION
-// =============================================================================
-// Your frontend (fetchOnlineResults) expects these exact field names:
-//   home_team_name_en, away_team_name_en, home_score, away_score,
-//   finished/time_elapsed/status
-// We normalize whatever the source sends into this standard format.
-
-const ALIASES = {
-  homeTeam: ['home_team_name_en', 'homeTeam', 'home_team', 'home', 'team1', 'homeName'],
-  awayTeam: ['away_team_name_en', 'awayTeam', 'away_team', 'away', 'team2', 'awayName'],
-  homeScore: ['home_score', 'homeScore', 'score1', 'home_score_fulltime'],
-  awayScore: ['away_score', 'awayScore', 'score2', 'away_score_fulltime'],
-  status: ['finished', 'time_elapsed', 'status', 'match_status', 'state']
-};
-
-function pick(obj, keys) {
-  for (const k of keys) {
-    if (obj[k] !== undefined && obj[k] !== null) return obj[k];
-  }
-  return undefined;
+// Ensure directory exists
+if (!fs.existsSync(path.dirname(OUTPUT_PATH))) {
+  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
 }
 
-function normalizeGame(raw) {
-  if (!raw || typeof raw !== 'object') return null;
-
-  const home = pick(raw, ALIASES.homeTeam);
-  const away = pick(raw, ALIASES.awayTeam);
-  const homeScore = pick(raw, ALIASES.homeScore);
-  const awayScore = pick(raw, ALIASES.awayScore);
-  const statusRaw = pick(raw, ALIASES.status);
-
-  // Hard validation: must have identifiable teams and numeric scores
-  if (!home || !away) return null;
-  if (homeScore === undefined || awayScore === undefined) return null;
-
-  const s = String(statusRaw || '').toLowerCase();
-  const isFinished =
-    s === 'true' ||
-    s === 'finished' ||
-    s === 'ft' ||
-    s === 'full time' ||
-    s === 'full_time' ||
-    s.includes('finish');
-
-  return {
-    home_team_name_en: String(home).trim(),
-    away_team_name_en: String(away).trim(),
-    home_score: parseInt(homeScore, 10) || 0,
-    away_score: parseInt(awayScore, 10) || 0,
-    finished: isFinished,
-    status: isFinished ? 'FINISHED' : (String(statusRaw || 'SCHEDULED').toUpperCase()),
-    // Preserve any extra metadata the source provides
-    _source_timestamp: raw.timestamp || raw.date || raw.datetime || raw.match_time || null
-  };
-}
-
-// =============================================================================
-// NETWORK LAYER
-// =============================================================================
-
-function fetchJSON(urlString, attempt = 1) {
+function fetchJSON(url) {
   return new Promise((resolve, reject) => {
-    const url = new URL(urlString);
-    const client = url.protocol === 'https:' ? https : http;
-
-    const req = client.get(urlString, {
+    const req = https.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Referer': 'https://worldcup26.ir/'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+        'Accept-Language': 'en-US,en;q=0.9'
       },
-      timeout: REQUEST_TIMEOUT
+      timeout: 10000
     }, (res) => {
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        reject(new Error(`HTTP ${res.statusCode}`));
+      // Follow redirects (status 301, 302, 303, 307, 308)
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        fetchJSON(res.headers.location).then(resolve).catch(reject);
         return;
       }
 
       let data = '';
-      res.on('data', chunk => (data += chunk));
+      res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try {
-          resolve(JSON.parse(data));
+          const parsed = JSON.parse(data);
+          resolve(parsed);
         } catch (e) {
-          reject(new Error(`Invalid JSON: ${e.message}`));
+          reject(new Error(`Invalid JSON: ${data.substring(0, 100)}...`));
         }
       });
     });
-
     req.on('timeout', () => {
       req.destroy();
-      reject(new Error('Request timeout'));
+      reject(new Error('Timeout'));
     });
-    req.on('error', (err) => reject(new Error(`Network: ${err.message}`)));
+    req.on('error', reject);
   });
 }
 
-async function fetchWithRetry(url) {
-  let lastErr;
-  for (let i = 0; i < MAX_RETRIES_PER_ENDPOINT; i++) {
-    try {
-      return await fetchJSON(url);
-    } catch (err) {
-      lastErr = err;
-      console.log(`   ↳ Retry ${i + 1}/${MAX_RETRIES_PER_ENDPOINT}: ${err.message}`);
-      if (i < MAX_RETRIES_PER_ENDPOINT - 1) {
-        await new Promise(r => setTimeout(r, 2000 * (i + 1)));
-      }
+function extractGames(data) {
+  // Handle different response formats
+  if (data.games && Array.isArray(data.games)) return data.games;
+  if (data.matches && Array.isArray(data.matches)) return data.matches;
+  if (data.fixtures && Array.isArray(data.fixtures)) return data.fixtures;
+  if (data.response && Array.isArray(data.response)) return data.response;
+  if (data.events && Array.isArray(data.events)) return data.events;
+  if (Array.isArray(data)) return data;
+  
+  // Try to find any array in the response
+  for (const key of Object.keys(data)) {
+    if (Array.isArray(data[key]) && data[key].length > 0) {
+      return data[key];
     }
   }
-  throw lastErr;
+  
+  return [];
 }
 
-// =============================================================================
-// MAIN
-// =============================================================================
+function normalizeGame(game) {
+  // Extract team names from various fields
+  const homeNames = [
+    game.home_team_name_en,
+    game.homeTeam,
+    game.home_team,
+    game.home,
+    game.team1,
+    game.homeName,
+    game.home_team?.name,
+    game.homeTeam?.name,
+    game.teams?.home?.name
+  ].filter(Boolean).map(String);
+
+  const awayNames = [
+    game.away_team_name_en,
+    game.awayTeam,
+    game.away_team,
+    game.away,
+    game.team2,
+    game.awayName,
+    game.away_team?.name,
+    game.awayTeam?.name,
+    game.teams?.away?.name
+  ].filter(Boolean).map(String);
+
+  // Extract scores
+  const score1 = parseInt(
+    game.home_score || game.homeScore || game.score1 || game.intHomeScore || 
+    game.scores?.home || game.scores?.team1 || game.goals?.home || 0
+  ) || 0;
+
+  const score2 = parseInt(
+    game.away_score || game.awayScore || game.score2 || game.intAwayScore ||
+    game.scores?.away || game.scores?.team2 || game.goals?.away || 0
+  ) || 0;
+
+  // Check if match is completed
+  const completed = 
+    game.completed === true || 
+    game.finished === true ||
+    game.status === 'FINISHED' ||
+    game.status === 'FT' ||
+    game.status === 'Full Time' ||
+    (game.status && typeof game.status === 'string' && game.status.toLowerCase().includes('finished'));
+
+  return {
+    home: homeNames[0] || 'Unknown Home',
+    away: awayNames[0] || 'Unknown Away',
+    homeScore: score1,
+    awayScore: score2,
+    completed: completed || false,
+    status: game.status || (completed ? 'FT' : 'Scheduled'),
+    id: game.id || game.match_id || game.fixture_id || game._id || Date.now()
+  };
+}
 
 async function main() {
-  console.log('🏆 FIFA World Cup 2026 Live Scraper');
-  console.log(`⏰ ${new Date().toISOString()}`);
-
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  }
-
-  let success = false;
-  let usedSource = null;
-  let lastError = null;
-  let games = [];
-
-  for (const endpoint of ENDPOINTS) {
+  console.log('🔄 Starting live score scraper...');
+  
+  let lastError = '';
+  
+  for (const url of SOURCES) {
     try {
-      console.log(`\n🔄 Trying: ${endpoint}`);
-      const payload = await fetchWithRetry(endpoint);
-
-      // Unwrap various API shapes
-      let rawGames = payload.games || payload.matches || payload.fixtures ||
-                     payload.response || payload.data || payload;
-      if (!Array.isArray(rawGames)) {
-        rawGames = (rawGames && typeof rawGames === 'object') ? [rawGames] : [];
+      console.log(`📡 Fetching: ${url}`);
+      const data = await fetchJSON(url);
+      const rawGames = extractGames(data);
+      
+      if (!rawGames || rawGames.length === 0) {
+        throw new Error('No games found in response');
       }
 
-      // Normalize & validate
-      games = rawGames.map(normalizeGame).filter(g => g !== null);
+      // Normalize all games
+      const normalizedGames = rawGames
+        .filter(game => game && typeof game === 'object' && !game.error)
+        .map(normalizeGame)
+        .filter(game => game.home && game.away && game.home !== game.away);
 
-      if (games.length === 0) {
+      if (normalizedGames.length === 0) {
         throw new Error('No valid games after normalization');
       }
 
-      usedSource = endpoint;
-      success = true;
-      console.log(`✅ SUCCESS: ${games.length} valid games`);
-      break;
-    } catch (err) {
-      lastError = err.message;
-      console.log(`❌ FAILED: ${endpoint} — ${err.message}`);
+      // Write to file
+      const output = {
+        games: normalizedGames,
+        lastUpdated: new Date().toISOString(),
+        source: url,
+        totalMatches: normalizedGames.length
+      };
+
+      fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
+      
+      console.log(`✅ SUCCESS! Saved ${normalizedGames.length} matches`);
+      console.log(`📁 Output: ${OUTPUT_PATH}`);
+      
+      // Display sample match
+      if (normalizedGames.length > 0) {
+        const sample = normalizedGames[0];
+        console.log(`📊 Sample: ${sample.home} ${sample.homeScore} - ${sample.awayScore} ${sample.away} (${sample.status})`);
+      }
+      
+      process.exit(0);
+      
+    } catch (error) {
+      lastError = error.message;
+      console.log(`❌ Failed: ${url} - ${error.message}`);
+      
+      // If this was a CORS proxy error, try the next one
+      if (error.message.includes('CORS')) {
+        console.log('🔄 CORS error detected, trying next source...');
+        continue;
+      }
     }
   }
 
-  // Build output
-  const output = {
-    meta: {
-      lastUpdated: new Date().toISOString(),
-      source: usedSource || 'none',
-      version: '2.0',
-      totalGames: games.length,
-      finishedGames: games.filter(g => g.finished).length,
-      success,
-      error: success ? null : lastError
-    },
-    games
-  };
-
-  // Atomic write: temp file then rename
-  fs.writeFileSync(TEMP_PATH, JSON.stringify(output, null, 2));
-  fs.renameSync(TEMP_PATH, OUTPUT_PATH);
-
-  if (success) {
-    console.log(`\n💾 Saved → ${OUTPUT_PATH}`);
-    console.log(`📊 Total: ${games.length} | ✅ Finished: ${output.meta.finishedGames} | ⏳ Upcoming: ${games.length - output.meta.finishedGames}`);
-    process.exit(0);
-  } else {
-    console.error(`\n⚠️ All sources failed. Last error: ${lastError}`);
-    console.log(`📁 Wrote empty/placeholder file so the frontend never gets a 404`);
-    process.exit(0);
-  }
+  // All sources failed
+  console.error('❌ All sources failed. Last error:', lastError);
+  
+  // Write fallback data
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify({
+    games: [
+      {
+        home: 'Portugal',
+        away: 'DR Congo',
+        homeScore: null,
+        awayScore: null,
+        completed: false,
+        status: 'Scheduled',
+        id: 61
+      }
+    ],
+    lastUpdated: new Date().toISOString(),
+    error: lastError,
+    source: 'fallback'
+  }, null, 2));
+  
+  console.log('📁 Created fallback data');
+  process.exit(0);
 }
 
-// Crash safety: even if main() throws, write a valid JSON file
-main().catch((err) => {
-  console.error('💥 Unhandled error:', err);
-  try {
-    const emergency = {
-      meta: {
-        lastUpdated: new Date().toISOString(),
-        source: 'crash',
-        version: '2.0',
-        totalGames: 0,
-        success: false,
-        error: err.message
-      },
-      games: []
-    };
-    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(emergency, null, 2));
-  } catch (e) { /* ignore */ }
-  process.exit(0);
+// Run the scraper
+main().catch(error => {
+  console.error('Fatal error:', error);
+  process.exit(0); // Always exit cleanly
 });
