@@ -1,3 +1,6 @@
 {
-  "error": "Server-side requests are not allowed on your plan. Upgrade at https://corsproxy.io/pricing/"
+  "games": {
+    "error": "Server-side requests are not allowed on your plan. Upgrade at https://corsproxy.io/pricing/"
+  },
+  "lastUpdated": "2026-06-18T07:35:44.937Z"
 }
