@@ -1,12 +1,661 @@
 {
   "meta": {
-    "lastUpdated": "2026-06-18T18:04:48.876Z",
-    "source": "none",
+    "lastUpdated": "2026-06-18T18:14:36.366Z",
+    "source": "https://worldcup26.ir/get/games",
     "version": "2.0",
-    "totalGames": 0,
-    "finishedGames": 0,
-    "success": false,
-    "error": "HTTP 400"
+    "totalGames": 72,
+    "finishedGames": 25,
+    "success": true,
+    "error": null
   },
-  "games": []
+  "games": [
+    {
+      "home_team_name_en": "Mexico",
+      "away_team_name_en": "South Africa",
+      "home_score": 2,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "South Korea",
+      "away_team_name_en": "Czech Republic",
+      "home_score": 2,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Canada",
+      "away_team_name_en": "Bosnia and Herzegovina",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "United States",
+      "away_team_name_en": "Paraguay",
+      "home_score": 4,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Haiti",
+      "away_team_name_en": "Scotland",
+      "home_score": 0,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Australia",
+      "away_team_name_en": "Turkey",
+      "home_score": 2,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Brazil",
+      "away_team_name_en": "Morocco",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Qatar",
+      "away_team_name_en": "Switzerland",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Ivory Coast",
+      "away_team_name_en": "Ecuador",
+      "home_score": 1,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Germany",
+      "away_team_name_en": "Curaçao",
+      "home_score": 7,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Netherlands",
+      "away_team_name_en": "Japan",
+      "home_score": 2,
+      "away_score": 2,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Sweden",
+      "away_team_name_en": "Tunisia",
+      "home_score": 5,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Iran",
+      "away_team_name_en": "New Zealand",
+      "home_score": 2,
+      "away_score": 2,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Spain",
+      "away_team_name_en": "Cape Verde",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Belgium",
+      "away_team_name_en": "Egypt",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Saudi Arabia",
+      "away_team_name_en": "Uruguay",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "France",
+      "away_team_name_en": "Senegal",
+      "home_score": 3,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Iraq",
+      "away_team_name_en": "Norway",
+      "home_score": 1,
+      "away_score": 4,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Argentina",
+      "away_team_name_en": "Algeria",
+      "home_score": 3,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Austria",
+      "away_team_name_en": "Jordan",
+      "home_score": 3,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Portugal",
+      "away_team_name_en": "Democratic Republic of the Congo",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "England",
+      "away_team_name_en": "Croatia",
+      "home_score": 4,
+      "away_score": 2,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Uzbekistan",
+      "away_team_name_en": "Colombia",
+      "home_score": 1,
+      "away_score": 3,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Ghana",
+      "away_team_name_en": "Panama",
+      "home_score": 1,
+      "away_score": 0,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Mexico",
+      "away_team_name_en": "South Korea",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Switzerland",
+      "away_team_name_en": "Bosnia and Herzegovina",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Canada",
+      "away_team_name_en": "Qatar",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Czech Republic",
+      "away_team_name_en": "South Africa",
+      "home_score": 1,
+      "away_score": 1,
+      "finished": true,
+      "status": "FINISHED",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Brazil",
+      "away_team_name_en": "Haiti",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Scotland",
+      "away_team_name_en": "Morocco",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "United States",
+      "away_team_name_en": "Australia",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Turkey",
+      "away_team_name_en": "Paraguay",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Germany",
+      "away_team_name_en": "Ivory Coast",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Ecuador",
+      "away_team_name_en": "Curaçao",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Netherlands",
+      "away_team_name_en": "Sweden",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Tunisia",
+      "away_team_name_en": "Japan",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Belgium",
+      "away_team_name_en": "Iran",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "New Zealand",
+      "away_team_name_en": "Egypt",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Spain",
+      "away_team_name_en": "Saudi Arabia",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Uruguay",
+      "away_team_name_en": "Cape Verde",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "France",
+      "away_team_name_en": "Iraq",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Norway",
+      "away_team_name_en": "Senegal",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Argentina",
+      "away_team_name_en": "Austria",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Jordan",
+      "away_team_name_en": "Algeria",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Portugal",
+      "away_team_name_en": "Uzbekistan",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Panama",
+      "away_team_name_en": "Croatia",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Colombia",
+      "away_team_name_en": "Democratic Republic of the Congo",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "England",
+      "away_team_name_en": "Ghana",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Scotland",
+      "away_team_name_en": "Brazil",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Morocco",
+      "away_team_name_en": "Haiti",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "South Africa",
+      "away_team_name_en": "South Korea",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Czech Republic",
+      "away_team_name_en": "Mexico",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Bosnia and Herzegovina",
+      "away_team_name_en": "Qatar",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Switzerland",
+      "away_team_name_en": "Canada",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Curaçao",
+      "away_team_name_en": "Ivory Coast",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Ecuador",
+      "away_team_name_en": "Germany",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Paraguay",
+      "away_team_name_en": "Australia",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Turkey",
+      "away_team_name_en": "United States",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Japan",
+      "away_team_name_en": "Sweden",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Tunisia",
+      "away_team_name_en": "Netherlands",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Senegal",
+      "away_team_name_en": "Iraq",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Norway",
+      "away_team_name_en": "France",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Egypt",
+      "away_team_name_en": "Iran",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "New Zealand",
+      "away_team_name_en": "Belgium",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Cape Verde",
+      "away_team_name_en": "Saudi Arabia",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Uruguay",
+      "away_team_name_en": "Spain",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Panama",
+      "away_team_name_en": "England",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Croatia",
+      "away_team_name_en": "Ghana",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Algeria",
+      "away_team_name_en": "Austria",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Jordan",
+      "away_team_name_en": "Argentina",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Colombia",
+      "away_team_name_en": "Portugal",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    },
+    {
+      "home_team_name_en": "Democratic Republic of the Congo",
+      "away_team_name_en": "Uzbekistan",
+      "home_score": 0,
+      "away_score": 0,
+      "finished": false,
+      "status": "FALSE",
+      "_source_timestamp": null
+    }
+  ]
 }
