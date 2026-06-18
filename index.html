@@ -1414,8 +1414,9 @@ function setManualMode() {
 }
 
 // ==================== ONLINE SYNC ====================
-const API_BASE = "https://www.thestatsapi.com/world-cup/data/fixtures.json";
+const API_BASE = "https://tonmoy977.github.io/wc2026-hub/data/live.json";
 
+async function fetchOnlineResults(isBackground = false) {
 async function fetchOnlineResults(isBackground = false) {
     if (!navigator.onLine) {
         if (!isBackground) showNotif("You are offline. Using saved results.", "warning");
@@ -1423,34 +1424,51 @@ async function fetchOnlineResults(isBackground = false) {
     }
     const now = new Date();
     if (now > WC_END_DATE) {
-        if (!isBackground) showNotif("World Cup 2026 has concluded. No live updates.", "info");
+        if (!isBackground) showNotif("World Cup 2026 has concluded.", "info");
         return;
     }
-    if (!isBackground) showNotif("Updating till now...", "info");
+    if (!isBackground) showNotif("Fetching live results...", "info");
     
     let totalImported = 0;
     try {
         const resp = await fetch(API_BASE, { cache: "no-store" });
-        if (!resp.ok) throw new Error("API error");
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
         const json = await resp.json();
-        const fixtures = json.fixtures || [];
         
-        for (let apiMatch of fixtures) {
-            // Map API team names to internal names
-            let home = mapTeamName(apiMatch.homeTeam);
-            let away = mapTeamName(apiMatch.awayTeam);
+        // Handle different JSON shapes from the scraper
+        let matches = [];
+        if (Array.isArray(json)) matches = json;
+        else if (Array.isArray(json.games)) matches = json.games;
+        else if (Array.isArray(json.matches)) matches = json.matches;
+        else if (Array.isArray(json.fixtures)) matches = json.fixtures;
+        else if (Array.isArray(json.data)) matches = json.data;
+        else if (json.response && Array.isArray(json.response)) matches = json.response;
+        
+        for (let apiMatch of matches) {
+            const homeRaw = apiMatch.homeTeam || apiMatch.home_team || apiMatch.team1 || apiMatch.home || apiMatch.homeName || apiMatch.localTeam?.name;
+            const awayRaw = apiMatch.awayTeam || apiMatch.away_team || apiMatch.team2 || apiMatch.away || apiMatch.awayName || apiMatch.visitorTeam?.name;
+            
+            const home = mapTeamName(homeRaw);
+            const away = mapTeamName(awayRaw);
             if (!home || !away) continue;
             
-            // Find matching fixture by teams and date
+            // Check if match is finished
+            const status = String(apiMatch.status || apiMatch.state || apiMatch.matchStatus || apiMatch.time?.status || "").toLowerCase();
+            const isFinished = status.includes("finish") || status.includes("ft") || status.includes("full") || status.includes("end") || status.includes("done") || status.includes("closed");
+            
+            // Get scores
+            let s1 = apiMatch.homeScore ?? apiMatch.home_score ?? apiMatch.score1 ?? apiMatch.goalsHome ?? apiMatch.homeGoals ?? apiMatch.localTeam?.goals;
+            let s2 = apiMatch.awayScore ?? apiMatch.away_score ?? apiMatch.score2 ?? apiMatch.goalsAway ?? apiMatch.awayGoals ?? apiMatch.visitorTeam?.goals;
+            
             const match = appData.fixtures.find(f => 
                 (f.team1 === home && f.team2 === away) || 
                 (f.team1 === away && f.team2 === home)
             );
+            
             if (match && !match.syncFinalized) {
-                // If API has scores, update them
-                if (apiMatch.homeScore !== undefined && apiMatch.awayScore !== undefined) {
-                    match.score1 = parseInt(apiMatch.homeScore) || 0;
-                    match.score2 = parseInt(apiMatch.awayScore) || 0;
+                if (s1 !== undefined && s2 !== undefined && isFinished) {
+                    match.score1 = parseInt(s1) || 0;
+                    match.score2 = parseInt(s2) || 0;
                     match.completed = true;
                     match.syncFinalized = true;
                     syncState.finalized[match.id] = true;
@@ -1460,7 +1478,7 @@ async function fetchOnlineResults(isBackground = false) {
         }
     } catch (e) {
         console.error("Fetch failed:", e);
-        if (!isBackground) showNotif("Update failed. Check connection.", "error");
+        if (!isBackground) showNotif("Update failed. " + e.message, "error");
         return;
     }
     
@@ -1471,30 +1489,39 @@ async function fetchOnlineResults(isBackground = false) {
         updateKnockoutSlots();
         if (document.getElementById("knockoutView").classList.contains("active")) renderKnockout();
         if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
-        if (!isBackground) showNotif("Updated till now", "success");
+        if (!isBackground) showNotif(`Updated ${totalImported} matches`, totalImported > 0 ? "success" : "info");
     }
     syncState.lastSync = new Date().toISOString();
     saveData();
 }
-
 function mapTeamName(apiName) {
+function mapTeamName(apiName) {
+    if (!apiName) return null;
     const map = {
-        "Mexico": "Mexico", "South Africa": "South Africa", "Korea Republic": "South Korea",
-        "Czechia": "Czechia", "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia",
-        "Qatar": "Qatar", "Switzerland": "Switzerland", "Brazil": "Brazil", "Morocco": "Morocco",
-        "Haiti": "Haiti", "Scotland": "Scotland", "United States": "USA", "Paraguay": "Paraguay",
-        "Australia": "Australia", "Turkiye": "Türkiye", "Germany": "Germany", "Curacao": "Curaçao",
-        "Cote d'Ivoire": "Ivory Coast", "Ecuador": "Ecuador", "Netherlands": "Netherlands",
-        "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia", "Spain": "Spain",
-        "Cabo Verde": "Cape Verde", "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
-        "Belgium": "Belgium", "Egypt": "Egypt", "IR Iran": "Iran", "New Zealand": "New Zealand",
+        "Mexico": "Mexico", "South Africa": "South Africa", "Korea Republic": "South Korea", "South Korea": "South Korea",
+        "Czechia": "Czechia", "Czech Republic": "Czechia",
+        "Canada": "Canada", "Bosnia and Herzegovina": "Bosnia", "Bosnia": "Bosnia",
+        "Qatar": "Qatar", "Switzerland": "Switzerland",
+        "Brazil": "Brazil", "Morocco": "Morocco", "Haiti": "Haiti", "Scotland": "Scotland",
+        "United States": "USA", "USA": "USA", "Paraguay": "Paraguay",
+        "Australia": "Australia", "Turkiye": "Türkiye", "Turkey": "Türkiye", "Türkiye": "Türkiye",
+        "Germany": "Germany", "Curacao": "Curaçao", "Curaçao": "Curaçao",
+        "Cote d'Ivoire": "Ivory Coast", "Ivory Coast": "Ivory Coast", "Ecuador": "Ecuador",
+        "Netherlands": "Netherlands", "Japan": "Japan", "Sweden": "Sweden", "Tunisia": "Tunisia",
+        "Spain": "Spain", "Cabo Verde": "Cape Verde", "Cape Verde": "Cape Verde",
+        "Saudi Arabia": "Saudi Arabia", "Uruguay": "Uruguay",
+        "Belgium": "Belgium", "Egypt": "Egypt", "IR Iran": "Iran", "Iran": "Iran", "New Zealand": "New Zealand",
         "France": "France", "Senegal": "Senegal", "Iraq": "Iraq", "Norway": "Norway",
         "Argentina": "Argentina", "Algeria": "Algeria", "Austria": "Austria", "Jordan": "Jordan",
-        "Portugal": "Portugal", "Congo DR": "DR Congo", "Uzbekistan": "Uzbekistan",
-        "Colombia": "Colombia", "England": "England", "Croatia": "Croatia", "Ghana": "Ghana",
-        "Panama": "Panama"
+        "Portugal": "Portugal", "Congo DR": "DR Congo", "DR Congo": "DR Congo", "Uzbekistan": "Uzbekistan",
+        "Colombia": "Colombia", "England": "England", "Croatia": "Croatia", "Ghana": "Ghana", "Panama": "Panama"
     };
-    return map[apiName] || apiName;
+    if (map[apiName]) return map[apiName];
+    const lower = apiName.toLowerCase();
+    for (const [key, val] of Object.entries(map)) {
+        if (key.toLowerCase() === lower) return val;
+    }
+    return apiName;
 }
 
 // ==================== PULL TO REFRESH ====================
