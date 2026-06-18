@@ -4501,6 +4501,115 @@ function emergencyFix() {
     .catch(e => alert('Error: ' + e.message));
 }
 </script>
+<!-- Emergency Fix Button - Add this near the end of your body -->
+<button onclick="emergencyFix()" style="position:fixed;top:70px;right:10px;z-index:9999;background:#ff6b35;color:white;border:none;padding:8px 12px;border-radius:4px;font-size:12px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.3);">
+  🔧 Fix Portugal
+</button>
 
+<script>
+function emergencyFix() {
+    console.log('🔧 Emergency fix triggered');
+    
+    // Try to get data from live.json
+    fetch('data/live.json?_=' + Date.now(), {cache: 'no-store'})
+    .then(r => {
+        if (!r.ok) throw new Error('Failed to fetch data/live.json');
+        return r.json();
+    })
+    .then(data => {
+        console.log('📊 Received data:', data);
+        
+        // Extract games from various possible structures
+        let games = data.games || data.data || data.matches || data.fixtures || data;
+        
+        // If it's an object with arrays inside, find the array
+        if (!Array.isArray(games)) {
+            for (const key of Object.keys(games)) {
+                if (Array.isArray(games[key]) && games[key].length > 0) {
+                    games = games[key];
+                    break;
+                }
+            }
+        }
+        
+        if (!Array.isArray(games) || games.length === 0) {
+            throw new Error('No games array found in data');
+        }
+
+        console.log('🔍 Searching through', games.length, 'games');
+
+        // Find Portugal vs DR Congo match
+        const match = games.find(g => {
+            // Try all possible field names
+            const home = String(
+                g.home || g.homeTeam || g.home_team || g.homeName || 
+                g.team1 || g.home_team_name_en || ''
+            ).toLowerCase();
+            
+            const away = String(
+                g.away || g.awayTeam || g.away_team || g.awayName ||
+                g.team2 || g.away_team_name_en || ''
+            ).toLowerCase();
+            
+            const isPortugal = home.includes('portugal');
+            const isCongo = away.includes('congo') || away.includes('dr congo');
+            const isPortugalAway = away.includes('portugal');
+            const isCongoHome = home.includes('congo') || home.includes('dr congo');
+            
+            return (isPortugal && isCongo) || (isCongoHome && isPortugalAway);
+        });
+
+        if (!match) {
+            throw new Error('Portugal vs DR Congo match not found. Available matches: ' + 
+                games.map(g => {
+                    const h = String(g.home || g.homeTeam || g.home_team || '?').substring(0, 20);
+                    const a = String(g.away || g.awayTeam || g.away_team || '?').substring(0, 20);
+                    return `${h} vs ${a}`;
+                }).join(', ').substring(0, 200)
+            );
+        }
+
+        console.log('✅ Found match:', match);
+
+        // Extract scores
+        const score1 = parseInt(match.homeScore || match.home_score || match.score1 || 
+                               match.intHomeScore || match.scores?.home || 0) || 0;
+        const score2 = parseInt(match.awayScore || match.away_score || match.score2 || 
+                               match.intAwayScore || match.scores?.away || 0) || 0;
+
+        // Find match in appData
+        const matchId = match.id || match.match_id || match.fixture_id || 61;
+        const appMatch = appData.fixtures.find(f => f.id === matchId);
+        
+        if (!appMatch) {
+            throw new Error(`Match with ID ${matchId} not found in appData.fixtures`);
+        }
+
+        // Update the match
+        appMatch.score1 = score1;
+        appMatch.score2 = score2;
+        appMatch.completed = match.completed || match.finished || 
+                            match.status === 'FT' || match.status === 'Full Time' || true;
+        appMatch.syncFinalized = false;
+        
+        // Save and re-render
+        if (typeof saveData === 'function') {
+            saveData();
+        } else {
+            localStorage.setItem('wc2026_data', JSON.stringify(appData));
+        }
+        
+        if (typeof renderGroupStage === 'function') renderGroupStage();
+        if (typeof renderStandings === 'function') renderStandings();
+        if (typeof updateKnockoutSlots === 'function') updateKnockoutSlots();
+        
+        alert('✅ Fixed: Portugal ' + score1 + ' - ' + score2 + ' DR Congo');
+    })
+    .catch(e => {
+        console.error('❌ Emergency fix error:', e);
+        alert('Error: ' + e.message + '\n\nCheck console (F12) for details');
+    });
+}
+</script>  
 </body>
 </html>
