@@ -2,8 +2,8 @@ name: Scrape live results
 
 on:
   schedule:
-    - cron: '0 * * * *'   # every hour
-  workflow_dispatch:       # manual trigger (you can run it anytime)
+    - cron: '*/30 * * * *'   # every 30 minutes
+  workflow_dispatch:         # manual trigger
 
 jobs:
   scrape:
@@ -15,10 +15,12 @@ jobs:
           node-version: 18
       - name: Run scraper
         run: node scraper.js
+        continue-on-error: true   # Don't fail the workflow if scraper fails
       - name: Commit and push if changed
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull origin main --rebase || true   # Pull latest changes first
           git add data/live.json
           git diff --staged --quiet || git commit -m "Update live results [skip ci]"
-          git push
+          git push origin main || true   # Don't fail if push fails
