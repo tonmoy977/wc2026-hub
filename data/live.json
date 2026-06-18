@@ -1,6 +1,9 @@
 {
-  "games": {
-    "error": "Server-side requests are not allowed on your plan. Upgrade at https://corsproxy.io/pricing/"
-  },
-  "lastUpdated": "2026-06-18T07:50:18.528Z"
+  "games": [
+    {
+      "error": "Server-side requests are not allowed on your plan. Upgrade at https://corsproxy.io/pricing/"
+    }
+  ],
+  "lastUpdated": "2026-06-18T08:08:46.164Z",
+  "source": "https://corsproxy.io/?https://worldcup26.ir/get/games"
 }
