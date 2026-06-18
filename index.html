@@ -1448,7 +1448,7 @@ async function fetchOnlineResults(isBackground = false) {
             const away = mapTeamName(awayRaw);
             if (!home || !away) continue;
             
-            const finished = String(apiMatch.finished || "").toLowerCase();
+ const finished = String(apiMatch.finished || "").toLowerCase();
 const timeElapsed = String(apiMatch.time_elapsed || "").toLowerCase();
 const statusStr = String(apiMatch.status || apiMatch.match_status || apiMatch.state || "").toLowerCase();
 const isFinished = finished === "true" || finished === "1" || timeElapsed === "finished" || 
@@ -1468,6 +1468,7 @@ function getScore(apiMatch, isHome) {
 }
 let s1 = getScore(apiMatch, true);
 let s2 = getScore(apiMatch, false);
+
             
             const match = appData.fixtures.find(f => 
                 (f.team1 === home && f.team2 === away) || 
