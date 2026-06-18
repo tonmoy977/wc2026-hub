@@ -4610,6 +4610,74 @@ function emergencyFix() {
         alert('Error: ' + e.message + '\n\nCheck console (F12) for details');
     });
 }
-</script>  
+<!-- Emergency Fix Button -->
+<button onclick="emergencyFix()" style="position:fixed;top:70px;right:10px;z-index:9999;background:#ff6b35;color:white;border:none;padding:8px 12px;border-radius:4px;font-size:12px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.3);">
+  🔧 Fix Portugal
+</button>
+
+<script>
+function emergencyFix() {
+    console.log('🔧 Emergency fix triggered');
+    
+    fetch('data/live.json?_=' + Date.now(), {cache: 'no-store'})
+    .then(r => {
+        if (!r.ok) throw new Error('Failed to fetch data/live.json');
+        return r.json();
+    })
+    .then(data => {
+        let games = data.games || data.data || data.matches || data.fixtures || data;
+        if (!Array.isArray(games)) {
+            for (const key of Object.keys(games)) {
+                if (Array.isArray(games[key]) && games[key].length > 0) {
+                    games = games[key];
+                    break;
+                }
+            }
+        }
+        if (!Array.isArray(games) || games.length === 0) {
+            throw new Error('No games array found in data');
+        }
+
+        const match = games.find(g => {
+            const home = String(g.home || g.homeTeam || g.home_team || g.homeName || g.team1 || '').toLowerCase();
+            const away = String(g.away || g.awayTeam || g.away_team || g.awayName || g.team2 || '').toLowerCase();
+            return (home.includes('portugal') && (away.includes('congo') || away.includes('dr congo'))) ||
+                   ((home.includes('congo') || home.includes('dr congo')) && away.includes('portugal'));
+        });
+
+        if (!match) {
+            throw new Error('Portugal vs DR Congo match not found');
+        }
+
+        const score1 = parseInt(match.homeScore || match.home_score || match.score1 || match.intHomeScore || 0) || 0;
+        const score2 = parseInt(match.awayScore || match.away_score || match.score2 || match.intAwayScore || 0) || 0;
+
+        const matchId = match.id || match.match_id || match.fixture_id || 61;
+        const appMatch = appData.fixtures.find(f => f.id === matchId);
+        
+        if (!appMatch) {
+            throw new Error(`Match with ID ${matchId} not found in appData.fixtures`);
+        }
+
+        appMatch.score1 = score1;
+        appMatch.score2 = score2;
+        appMatch.completed = true;
+        appMatch.syncFinalized = false;
+        
+        if (typeof saveData === 'function') saveData();
+        else localStorage.setItem('wc2026_data', JSON.stringify(appData));
+        
+        if (typeof renderGroupStage === 'function') renderGroupStage();
+        if (typeof renderStandings === 'function') renderStandings();
+        if (typeof updateKnockoutSlots === 'function') updateKnockoutSlots();
+        
+        alert('✅ Fixed: Portugal ' + score1 + ' - ' + score2 + ' DR Congo');
+    })
+    .catch(e => {
+        console.error('❌ Emergency fix error:', e);
+        alert('Error: ' + e.message + '\n\nCheck console (F12) for details');
+    });
+}
+</script>
 </body>
 </html>
