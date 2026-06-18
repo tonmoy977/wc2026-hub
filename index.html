@@ -2239,6 +2239,31 @@ loadData();
 initPullToRefresh();
 if (!manualHelperActive) startBackgroundSync();
 firstRenderDone = true;
+<button onclick="emergencyFix()" style="position:fixed;top:70px;right:10px;z-index:9999;background:#ff6b35;color:white;border:none;padding:8px 12px;border-radius:4px;font-size:12px;cursor:pointer;">🔧 Fix Portugal</button>
+<script>
+function emergencyFix() {
+    fetch('https://tonmoy977.github.io/wc2026-hub/data/live.json?_=' + Date.now(), {cache: 'no-store'})
+    .then(r => r.json())
+    .then(j => {
+        const games = j.games || j.matches || j.fixtures || j.response || j.data || j;
+        const g = games.find(x => {
+            const h = String(x.home_team_name_en || x.homeTeam || x.home_team || x.home || x.team1 || x.homeName || '').toLowerCase();
+            const a = String(x.away_team_name_en || x.awayTeam || x.away_team || x.away || x.team2 || x.awayName || '').toLowerCase();
+            return (h.includes('portugal') && (a.includes('congo') || a.includes('dr congo'))) || ((h.includes('congo') || h.includes('dr congo')) && a.includes('portugal'));
+        });
+        if (!g) { alert('Match not found in JSON'); return; }
+        const gs = (o, keys) => { for (const k of keys) { if (o[k] !== undefined && o[k] !== null) { const v = parseInt(o[k], 10); if (!isNaN(v)) return v; } } return null; };
+        const s1 = gs(g, ['home_score', 'homeScore', 'score1', 'intHomeScore']);
+        const s2 = gs(g, ['away_score', 'awayScore', 'score2', 'intAwayScore']);
+        if (s1 === null || s2 === null) { alert('Scores unreadable. Fields: ' + Object.keys(g).join(', ')); return; }
+        const m = appData.fixtures.find(f => f.id === 61);
+        m.score1 = s1; m.score2 = s2; m.completed = true; m.syncFinalized = false;
+        saveData(); renderGroupStage(); renderStandings(); updateKnockoutSlots();
+        alert('✅ Fixed: Portugal ' + s1 + ' - ' + s2 + ' DR Congo');
+    })
+    .catch(e => alert('Error: ' + e.message));
+}
 </script>
+
 </body>
 </html>
