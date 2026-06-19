@@ -4,220 +4,172 @@ const path = require('path');
 
 const OUTPUT_PATH = path.join(__dirname, 'data', 'live.json');
 
-// Multiple fallback sources
+// ESPN public API (powers ESPN.com, no auth required)
+// Fallback: upbound-web openfootball fork (raw JSON, no auth)
 const SOURCES = [
-  // Direct source (if accessible)
-  'https://worldcup26.ir/get/games',
-  // CORS proxies
-  'https://corsproxy.io/?https://worldcup26.ir/get/games',
-  'https://api.allorigins.win/raw?url=https://worldcup26.ir/get/games',
-  // Alternative sources
-  'https://raw.githubusercontent.com/openfootball/world-cup.json/master/2026/worldcup.json',
-  // Backup - ESPN API (if available)
-  'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard'
+  {
+    url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard',
+    type: 'espn'
+  },
+  {
+    url: 'https://raw.githubusercontent.com/upbound-web/worldcup-live.json/master/2026/worldcup.json',
+    type: 'openfootball'
+  }
 ];
 
-// Ensure directory exists
-if (!fs.existsSync(path.dirname(OUTPUT_PATH))) {
-  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
+// Map real API names to your app names
+const TEAM_MAP = {
+  "Korea Republic": "South Korea",
+  "Czech Republic": "Czechia",
+  "United States": "USA",
+  "Turkiye": "Türkiye",
+  "Curacao": "Curaçao",
+  "Cote d'Ivoire": "Ivory Coast",
+  "IR Iran": "Iran",
+  "Congo DR": "DR Congo",
+  "Cabo Verde": "Cape Verde",
+  "Bosnia and Herzegovina": "Bosnia"
+};
+
+function mapTeam(name) {
+  if (!name) return null;
+  return TEAM_MAP[name] || name;
 }
 
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, {
+    https.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/json',
-        'Accept-Language': 'en-US,en;q=0.9'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json'
       },
-      timeout: 10000
+      timeout: 15000
     }, (res) => {
-      // Follow redirects (status 301, 302, 303, 307, 308)
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         fetchJSON(res.headers.location).then(resolve).catch(reject);
         return;
       }
-
+      if (res.statusCode !== 200) {
+        reject(new Error(`HTTP ${res.statusCode}`));
+        return;
+      }
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          resolve(parsed);
-        } catch (e) {
-          reject(new Error(`Invalid JSON: ${data.substring(0, 100)}...`));
-        }
+        try { resolve(JSON.parse(data)); } catch (e) { reject(new Error('Invalid JSON')); }
       });
-    });
-    req.on('timeout', () => {
-      req.destroy();
-      reject(new Error('Timeout'));
-    });
-    req.on('error', reject);
+    }).on('timeout', () => reject(new Error('Timeout')))
+      .on('error', reject);
   });
 }
 
-function extractGames(data) {
-  // Handle different response formats
-  if (data.games && Array.isArray(data.games)) return data.games;
-  if (data.matches && Array.isArray(data.matches)) return data.matches;
-  if (data.fixtures && Array.isArray(data.fixtures)) return data.fixtures;
-  if (data.response && Array.isArray(data.response)) return data.response;
-  if (data.events && Array.isArray(data.events)) return data.events;
-  if (Array.isArray(data)) return data;
-  
-  // Try to find any array in the response
-  for (const key of Object.keys(data)) {
-    if (Array.isArray(data[key]) && data[key].length > 0) {
-      return data[key];
-    }
+// Parse ESPN format
+function extractESPN(data) {
+  const events = data?.events || [];
+  const games = [];
+  for (const ev of events) {
+    const comp = ev.competitions?.[0];
+    if (!comp) continue;
+    const competitors = comp.competitors || [];
+    const home = competitors.find(c => c.homeAway === 'home');
+    const away = competitors.find(c => c.homeAway === 'away');
+    if (!home?.team?.name || !away?.team?.name) continue;
+
+    const statusName = ev.status?.type?.name || '';
+    const isDone = statusName === 'STATUS_FINAL' || statusName === 'STATUS_FULL_TIME';
+    const shortDetail = ev.status?.type?.shortDetail || '';
+
+    const homeName = mapTeam(home.team.name);
+    const awayName = mapTeam(away.team.name);
+
+    games.push({
+      id: parseInt(ev.id, 10) || 0,
+      home: homeName,
+      away: awayName,
+      homeScore: home.score ? parseInt(home.score, 10) : 0,
+      awayScore: away.score ? parseInt(away.score, 10) : 0,
+      completed: isDone,
+      status: isDone ? 'FT' : shortDetail
+    });
   }
-  
-  return [];
+  return games;
 }
 
-function normalizeGame(game) {
-  // Extract team names from various fields
-  const homeNames = [
-    game.home_team_name_en,
-    game.homeTeam,
-    game.home_team,
-    game.home,
-    game.team1,
-    game.homeName,
-    game.home_team?.name,
-    game.homeTeam?.name,
-    game.teams?.home?.name
-  ].filter(Boolean).map(String);
+// Parse openfootball/upbound-web format
+function extractOpenfootball(data) {
+  const rounds = data?.rounds || [];
+  const games = [];
+  for (const round of rounds) {
+    for (const m of (round.matches || [])) {
+      const score1 = m.score1 !== undefined ? parseInt(m.score1, 10) : null;
+      const score2 = m.score2 !== undefined ? parseInt(m.score2, 10) : null;
+      const finished = score1 !== null && score2 !== null;
+      const homeName = mapTeam(m.team1?.name);
+      const awayName = mapTeam(m.team2?.name);
+      if (!homeName || !awayName) continue;
 
-  const awayNames = [
-    game.away_team_name_en,
-    game.awayTeam,
-    game.away_team,
-    game.away,
-    game.team2,
-    game.awayName,
-    game.away_team?.name,
-    game.awayTeam?.name,
-    game.teams?.away?.name
-  ].filter(Boolean).map(String);
-
-  // Extract scores
-  const score1 = parseInt(
-    game.home_score || game.homeScore || game.score1 || game.intHomeScore || 
-    game.scores?.home || game.scores?.team1 || game.goals?.home || 0
-  ) || 0;
-
-  const score2 = parseInt(
-    game.away_score || game.awayScore || game.score2 || game.intAwayScore ||
-    game.scores?.away || game.scores?.team2 || game.goals?.away || 0
-  ) || 0;
-
-  // Check if match is completed
-  const completed = 
-    game.completed === true || 
-    game.finished === true ||
-    game.status === 'FINISHED' ||
-    game.status === 'FT' ||
-    game.status === 'Full Time' ||
-    (game.status && typeof game.status === 'string' && game.status.toLowerCase().includes('finished'));
-
-  return {
-    home: homeNames[0] || 'Unknown Home',
-    away: awayNames[0] || 'Unknown Away',
-    homeScore: score1,
-    awayScore: score2,
-    completed: completed || false,
-    status: game.status || (completed ? 'FT' : 'Scheduled'),
-    id: game.id || game.match_id || game.fixture_id || game._id || Date.now()
-  };
+      games.push({
+        id: parseInt(m.num, 10) || 0,
+        home: homeName,
+        away: awayName,
+        homeScore: finished ? score1 : 0,
+        awayScore: finished ? score2 : 0,
+        completed: finished,
+        status: finished ? 'FT' : 'Scheduled'
+      });
+    }
+  }
+  return games;
 }
 
 async function main() {
-  console.log('🔄 Starting live score scraper...');
-  
+  console.log('🔄 Fetching live results...');
   let lastError = '';
-  
-  for (const url of SOURCES) {
+
+  for (const source of SOURCES) {
     try {
-      console.log(`📡 Fetching: ${url}`);
-      const data = await fetchJSON(url);
-      const rawGames = extractGames(data);
-      
-      if (!rawGames || rawGames.length === 0) {
-        throw new Error('No games found in response');
+      console.log(`📡 Trying: ${source.url}`);
+      const data = await fetchJSON(source.url);
+
+      let games = [];
+      if (source.type === 'espn') {
+        games = extractESPN(data);
+      } else {
+        games = extractOpenfootball(data);
       }
 
-      // Normalize all games
-      const normalizedGames = rawGames
-        .filter(game => game && typeof game === 'object' && !game.error)
-        .map(normalizeGame)
-        .filter(game => game.home && game.away && game.home !== game.away);
+      if (games.length === 0) throw new Error('No games found');
 
-      if (normalizedGames.length === 0) {
-        throw new Error('No valid games after normalization');
-      }
-
-      // Write to file
       const output = {
-        games: normalizedGames,
+        games,
         lastUpdated: new Date().toISOString(),
-        source: url,
-        totalMatches: normalizedGames.length
+        source: source.url,
+        totalMatches: games.length
       };
 
+      if (!fs.existsSync(path.dirname(OUTPUT_PATH))) {
+        fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
+      }
       fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
-      
-      console.log(`✅ SUCCESS! Saved ${normalizedGames.length} matches`);
-      console.log(`📁 Output: ${OUTPUT_PATH}`);
-      
-      // Display sample match
-      if (normalizedGames.length > 0) {
-        const sample = normalizedGames[0];
+
+      console.log(`✅ Saved ${games.length} matches from ${source.type}`);
+      const sample = games.find(g => g.completed) || games[0];
+      if (sample) {
         console.log(`📊 Sample: ${sample.home} ${sample.homeScore} - ${sample.awayScore} ${sample.away} (${sample.status})`);
       }
-      
       process.exit(0);
-      
-    } catch (error) {
-      lastError = error.message;
-      console.log(`❌ Failed: ${url} - ${error.message}`);
-      
-      // If this was a CORS proxy error, try the next one
-      if (error.message.includes('CORS')) {
-        console.log('🔄 CORS error detected, trying next source...');
-        continue;
-      }
+
+    } catch (err) {
+      lastError = err.message;
+      console.log(`❌ Failed: ${source.url} - ${err.message}`);
     }
   }
 
-  // All sources failed
-  console.error('❌ All sources failed. Last error:', lastError);
-  
-  // Write fallback data
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify({
-    games: [
-      {
-        home: 'Portugal',
-        away: 'DR Congo',
-        homeScore: null,
-        awayScore: null,
-        completed: false,
-        status: 'Scheduled',
-        id: 61
-      }
-    ],
-    lastUpdated: new Date().toISOString(),
-    error: lastError,
-    source: 'fallback'
-  }, null, 2));
-  
-  console.log('📁 Created fallback data');
-  process.exit(0);
+  console.error('❌ All sources failed:', lastError);
+  process.exit(1);
 }
 
-// Run the scraper
-main().catch(error => {
-  console.error('Fatal error:', error);
-  process.exit(0); // Always exit cleanly
+main().catch(err => {
+  console.error('Fatal:', err);
+  process.exit(1);
 });
