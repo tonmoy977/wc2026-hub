@@ -100,6 +100,15 @@ body { background: var(--bg-primary); color: var(--text-primary); min-height: 10
 /* R32 third-place edit in auto mode */
 .r32-edit-btn { background:var(--warning); color:black; border:none; padding:0.2rem 0.5rem; border-radius:4px; cursor:pointer; font-size:0.65rem; margin-left:0.3rem; }
 
+/* Add these to your existing CSS */
+.live-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.live-last-updated { font-size: 0.8rem; color: var(--text-secondary); }
+.live-source { font-size: 0.7rem; color: var(--accent-secondary); }
+.match-card.live { border-left: 4px solid var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+.empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
+.sync-btn.loading { opacity: 0.7; cursor: wait; }
+
 </style>
 <base target="_blank">
 </head>
@@ -117,7 +126,7 @@ body { background: var(--bg-primary); color: var(--text-primary); min-height: 10
     tonmoy977@gmail.com,  Bangladesh & assisted by AI</div>
     <div>FIFA WC 2026 OFFLINE HUB</div>
     <div class="header-right">
-        <button class="sync-btn" id="syncBtn" onclick="fetchOnlineResults()" title="Fetch live results">🌐 Sync</button>
+        <button class="sync-btn" id="syncBtn" onclick="fetchOnlineResults()">🌐 Sync</button>
         <button class="mode-btn active" id="btnAutoMode" onclick="setAutoMode()">🤖 Auto Mode</button>
         <button class="mode-btn" id="btnManualMode" onclick="setManualMode()">🛠️ Manual Mode</button>
         <button class="reset-btn hidden" id="resetBtn" onclick="resetAllData()">Reset All</button>
@@ -2336,6 +2345,7 @@ firstRenderDone = true;
 </div>
 <div class="nav">
     <button id="btnGroup" class="active" onclick="showView('group')">📋 Group Stage</button>
+    <button id="btnLive" onclick="showView('live')">🔴 Live Matches</button>
     <button id="btnKnockout" onclick="showView('knockout')">🏆 Knockout</button>
     <button id="btnStandings" onclick="showView('standings')">📊 Standings</button>
     <button id="btnStats" onclick="showView('stats')">📈 Stats</button>
@@ -2345,6 +2355,16 @@ firstRenderDone = true;
     <div class="sidebar" id="teamSidebar"><button class="sidebar-close" onclick="closeSidebar()">×</button><div id="teamDetailsContent"></div></div>
     <div class="main-content">
         <div id="groupView" class="view active"><div id="groupGrid"></div></div>
+        <div id="liveView" class="view">
+    <div class="live-header">
+        <h2>🔴 Live Matches</h2>
+        <div>
+            <span class="live-last-updated" id="lastUpdated">Last updated: Never</span>
+            <span class="live-source" id="dataSource"></span>
+        </div>
+    </div>
+    <div id="liveMatchesContainer"></div>
+</div>
         <div id="knockoutView" class="view"><div id="knockoutContent"></div></div>
         <div id="standingsView" class="view"><div id="standingsContent"></div></div>
         <div id="statsView" class="view"><div id="statsContent"></div></div>
@@ -3623,7 +3643,132 @@ function setManualMode() {
     stopBackgroundSync();
     showNotif("Manual Mode active – full edit enabled", "success");
 }
+// ==================== LIVE DATA STATE ====================
+let liveData = { games: [], lastUpdated: null, source: null, error: null };
 
+// ==================== LIVE RESULTS ====================
+async function fetchOnlineResults() {
+    const syncBtn = document.getElementById('syncBtn');
+    try {
+        syncBtn.classList.add('loading');
+        syncBtn.textContent = '🔄 Syncing...';
+
+        const response = await fetch('data/live.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        liveData = await response.json();
+        updateLiveHeader();
+        renderLiveMatches();
+        showNotification('✅ Live data loaded!', 'success');
+    } catch (error) {
+        liveData.error = error.message;
+        showNotification(`❌ Failed: ${error.message}`, 'error');
+        updateLiveHeader();
+        renderLiveMatches();
+    } finally {
+        syncBtn.classList.remove('loading');
+        syncBtn.textContent = '🌐 Sync';
+    }
+}
+
+function updateLiveHeader() {
+    const lastUpdatedEl = document.getElementById('lastUpdated');
+    const sourceEl = document.getElementById('dataSource');
+
+    if (liveData.lastUpdated) {
+        const date = new Date(liveData.lastUpdated);
+        lastUpdatedEl.textContent = `Last updated: ${date.toLocaleString()}`;
+    }
+    if (liveData.source) {
+        sourceEl.textContent = `Source: ${liveData.source}`;
+    }
+}
+
+function renderLiveMatches() {
+    const container = document.getElementById('liveMatchesContainer');
+
+    if (liveData.error) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <p>⚠️ Error: ${liveData.error}</p>
+                <p><button class="sync-btn" onclick="fetchOnlineResults()">Retry</button></p>
+            </div>`;
+        return;
+    }
+
+    if (!liveData.games || liveData.games.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <p>📭 No live matches found</p>
+                <p>Click Sync to fetch latest results</p>
+            </div>`;
+        return;
+    }
+
+    const inProgress = liveData.games.filter(g => !g.completed);
+    const completed = liveData.games.filter(g => g.completed);
+
+    let html = '';
+    if (inProgress.length > 0) {
+        html += `<h3 style="color: var(--accent); margin: 1rem 0 0.5rem;">🔴 In Progress (${inProgress.length})</h3><div style="margin-bottom: 1.5rem;">`;
+        inProgress.forEach(match => html += createMatchCard(match, true));
+        html += '</div>';
+    }
+    if (completed.length > 0) {
+        html += `<h3 style="color: var(--success); margin: 1rem 0 0.5rem;">✅ Completed (${completed.length})</h3>`;
+        completed.forEach(match => html += createMatchCard(match, false));
+    }
+    container.innerHTML = html;
+}
+
+function createMatchCard(match, isLive) {
+    const homeFlag = getTeamFlag(match.home);
+    const awayFlag = getTeamFlag(match.away);
+    const cardClass = isLive ? 'match-card live' : (match.completed ? 'match-card completed' : 'match-card');
+
+    return `
+        <div class="${cardClass}">
+            <div class="match-teams">
+                <span class="team-name" onclick="showTeamDetails('${match.home}')">${homeFlag} ${match.home}</span>
+                <span style="font-weight: bold; font-size: 1.2rem;">${match.homeScore ?? '-'}</span>
+                <span style="color: var(--text-secondary);">vs</span>
+                <span style="font-weight: bold; font-size: 1.2rem;">${match.awayScore ?? '-'}</span>
+                <span class="team-name" onclick="showTeamDetails('${match.away}')">${awayFlag} ${match.away}</span>
+            </div>
+            <div class="match-actions">
+                <span class="slot-placeholder" style="background: ${match.completed ? 'var(--success)' : 'var(--accent)'};">
+                    ${match.status || (match.completed ? 'FT' : 'LIVE')}
+                </span>
+                ${isLive ? '<span class="helper-badge">LIVE</span>' : ''}
+            </div>
+        </div>`;
+}
+
+function getTeamFlag(teamName) {
+    const flagMap = {
+        'Mexico': '🇲🇽', 'South Africa': '🇿🇦', 'South Korea': '🇰🇷', 'Czechia': '🇨🇿',
+        'Canada': '🇨🇦', 'Bosnia': '🇧🇦', 'Qatar': '🇶🇦', 'Switzerland': '🇨🇭',
+        'Brazil': '🇧🇷', 'Morocco': '🇲🇦', 'Haiti': '🇭🇹', 'Scotland': '🏴',
+        'USA': '🇺🇸', 'Paraguay': '🇵🇾', 'Australia': '🇦🇺', 'Türkiye': '🇹🇷',
+        'Germany': '🇩🇪', 'Curaçao': '🇨🇼', 'Ivory Coast': '🇨🇮', 'Ecuador': '🇪🇨',
+        'Netherlands': '🇳🇱', 'Japan': '🇯🇵', 'Sweden': '🇸🇪', 'Tunisia': '🇹🇳',
+        'Belgium': '🇧🇪', 'Egypt': '🇪🇬', 'Iran': '🇮🇷', 'New Zealand': '🇳🇿',
+        'Spain': '🇪🇸', 'Cape Verde': '🇨🇻', 'Saudi Arabia': '🇸🇦', 'Uruguay': '🇺🇾',
+        'France': '🇫🇷', 'Senegal': '🇸🇳', 'Iraq': '🇮🇶', 'Norway': '🇳🇴',
+        'Argentina': '🇦🇷', 'Algeria': '🇩🇿', 'Austria': '🇦🇹', 'Jordan': '🇯🇴',
+        'Portugal': '🇵🇹', 'DR Congo': '🇨🇩', 'Uzbekistan': '🇺🇿', 'Colombia': '🇨🇴',
+        'England': '🏴', 'Croatia': '🇭🇷', 'Ghana': '🇬🇭', 'Panama': '🇵🇦'
+    };
+    return flagMap[teamName] || '⚽';
+}
+
+// ==================== NOTIFICATION ====================
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = 'notification active ' + type;
+    setTimeout(() => notification.classList.remove('active'), 5000);
+}
 // ==================== ONLINE SYNC ====================
 const API_BASE = `https://tonmoy977.github.io/wc2026-hub/data/live.json?_=${Date.now()}`;
 
@@ -4266,6 +4411,7 @@ function showView(view) {
     document.getElementById(view + "View").classList.add("active");
     document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
     document.getElementById(view === "date" ? "btnDate" : (view === "group" ? "btnGroup" : (view === "knockout" ? "btnKnockout" : (view === "standings" ? "btnStandings" : "btnStats")))).classList.add("active");
+    if (viewName === 'live') renderLiveMatches();
     if (view === "group") {
         renderGroupStage();
     } else if (view === "knockout") { 
