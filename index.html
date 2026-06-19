@@ -148,10 +148,6 @@ body { background: var(--bg-primary); color: var(--text-primary); min-height: 10
 </div>
 <div class="notification" id="notification"></div>
 
-<!-- Emergency Fix Button -->
-<button onclick="emergencyFix()" style="position:fixed;top:70px;right:10px;z-index:9999;background:#ff6b35;color:white;border:none;padding:8px 12px;border-radius:4px;font-size:12px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.3);">
-  🔧 Fix Portugal
-</button>
 
 <script>
 // ==================== GROUP ASSIGNMENTS ====================
@@ -1218,7 +1214,10 @@ let bgSyncInterval = null;
 let ptrStartY = 0;
 let ptrPulling = false;
 let firstRenderDone = false;
-
+function escapeJsString(str) {
+    if (!str) return '';
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
 // ==================== FIXED MANUAL HELPER ====================
 function loadManualHelperState() {
     const saved = localStorage.getItem(STORAGE_HELPER);
@@ -1390,41 +1389,113 @@ function setManualMode() {
     showNotif("Manual Mode active – full edit enabled", "success");
 }
 
-// ==================== LIVE DATA STATE ====================
+// ==================== LIVE DATA & ONLINE SYNC ====================
 let liveData = { games: [], lastUpdated: null, source: null, error: null };
 
-// ==================== LIVE RESULTS ====================
-async function fetchOnlineResults() {
-    const syncBtn = document.getElementById('syncBtn');
-    try {
-        syncBtn.classList.add('loading');
-        syncBtn.textContent = '🔄 Syncing...';
-
-        const response = await fetch('data/live.json?_=' + Date.now(), { cache: 'no-store' });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        liveData = await response.json();
-        updateLiveHeader();
-        renderLiveMatches();
-        showNotification('✅ Live data loaded!', 'success');
-    } catch (error) {
-        liveData.error = error.message;
-        showNotification(`❌ Failed: ${error.message}`, 'error');
-        updateLiveHeader();
-        renderLiveMatches();
-    } finally {
-        syncBtn.classList.remove('loading');
-        syncBtn.textContent = '🌐 Sync';
+async function fetchOnlineResults(isBackground = false) {
+    if (!navigator.onLine) {
+        if (!isBackground) showNotif("You are offline. Using saved results.", "warning");
+        return;
     }
+    const now = new Date();
+    if (now > WC_END_DATE) {
+        if (!isBackground) showNotif("World Cup 2026 has concluded.", "info");
+        return;
+    }
+    if (!isBackground) showNotif("Fetching live results...", "info");
+
+    let totalImported = 0;
+
+    try {
+        const resp = await fetch(API_BASE, { cache: "no-store" });
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        const json = await resp.json();
+
+        // Populate Live tab state
+        liveData.games = json.games || [];
+        liveData.lastUpdated = json.lastUpdated || new Date().toISOString();
+        liveData.source = json.source || 'live.json';
+        liveData.error = null;
+
+        let matches = [];
+        if (json.games && Array.isArray(json.games)) matches = json.games;
+        else if (Array.isArray(json)) matches = json;
+        else if (Array.isArray(json.matches)) matches = json.matches;
+        else if (Array.isArray(json.fixtures)) matches = json.fixtures;
+
+        for (let apiMatch of matches) {
+            const homeRaw = apiMatch.home_team_name_en || apiMatch.homeTeam || apiMatch.home_team || apiMatch.team1 || apiMatch.home || apiMatch.homeName;
+            const awayRaw = apiMatch.away_team_name_en || apiMatch.awayTeam || apiMatch.away_team || apiMatch.team2 || apiMatch.away || apiMatch.awayName;
+
+            const home = mapTeamName(homeRaw);
+            const away = mapTeamName(awayRaw);
+            if (!home || !away) continue;
+
+            // Recognize the 'completed' field your scraper writes
+            const isFinished =
+                apiMatch.completed === true ||
+                apiMatch.finished === true ||
+                String(apiMatch.finished || "").toLowerCase() === "true" ||
+                String(apiMatch.time_elapsed || "").toLowerCase() === "finished" ||
+                /^(ft|full.time|finished|completed)$/i.test(String(apiMatch.status || apiMatch.match_status || apiMatch.state || ""));
+
+            function getScore(apiMatch, isHome) {
+                const keys = isHome
+                    ? ['homeScore', 'home_score', 'score1', 'intHomeScore', 'home_score_fulltime']
+                    : ['awayScore', 'away_score', 'score2', 'intAwayScore', 'away_score_fulltime'];
+                for (const k of keys) {
+                    if (apiMatch[k] !== undefined && apiMatch[k] !== null) {
+                        const val = parseInt(apiMatch[k], 10);
+                        if (!isNaN(val)) return val;
+                    }
+                }
+                return null;
+            }
+            let s1 = getScore(apiMatch, true);
+            let s2 = getScore(apiMatch, false);
+
+            const match = appData.fixtures.find(f =>
+                (f.team1 === home && f.team2 === away) ||
+                (f.team1 === away && f.team2 === home)
+            );
+
+            if (match && !match.syncFinalized) {
+                if (s1 !== null && s2 !== null && isFinished) {
+                    match.score1 = s1;
+                    match.score2 = s2;
+                    match.completed = true;
+                    match.syncFinalized = true;
+                    syncState.finalized[match.id] = true;
+                    totalImported++;
+                }
+            }
+        }
+    } catch (e) {
+        console.error("Fetch failed:", e);
+        liveData.error = e.message;
+        if (!isBackground) showNotif("Update failed. " + e.message, "error");
+        return;
+    }
+
+    if (totalImported > 0 || !isBackground) {
+        saveData();
+        renderGroupStage();
+        renderStandings();
+        updateKnockoutSlots();
+        renderLiveMatches();
+        if (document.getElementById("knockoutView").classList.contains("active")) renderKnockout();
+        if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
+        if (!isBackground) showNotif(`Updated ${totalImported} matches`, totalImported > 0 ? "success" : "info");
+    }
+    syncState.lastSync = new Date().toISOString();
+    saveData();
 }
 
 function updateLiveHeader() {
     const lastUpdatedEl = document.getElementById('lastUpdated');
     const sourceEl = document.getElementById('dataSource');
-
     if (liveData.lastUpdated) {
-        const date = new Date(liveData.lastUpdated);
-        lastUpdatedEl.textContent = `Last updated: ${date.toLocaleString()}`;
+        lastUpdatedEl.textContent = `Last updated: ${new Date(liveData.lastUpdated).toLocaleString()}`;
     }
     if (liveData.source) {
         sourceEl.textContent = `Source: ${liveData.source}`;
@@ -1432,8 +1503,8 @@ function updateLiveHeader() {
 }
 
 function renderLiveMatches() {
+    updateLiveHeader();
     const container = document.getElementById('liveMatchesContainer');
-
     if (liveData.error) {
         container.innerHTML = `
             <div class="empty-state">
@@ -1442,7 +1513,6 @@ function renderLiveMatches() {
             </div>`;
         return;
     }
-
     if (!liveData.games || liveData.games.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -1451,10 +1521,8 @@ function renderLiveMatches() {
             </div>`;
         return;
     }
-
     const inProgress = liveData.games.filter(g => !g.completed);
     const completed = liveData.games.filter(g => g.completed);
-
     let html = '';
     if (inProgress.length > 0) {
         html += `<h3 style="color: var(--accent); margin: 1rem 0 0.5rem;">🔴 In Progress (${inProgress.length})</h3><div style="margin-bottom: 1.5rem;">`;
@@ -1472,15 +1540,16 @@ function createMatchCard(match, isLive) {
     const homeFlag = getTeamFlag(match.home);
     const awayFlag = getTeamFlag(match.away);
     const cardClass = isLive ? 'match-card live' : (match.completed ? 'match-card completed' : 'match-card');
-
+    const homeSafe = escapeJsString(match.home);
+    const awaySafe = escapeJsString(match.away);
     return `
         <div class="${cardClass}">
             <div class="match-teams">
-                <span class="team-name" onclick="showTeamDetails('${match.home}')">${homeFlag} ${match.home}</span>
+                <span class="team-name" onclick="showTeamDetails('${homeSafe}')">${homeFlag} ${match.home}</span>
                 <span style="font-weight: bold; font-size: 1.2rem;">${match.homeScore ?? '-'}</span>
                 <span style="color: var(--text-secondary);">vs</span>
                 <span style="font-weight: bold; font-size: 1.2rem;">${match.awayScore ?? '-'}</span>
-                <span class="team-name" onclick="showTeamDetails('${match.away}')">${awayFlag} ${match.away}</span>
+                <span class="team-name" onclick="showTeamDetails('${awaySafe}')">${awayFlag} ${match.away}</span>
             </div>
             <div class="match-actions">
                 <span class="slot-placeholder" style="background: ${match.completed ? 'var(--success)' : 'var(--accent)'};">
@@ -1516,96 +1585,6 @@ function showNotification(message, type = 'info') {
     setTimeout(() => notification.classList.remove('active'), 5000);
 }
 
-// ==================== ONLINE SYNC (import results into fixtures) ====================
-const API_BASE = `https://tonmoy977.github.io/wc2026-hub/data/live.json?_=${Date.now()}`;
-
-async function fetchOnlineResults(isBackground = false) {
-    if (!navigator.onLine) {
-        if (!isBackground) showNotif("You are offline. Using saved results.", "warning");
-        return;
-    }
-    const now = new Date();
-    if (now > WC_END_DATE) {
-        if (!isBackground) showNotif("World Cup 2026 has concluded.", "info");
-        return;
-    }
-    if (!isBackground) showNotif("Fetching live results...", "info");
-    
-    let totalImported = 0;
-    try {
-        const resp = await fetch(API_BASE, { cache: "no-store" });
-        if (!resp.ok) throw new Error("HTTP " + resp.status);
-        const json = await resp.json();
-        
-        let matches = [];
-        if (json.games && Array.isArray(json.games)) matches = json.games;
-        else if (Array.isArray(json)) matches = json;
-        else if (Array.isArray(json.matches)) matches = json.matches;
-        else if (Array.isArray(json.fixtures)) matches = json.fixtures;
-        
-        for (let apiMatch of matches) {
-            const homeRaw = apiMatch.home_team_name_en || apiMatch.homeTeam || apiMatch.home_team || apiMatch.team1 || apiMatch.home || apiMatch.homeName;
-            const awayRaw = apiMatch.away_team_name_en || apiMatch.awayTeam || apiMatch.away_team || apiMatch.team2 || apiMatch.away || apiMatch.awayName;
-            
-            const home = mapTeamName(homeRaw);
-            const away = mapTeamName(awayRaw);
-            if (!home || !away) continue;
-            
-            const finished = String(apiMatch.finished || "").toLowerCase();
-            const timeElapsed = String(apiMatch.time_elapsed || "").toLowerCase();
-            const statusStr = String(apiMatch.status || apiMatch.match_status || apiMatch.state || "").toLowerCase();
-            const isFinished = finished === "true" || finished === "1" || timeElapsed === "finished" || 
-                               statusStr.includes("finish") || statusStr === "ft" || statusStr === "full_time";
-
-            function getScore(apiMatch, isHome) {
-                const keys = isHome 
-                    ? ['home_score', 'homeScore', 'score1', 'intHomeScore', 'home_score_fulltime']
-                    : ['away_score', 'awayScore', 'score2', 'intAwayScore', 'away_score_fulltime'];
-                for (const k of keys) {
-                    if (apiMatch[k] !== undefined && apiMatch[k] !== null) {
-                        const val = parseInt(apiMatch[k], 10);
-                        if (!isNaN(val)) return val;
-                    }
-                }
-                return null;
-            }
-            let s1 = getScore(apiMatch, true);
-            let s2 = getScore(apiMatch, false);
-
-            const match = appData.fixtures.find(f => 
-                (f.team1 === home && f.team2 === away) || 
-                (f.team1 === away && f.team2 === home)
-            );
-            
-            if (match && !match.syncFinalized) {
-                if (s1 !== null && s2 !== null && isFinished) {
-                    match.score1 = s1;
-                    match.score2 = s2;
-                    match.completed = true;
-                    match.syncFinalized = true;
-                    syncState.finalized[match.id] = true;
-                    totalImported++;
-                }
-            }
-        }
-    } catch (e) {
-        console.error("Fetch failed:", e);
-        if (!isBackground) showNotif("Update failed. " + e.message, "error");
-        return;
-    }
-    
-    if (totalImported > 0 || !isBackground) {
-        saveData();
-        renderGroupStage();
-        renderStandings();
-        updateKnockoutSlots();
-        if (document.getElementById("knockoutView").classList.contains("active")) renderKnockout();
-        if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
-        if (!isBackground) showNotif(`Updated ${totalImported} matches`, totalImported > 0 ? "success" : "info");
-    }
-    syncState.lastSync = new Date().toISOString();
-    saveData();
-}
 
 function mapTeamName(apiName) {
     if (!apiName) return null;
@@ -1859,12 +1838,12 @@ function renderGroupStage() {
                 btnHtml = `<button class="btn match-detail-btn" onclick="showMatchDetails(${m.id})">Details</button>`;
             }
             html += `<tr>
-                <td style="font-weight:bold;color:var(--accent);font-size:0.8rem;">${m.id}</td>
-                <td>${timeStr}</td>
-                <td><span class="team-name" onclick="showTeamDetails('${m.team1}')">${teamsData[m.team1]?.flag||"🏴"} ${m.team1}</span> vs <span class="team-name" onclick="showTeamDetails('${m.team2}')">${teamsData[m.team2]?.flag||"🏴"} ${m.team2}</span></td>
-                <td>${scoreDisplay}</td>
-                <td>${btnHtml}</td>
-            </tr>`;
+    <td style="font-weight:bold;color:var(--accent);font-size:0.8rem;">${m.id}</td>
+    <td>${timeStr}</td>
+    <td><span class="team-name" onclick="showTeamDetails('${escapeJsString(m.team1)}')">${teamsData[m.team1]?.flag||"🏴"} ${m.team1}</span> vs <span class="team-name" onclick="showTeamDetails('${escapeJsString(m.team2)}')">${teamsData[m.team2]?.flag||"🏴"} ${m.team2}</span></td>
+    <td>${scoreDisplay}</td>
+    <td>${btnHtml}</td>
+</tr>`;
         }
         html += `</tbody></table></div>`;
     }
@@ -1938,11 +1917,11 @@ function renderKnockout() {
                 <div style="width:100%;margin-bottom:0.3rem;font-size:0.85rem;color:var(--accent-secondary);"><b>${matchLabel}</b> · ${formatBST(m.date)} · ${m.venue}</div>
                 <div class="match-teams" style="width:100%;">
                     <div style="flex:1;text-align:right;padding-right:0.5rem;">
-                        <span class="team-name" title="${t1Tooltip}" onclick="${m.team1 ? `showTeamDetails('${m.team1}')` : ''}">${t1Display}</span>${t1Edit}
+                        <span class="team-name" title="${t1Tooltip}" onclick="${m.team1 ? `showTeamDetails('${escapeJsString(m.team1)}')` : ''}">${t1Display}</span>${t1Edit}
                     </div>
                     <div style="font-weight:bold;color:var(--accent);">VS</div>
                     <div style="flex:1;text-align:left;padding-left:0.5rem;">
-                        <span class="team-name" title="${t2Tooltip}" onclick="${m.team2 ? `showTeamDetails('${m.team2}')` : ''}">${t2Display}</span>${t2Edit}
+                        <span class="team-name" title="${t2Tooltip}" onclick="${m.team2 ? `showTeamDetails('${escapeJsString(m.team2)}')` : ''}">${t2Display}</span>${t2Edit}
                     </div>
                 </div>
                 <div style="width:100%;text-align:center;margin:0.3rem 0;font-size:1.1rem;font-weight:bold;">${scoreDisplay}</div>
@@ -2088,7 +2067,7 @@ function renderStandings() {
         stats.forEach((s, idx) => {
             html += `<tr>
                 <td>${idx+1}</td>
-                <td class="team-name" onclick="showTeamDetails('${s.team}')">${teamsData[s.team]?.flag||"🏴"} ${s.team}</td>
+                <td class="team-name" onclick="showTeamDetails('${escapeJsString(s.team)}')">${teamsData[s.team]?.flag||"🏴"} ${s.team}</td>
                 <td>${s.pl}</td>
                 <td>${s.w}/${s.d}/${s.l}</td>
                 <td>${s.gf}</td>
@@ -2151,12 +2130,17 @@ function showView(view) {
     document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
     const buttonMap = { 'group':'btnGroup', 'live':'btnLive', 'knockout':'btnKnockout', 'standings':'btnStandings', 'stats':'btnStats', 'date':'btnDate' };
     document.getElementById(buttonMap[view]).classList.add("active");
+
     if (view === 'live') {
-        renderLiveMatches();
+        if (!liveData.lastUpdated || (Date.now() - new Date(liveData.lastUpdated).getTime() > 60000)) {
+            fetchOnlineResults(false);
+        } else {
+            renderLiveMatches();
+        }
     } else if (view === "group") {
         renderGroupStage();
-    } else if (view === "knockout") { 
-        updateKnockoutSlots(); 
+    } else if (view === "knockout") {
+        updateKnockoutSlots();
         renderKnockout();
         if (manualHelperActive) renderManualHelperPanel();
         else { let panel = document.getElementById("helperPanel"); if (panel) panel.remove(); }
@@ -2320,9 +2304,12 @@ function startBackgroundSync() {
         if (!navigator.onLine || manualHelperActive) return;
         const now = new Date();
         if (now > WC_END_DATE) { stopBackgroundSync(); return; }
-        const ongoingGroup = appData.fixtures.filter(f => !f.syncFinalized && isMatchOngoing(f));
-        const ongoingKO = appData.knockout.filter(k => !k.syncFinalized && k.team1 && k.team2 && isMatchOngoing(k));
-        if (ongoingGroup.length > 0 || ongoingKO.length > 0) {
+
+        // Sync ANY match that hasn't been finalized yet (past or present)
+        const needsSync = appData.fixtures.some(f => !f.syncFinalized) ||
+                         appData.knockout.some(k => !k.syncFinalized && k.team1 && k.team2);
+
+        if (needsSync) {
             fetchOnlineResults(true);
         }
     }, 60000);
