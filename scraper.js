@@ -3,6 +3,7 @@ const path = require('path');
 
 const OUTPUT_PATH = path.join(__dirname, 'data', 'live.json');
 
+// FIFA rankings (lower = stronger)
 const RANKS = {
   "Mexico":15, "South Africa":64, "South Korea":23, "Czechia":36,
   "Canada":48, "Bosnia":74, "Qatar":56, "Switzerland":20,
@@ -93,11 +94,13 @@ const FIXTURES = [
   { id:72, group:"L", home:"Croatia", away:"Ghana", date:"2026-06-27T21:00:00Z" }
 ];
 
+// Deterministic seeded random
 function seededRandom(seed) {
   let x = Math.sin(seed) * 10000;
   return x - Math.floor(x);
 }
 
+// Realistic football score generator
 function simulateMatch(home, away, matchId, now) {
   const matchTime = new Date(FIXTURES.find(f => f.id === matchId).date);
   const matchEnd = new Date(matchTime.getTime() + 2 * 60 * 60 * 1000);
@@ -106,28 +109,77 @@ function simulateMatch(home, away, matchId, now) {
   const r1 = RANKS[home] || 50;
   const r2 = RANKS[away] || 50;
   
-  const seed = matchId * 12345 + 2026;
-  const rand1 = seededRandom(seed);
-  const rand2 = seededRandom(seed + 1);
-  const rand3 = seededRandom(seed + 2);
+  // Base expected goals based on ranking difference
+  const rankDiff = r2 - r1; // positive = home team stronger
+  const homeAdv = 0.35;
   
-  const homeAdv = 0.15;
-  const probHome = Math.min(0.85, (r2 / (r1 + r2)) + homeAdv);
+  // Expected goals: stronger teams score more
+  // Base xG for home: 1.2 to 2.8 depending on strength
+  let xGHome = 1.1 + (rankDiff / 60) + homeAdv;
+  let xGAway = 1.1 - (rankDiff / 60);
   
-  let s1, s2;
+  // Clamp to realistic ranges
+  xGHome = Math.max(0.4, Math.min(3.2, xGHome));
+  xGAway = Math.max(0.3, Math.min(2.8, xGAway));
   
-  if (rand1 < probHome * 0.30) { s1 = Math.floor(rand2 * 3) + 2; s2 = Math.floor(rand3 * 2); }
-  else if (rand1 < probHome) { s1 = Math.floor(rand2 * 2) + 1; s2 = Math.floor(rand3 * 2); }
-  else if (rand1 < probHome + (1 - probHome) * 0.30) { s1 = Math.floor(rand2 * 2); s2 = Math.floor(rand3 * 3) + 2; }
-  else { s1 = Math.floor(rand2 * 2); s2 = Math.floor(rand3 * 2) + 1; }
+  // Deterministic seeds for this match
+  const s1 = seededRandom(matchId * 7919);
+  const s2 = seededRandom(matchId * 104729);
+  const s3 = seededRandom(matchId * 1299709);
   
-  if (rand3 < 0.22) { const d = Math.floor(rand1 * 3); s1 = d; s2 = d; }
+  // Convert xG to actual goals using weighted probability
+  function goalsFromxG(xg, seed) {
+    const r = seededRandom(seed * 99991 + matchId);
+    // Poisson-like distribution but weighted toward low scores
+    if (r < 0.30) return 0;
+    if (r < 0.55) return 1;
+    if (r < 0.75) return 2;
+    if (r < 0.88) return 3;
+    if (r < 0.95) return 4;
+    return 5;
+  }
+  
+  let homeScore = goalsFromxG(xGHome, s1);
+  let awayScore = goalsFromxG(xGAway, s2);
+  
+  // Fine-tune: if xG is very low, more likely 0 goals
+  if (xGHome < 0.8 && s1 > 0.6) homeScore = 0;
+  if (xGAway < 0.7 && s2 > 0.65) awayScore = 0;
+  
+  // If both score 0, force at least one goal 70% of the time (no 0-0 overload)
+  if (homeScore === 0 && awayScore === 0) {
+    if (s3 < 0.7) {
+      if (xGHome >= xGAway) homeScore = 1; else awayScore = 1;
+    }
+  }
+  
+  // Upset chance: if rank difference is huge but underdog wins
+  if (Math.abs(rankDiff) > 30 && s3 < 0.08) {
+    // Swap scores for upset
+    const tmp = homeScore;
+    homeScore = awayScore;
+    awayScore = tmp;
+    if (homeScore === awayScore) awayScore += 1;
+  }
+  
+  // Cap at realistic max
+  homeScore = Math.min(homeScore, 6);
+  awayScore = Math.min(awayScore, 6);
   
   if (now >= matchFullEnd) {
-    return { homeScore: s1, awayScore: s2, completed: true, status: 'FT' };
+    return { homeScore, awayScore, completed: true, status: 'FT' };
   } else if (now >= matchTime) {
     const progress = Math.min(1, (now - matchTime) / (matchEnd - matchTime));
-    return { homeScore: Math.floor(s1 * progress) || 0, awayScore: Math.floor(s2 * progress) || 0, completed: false, status: 'LIVE' };
+    // During live match, show partial scores (goals appear over time)
+    const liveHome = Math.floor(homeScore * progress);
+    const liveAway = Math.floor(awayScore * progress);
+    // Add a chance for a late goal to appear early in the second half
+    return { 
+      homeScore: liveHome + (progress > 0.6 && homeScore > liveHome ? 1 : 0), 
+      awayScore: liveAway + (progress > 0.6 && awayScore > liveAway ? 1 : 0), 
+      completed: false, 
+      status: 'LIVE' 
+    };
   } else {
     return { homeScore: null, awayScore: null, completed: false, status: 'Scheduled' };
   }
@@ -139,14 +191,38 @@ function generate() {
   
   for (const f of FIXTURES) {
     const result = simulateMatch(f.home, f.away, f.id, now);
-    games.push({ id: f.id, home: f.home, away: f.away, homeScore: result.homeScore, awayScore: result.awayScore, completed: result.completed, status: result.status, group: f.group });
+    games.push({ 
+      id: f.id, 
+      home: f.home, 
+      away: f.away, 
+      homeScore: result.homeScore, 
+      awayScore: result.awayScore, 
+      completed: result.completed, 
+      status: result.status, 
+      group: f.group 
+    });
   }
   
-  return { games, lastUpdated: now.toISOString(), source: 'wc2026-live-engine', totalMatches: games.length, simulated: true };
+  return { 
+    games, 
+    lastUpdated: now.toISOString(), 
+    source: 'wc2026-live-engine', 
+    totalMatches: games.length, 
+    simulated: true 
+  };
 }
 
 if (!fs.existsSync(path.dirname(OUTPUT_PATH))) fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
 
 const data = generate();
 fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2));
-console.log(`✅ ${data.games.length} matches | Live: ${data.games.filter(g=>g.status==='LIVE').length} | FT: ${data.games.filter(g=>g.status==='FT').length} | Scheduled: ${data.games.filter(g=>g.status==='Scheduled').length}`);
+
+const ft = data.games.filter(g => g.status === 'FT').length;
+const live = data.games.filter(g => g.status === 'LIVE').length;
+const sched = data.games.filter(g => g.status === 'Scheduled').length;
+
+console.log(`✅ ${data.games.length} matches | FT:${ft} | LIVE:${live} | SOON:${sched}`);
+console.log('Sample results:');
+data.games.filter(g => g.status === 'FT').slice(0, 6).forEach(g => {
+  console.log(`  ${g.home} ${g.homeScore} - ${g.awayScore} ${g.away}`);
+});
