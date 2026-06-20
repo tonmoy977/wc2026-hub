@@ -1,7 +1,15 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
+
+// ============================================================
+//  BULLETPROOF MULTI-SOURCE SCRAPER
+//  Never crashes. Always writes a valid live.json.
+// ============================================================
 
 const DEMO_MODE = process.env.DEMO_MODE === 'true';
+const WC_START = '20260611';
+const WC_END   = '20260720';
 
 const FIXTURES = [
   { id:1,  team1:"Mexico",       team2:"South Africa", date:"2026-06-11T19:00:00Z" },
@@ -46,10 +54,10 @@ const FIXTURES = [
   { id:40, team1:"New Zealand",  team2:"Egypt",        date:"2026-06-22T01:00:00Z" },
   { id:41, team1:"Egypt",        team2:"Iran",         date:"2026-06-27T03:00:00Z" },
   { id:42, team1:"New Zealand",  team2:"Belgium",      date:"2026-06-27T03:00:00Z" },
-  { id:43, team1:"Spain",        team2:"Cape Verde",   date:"2026-06-14T16:00:00Z" },
+  { id:43, team1:"Spain",        team2:"Cape Verde",     date:"2026-06-14T16:00:00Z" },
   { id:44, team1:"Saudi Arabia", team2:"Uruguay",      date:"2026-06-14T22:00:00Z" },
   { id:45, team1:"Spain",        team2:"Saudi Arabia", date:"2026-06-21T16:00:00Z" },
-  { id:46, team1:"Uruguay",      team2:"Cape Verde",   date:"2026-06-21T22:00:00Z" },
+  { id:46, team1:"Uruguay",      team2:"Cape Verde",     date:"2026-06-21T22:00:00Z" },
   { id:47, team1:"Cape Verde",   team2:"Saudi Arabia", date:"2026-06-27T00:00:00Z" },
   { id:48, team1:"Uruguay",      team2:"Spain",        date:"2026-06-27T00:00:00Z" },
   { id:49, team1:"France",       team2:"Senegal",      date:"2026-06-15T19:00:00Z" },
@@ -78,7 +86,27 @@ const FIXTURES = [
   { id:72, team1:"Croatia",      team2:"Ghana",        date:"2026-06-27T21:00:00Z" }
 ];
 
-// Deterministic "random" - same match ID always gives same score
+const TEAM_ALIASES = {
+  "Korea Republic":"South Korea","United States":"USA","Czech Republic":"Czechia",
+  "Cabo Verde":"Cape Verde","Cote d'Ivoire":"Ivory Coast","IR Iran":"Iran",
+  "Congo DR":"DR Congo","Turkiye":"Türkiye","Turkey":"Türkiye","Curacao":"Curaçao",
+  "Bosnia and Herzegovina":"Bosnia"
+};
+
+const FIXTURE_MAP = {};
+FIXTURES.forEach(f=>{
+  const k1 = `${norm(f.team1)}_${norm(f.team2)}`;
+  const k2 = `${norm(f.team2)}_${norm(f.team1)}`;
+  FIXTURE_MAP[k1] = f.id;
+  FIXTURE_MAP[k2] = f.id;
+});
+
+function norm(n){ 
+  if(!n) return ''; 
+  const s = n.trim(); 
+  return (TEAM_ALIASES[s]||s).toLowerCase().replace(/[^a-z0-9]/g,''); 
+}
+
 function pseudoRandom(seed, offset) {
   const x = Math.sin(seed * 9301 + offset * 49297) * 10000;
   return x - Math.floor(x);
@@ -87,116 +115,129 @@ function pseudoRandom(seed, offset) {
 function generateDemoData() {
   const now = new Date();
   const games = [];
-  
   for (const f of FIXTURES) {
     const matchDate = new Date(f.date);
     const matchEnd = new Date(matchDate.getTime() + 3 * 60 * 60 * 1000);
-    
-    if (now < matchDate) continue; // match hasn't started yet
-    
+    if (now < matchDate) continue;
     const seed = f.id * 1337;
-    const hs = Math.floor(pseudoRandom(seed, 1) * 5); // 0-4
-    const as = Math.floor(pseudoRandom(seed, 2) * 4); // 0-3
-    
+    const hs = Math.floor(pseudoRandom(seed, 1) * 5);
+    const as = Math.floor(pseudoRandom(seed, 2) * 4);
     games.push({
-      id: f.id,
-      home: f.team1,
-      away: f.team2,
-      homeScore: hs,
-      awayScore: as,
-      status: now > matchEnd ? 'FT' : 'LIVE',
-      completed: now > matchEnd
+      id: f.id, home: f.team1, away: f.team2,
+      homeScore: hs, awayScore: as,
+      status: now > matchEnd ? 'FT' : 'LIVE', completed: now > matchEnd
     });
   }
-  
   return {
-    games,
-    lastUpdated: new Date().toISOString(),
-    source: 'DEMO_MODE',
-    demo: true,
-    sourceCount: 0,
-    sourcesUsed: []
+    games, lastUpdated: new Date().toISOString(),
+    source: 'DEMO_MODE', demo: true, sourceCount: 0, sourcesUsed: []
   };
 }
 
-async function fetchEspn() {
-  const https = require('https');
+// ---------- HTTP HELPER ----------
+function fetchJson(host, path, headers={}) {
   return new Promise((resolve) => {
     const req = https.request({
-      hostname: 'site.api.espn.com',
-      path: '/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard?dates=20260611-20260720',
-      method: 'GET',
-      timeout: 10000,
-      headers: { 'User-Agent': 'Mozilla/5.0' }
+      hostname: host, path, headers: { 'User-Agent': 'Mozilla/5.0', ...headers },
+      method: 'GET', timeout: 10000
     }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
+      let d = '';
+      res.on('data', c => d += c);
       res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          const games = [];
-          if (json.events) {
-            for (const ev of json.events) {
-              const comp = ev.competitions?.[0];
-              if (!comp) continue;
-              const h = comp.competitors?.find(c => c.homeAway === 'home');
-              const a = comp.competitors?.find(c => c.homeAway === 'away');
-              if (!h?.team?.name || !a?.team?.name) continue;
-              const state = ev.status?.type?.state;
-              games.push({
-                id: null,
-                home: h.team.name,
-                away: a.team.name,
-                homeScore: h.score !== undefined ? parseInt(h.score) : null,
-                awayScore: a.score !== undefined ? parseInt(a.score) : null,
-                status: state === 'post' ? 'FT' : (state === 'in' ? 'LIVE' : 'Scheduled'),
-                completed: state === 'post'
-              });
-            }
-          }
-          resolve({ source: 'ESPN', games });
-        } catch (e) {
-          resolve({ source: 'ESPN', games: [] });
-        }
+        try { resolve(JSON.parse(d)); } catch (e) { resolve(null); }
       });
     });
-    req.on('error', () => resolve({ source: 'ESPN', games: [] }));
-    req.on('timeout', () => { req.destroy(); resolve({ source: 'ESPN', games: [] }); });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
     req.end();
   });
 }
 
+// ---------- SOURCE: ESPN ----------
+async function fetchEspn() {
+  console.log('[SRC] ESPN...');
+  const data = await fetchJson('site.api.espn.com', `/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard?dates=${WC_START}-${WC_END}`);
+  const games = [];
+  if (!data?.events) return { source: 'ESPN', games };
+  for (const ev of data.events) {
+    const comp = ev.competitions?.[0]; if (!comp) continue;
+    const h = comp.competitors?.find(c => c.homeAway === 'home');
+    const a = comp.competitors?.find(c => c.homeAway === 'away');
+    if (!h?.team?.name || !a?.team?.name) continue;
+    const home = norm(h.team.name), away = norm(a.team.name);
+    const id = FIXTURE_MAP[`${home}_${away}`]; if (!id) continue;
+    const state = ev.status?.type?.state;
+    let status = 'Scheduled', completed = false;
+    if (state === 'in') status = 'LIVE';
+    else if (state === 'post') { status = 'FT'; completed = true; }
+    games.push({ id, home: h.team.name, away: a.team.name,
+      homeScore: h.score !== undefined ? parseInt(h.score) : null,
+      awayScore: a.score !== undefined ? parseInt(a.score) : null,
+      status, completed });
+  }
+  console.log(`[SRC] ESPN: ${games.length} matches`);
+  return { source: 'ESPN', games };
+}
+
+// ---------- SOURCE: FOOTBALL-DATA ----------
+async function fetchFootballData() {
+  const key = process.env.FOOTBALL_DATA_KEY;
+  if (!key) return { source: 'Football-Data', games: [] };
+  console.log('[SRC] Football-Data...');
+  const data = await fetchJson('api.football-data.org', '/v4/competitions/WC/matches?season=2026', { 'X-Auth-Token': key });
+  const games = [];
+  if (!data?.matches) return { source: 'Football-Data', games };
+  for (const m of data.matches) {
+    const home = norm(m.homeTeam?.name), away = norm(m.awayTeam?.name);
+    const id = FIXTURE_MAP[`${home}_${away}`]; if (!id) continue;
+    let status = 'Scheduled', completed = false;
+    const s = m.status;
+    if (s === 'IN_PLAY' || s === 'LIVE') status = 'LIVE';
+    else if (s === 'FINISHED') { status = 'FT'; completed = true; }
+    games.push({ id, home: m.homeTeam?.name, away: m.awayTeam?.name,
+      homeScore: m.score?.fullTime?.home ?? null,
+      awayScore: m.score?.fullTime?.away ?? null,
+      status, completed });
+  }
+  console.log(`[SRC] Football-Data: ${games.length} matches`);
+  return { source: 'Football-Data', games };
+}
+
+// ---------- MAIN ----------
 async function main() {
   let output;
-  
+
   if (DEMO_MODE) {
-    console.log('⚠️ DEMO_MODE enabled - generating deterministic demo data');
+    console.log('⚠️ DEMO_MODE enabled');
     output = generateDemoData();
   } else {
-    console.log('Trying ESPN API...');
-    const espn = await fetchEspn();
-    
-    if (espn.games.length > 0) {
+    // Try all sources in parallel
+    const [espn, fd] = await Promise.all([fetchEspn(), fetchFootballData()]);
+    const results = [espn, fd].filter(r => r.games.length > 0);
+
+    if (results.length === 0) {
+      console.log('[WARN] No real data. Writing empty file.');
       output = {
-        games: espn.games,
-        lastUpdated: new Date().toISOString(),
-        source: 'ESPN',
-        sourceCount: 1,
-        sourcesUsed: ['ESPN']
+        games: [], lastUpdated: new Date().toISOString(),
+        source: 'No live data', sourceCount: 0, sourcesUsed: [],
+        message: 'No matches found. Set DEMO_MODE=true for demo data.'
+      };
+    } else if (results.length === 1) {
+      output = {
+        games: results[0].games, lastUpdated: new Date().toISOString(),
+        source: results[0].source, sourceCount: 1, sourcesUsed: [results[0].source]
       };
     } else {
-      console.log('No real data found. Writing empty file.');
+      // Simple merge: use the source with more matches
+      const best = results.reduce((a, b) => a.games.length > b.games.length ? a : b);
       output = {
-        games: [],
-        lastUpdated: new Date().toISOString(),
-        source: 'No live data',
-        sourceCount: 0,
-        sourcesUsed: [],
-        message: 'No matches found. Set DEMO_MODE=true for demo data.'
+        games: best.games, lastUpdated: new Date().toISOString(),
+        source: `Merged (${results.map(r => r.source).join('+')})`,
+        sourceCount: results.length, sourcesUsed: results.map(r => r.source)
       };
     }
   }
-  
+
   const outDir = path.join(__dirname, 'data');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'live.json'), JSON.stringify(output, null, 2));
@@ -205,14 +246,11 @@ async function main() {
 
 main().catch(err => {
   console.error('Fatal error:', err);
-  // NEVER crash the workflow - write a fallback file
+  // NEVER crash - write fallback
   const outDir = path.join(__dirname, 'data');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'live.json'), JSON.stringify({
-    games: [],
-    lastUpdated: new Date().toISOString(),
-    source: 'Error fallback',
-    error: err.message
+    games: [], lastUpdated: new Date().toISOString(),
+    source: 'Error fallback', error: err.message
   }, null, 2));
-  console.log('⚠️ Wrote error fallback file so workflow stays green');
 });
