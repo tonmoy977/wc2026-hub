@@ -5,18 +5,18 @@ const OUTPUT_PATH = path.join(__dirname, 'data', 'live.json');
 
 // FIFA rankings (lower = stronger)
 const RANKS = {
-  "Mexico":15, "South Africa":64, "South Korea":23, "Czechia":36,
-  "Canada":48, "Bosnia":74, "Qatar":56, "Switzerland":20,
-  "Brazil":5, "Morocco":14, "Haiti":85, "Scotland":38,
-  "USA":11, "Paraguay":52, "Australia":25, "Türkiye":40,
-  "Germany":13, "Curaçao":92, "Ivory Coast":41, "Ecuador":35,
-  "Netherlands":7, "Japan":18, "Sweden":27, "Tunisia":34,
-  "Belgium":3, "Egypt":29, "Iran":22, "New Zealand":100,
-  "Spain":8, "Cape Verde":67, "Saudi Arabia":56, "Uruguay":16,
-  "France":2, "Senegal":19, "Iraq":62, "Norway":44,
-  "Argentina":1, "Algeria":31, "Austria":25, "Jordan":87,
-  "Portugal":6, "DR Congo":65, "Uzbekistan":73, "Colombia":12,
-  "England":4, "Croatia":10, "Ghana":50, "Panama":44
+  "Mexico": 14, "South Africa": 60, "South Korea": 25, "Czechia": 40,
+  "Canada": 30, "Bosnia": 64, "Qatar": 56, "Switzerland": 19,
+  "Brazil": 6, "Morocco": 7, "Haiti": 83, "Scotland": 42,
+  "USA": 17, "Paraguay": 41, "Australia": 27, "Türkiye": 22,
+  "Germany": 10, "Curaçao": 82, "Ivory Coast": 33, "Ecuador": 23,
+  "Netherlands": 8, "Japan": 18, "Sweden": 38, "Tunisia": 45,
+  "Belgium": 9, "Egypt": 29, "Iran": 20, "New Zealand": 85,
+  "Spain": 2, "Cape Verde": 67, "Saudi Arabia": 61, "Uruguay": 16,
+  "France": 3, "Senegal": 15, "Iraq": 57, "Norway": 31,
+  "Argentina": 1, "Algeria": 28, "Austria": 24, "Jordan": 63,
+  "Portugal": 5, "DR Congo": 46, "Uzbekistan": 50, "Colombia": 13,
+  "England": 4, "Croatia": 11, "Ghana": 73, "Panama": 34
 };
 
 const FIXTURES = [
