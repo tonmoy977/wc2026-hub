@@ -2,10 +2,9 @@ name: Scrape live results
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # Every 30 minutes
-  workflow_dispatch:         # Manual trigger
+    - cron: '*/30 * * * *'   # Every 30 minutes
+  workflow_dispatch:
 
-# Prevent overlapping runs from creating git push races
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
@@ -32,6 +31,9 @@ jobs:
       - name: Run scraper
         id: scraper
         run: node scraper.js
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
         continue-on-error: true
 
       - name: Upload debug artifact on failure
@@ -39,8 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: scraper-failure-debug
-          path: |
-            data/live.json
+          path: data/live.json
           retention-days: 3
 
       - name: Validate JSON output
@@ -57,20 +58,15 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
-          # Pull latest with rebase to avoid "behind" rejections
           git pull origin ${{ github.ref_name }} --rebase || true
-          
           git add data/live.json
-          
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
-            # Retry push up to 3 times if another workflow committed in between
             for i in 1 2 3; do
               git push origin ${{ github.ref_name }} && break
-              echo "Push attempt $i failed, pulling and retrying..."
+              echo "Push attempt $i failed, retrying..."
               sleep 2
               git pull origin ${{ github.ref_name }} --rebase || true
             done
