@@ -4,8 +4,8 @@
       "id": 1,
       "home": "Mexico",
       "away": "South Africa",
-      "homeScore": 0,
-      "awayScore": 2,
+      "homeScore": 1,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -13,8 +13,8 @@
       "id": 2,
       "home": "South Korea",
       "away": "Czechia",
-      "homeScore": 1,
-      "awayScore": 0,
+      "homeScore": 0,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -22,8 +22,8 @@
       "id": 3,
       "home": "Czechia",
       "away": "South Africa",
-      "homeScore": 1,
-      "awayScore": 2,
+      "homeScore": 3,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -31,7 +31,7 @@
       "id": 4,
       "home": "Mexico",
       "away": "South Korea",
-      "homeScore": 2,
+      "homeScore": 0,
       "awayScore": 1,
       "completed": true,
       "status": "FT"
@@ -40,7 +40,7 @@
       "id": 7,
       "home": "Canada",
       "away": "Bosnia",
-      "homeScore": 2,
+      "homeScore": 3,
       "awayScore": 2,
       "completed": true,
       "status": "FT"
@@ -49,8 +49,8 @@
       "id": 8,
       "home": "Qatar",
       "away": "Switzerland",
-      "homeScore": 2,
-      "awayScore": 2,
+      "homeScore": 1,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -58,8 +58,8 @@
       "id": 9,
       "home": "Switzerland",
       "away": "Bosnia",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 2,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -67,7 +67,7 @@
       "id": 10,
       "home": "Canada",
       "away": "Qatar",
-      "homeScore": 1,
+      "homeScore": 3,
       "awayScore": 2,
       "completed": true,
       "status": "FT"
@@ -76,8 +76,8 @@
       "id": 13,
       "home": "Brazil",
       "away": "Morocco",
-      "homeScore": 3,
-      "awayScore": 3,
+      "homeScore": 1,
+      "awayScore": 0,
       "completed": true,
       "status": "FT"
     },
@@ -86,7 +86,7 @@
       "home": "Haiti",
       "away": "Scotland",
       "homeScore": 3,
-      "awayScore": 0,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -94,8 +94,8 @@
       "id": 15,
       "home": "Scotland",
       "away": "Morocco",
-      "homeScore": 1,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -103,8 +103,8 @@
       "id": 16,
       "home": "Brazil",
       "away": "Haiti",
-      "homeScore": 3,
-      "awayScore": 1,
+      "homeScore": 0,
+      "awayScore": 0,
       "completed": true,
       "status": "FT"
     },
@@ -112,7 +112,7 @@
       "id": 19,
       "home": "USA",
       "away": "Paraguay",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 2,
       "completed": true,
       "status": "FT"
@@ -121,8 +121,8 @@
       "id": 20,
       "home": "Australia",
       "away": "Türkiye",
-      "homeScore": 1,
-      "awayScore": 2,
+      "homeScore": 2,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -130,8 +130,8 @@
       "id": 21,
       "home": "USA",
       "away": "Australia",
-      "homeScore": 0,
-      "awayScore": 1,
+      "homeScore": 2,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -139,8 +139,8 @@
       "id": 22,
       "home": "Türkiye",
       "away": "Paraguay",
-      "homeScore": 0,
-      "awayScore": 1,
+      "homeScore": 2,
+      "awayScore": 0,
       "completed": true,
       "status": "FT"
     },
@@ -148,7 +148,7 @@
       "id": 25,
       "home": "Germany",
       "away": "Curaçao",
-      "homeScore": 3,
+      "homeScore": 1,
       "awayScore": 0,
       "completed": true,
       "status": "FT"
@@ -157,8 +157,8 @@
       "id": 26,
       "home": "Ivory Coast",
       "away": "Ecuador",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -166,7 +166,7 @@
       "id": 31,
       "home": "Netherlands",
       "away": "Japan",
-      "homeScore": 1,
+      "homeScore": 0,
       "awayScore": 1,
       "completed": true,
       "status": "FT"
@@ -175,8 +175,8 @@
       "id": 32,
       "home": "Sweden",
       "away": "Tunisia",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 2,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -184,8 +184,8 @@
       "id": 37,
       "home": "Belgium",
       "away": "Egypt",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 1,
       "completed": true,
       "status": "FT"
     },
@@ -202,8 +202,8 @@
       "id": 43,
       "home": "Spain",
       "away": "Cape Verde",
-      "homeScore": 2,
-      "awayScore": 1,
+      "homeScore": 3,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -211,7 +211,7 @@
       "id": 44,
       "home": "Saudi Arabia",
       "away": "Uruguay",
-      "homeScore": 2,
+      "homeScore": 1,
       "awayScore": 1,
       "completed": true,
       "status": "FT"
@@ -221,7 +221,7 @@
       "home": "France",
       "away": "Senegal",
       "homeScore": 0,
-      "awayScore": 0,
+      "awayScore": 1,
       "completed": true,
       "status": "FT"
     },
@@ -230,7 +230,7 @@
       "home": "Iraq",
       "away": "Norway",
       "homeScore": 0,
-      "awayScore": 1,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -238,8 +238,8 @@
       "id": 55,
       "home": "Argentina",
       "away": "Algeria",
-      "homeScore": 1,
-      "awayScore": 1,
+      "homeScore": 3,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -247,8 +247,8 @@
       "id": 56,
       "home": "Austria",
       "away": "Jordan",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 2,
       "completed": true,
       "status": "FT"
     },
@@ -256,8 +256,8 @@
       "id": 61,
       "home": "Portugal",
       "away": "DR Congo",
-      "homeScore": 1,
-      "awayScore": 2,
+      "homeScore": 2,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     },
@@ -266,7 +266,7 @@
       "home": "Uzbekistan",
       "away": "Colombia",
       "homeScore": 3,
-      "awayScore": 2,
+      "awayScore": 0,
       "completed": true,
       "status": "FT"
     },
@@ -275,7 +275,7 @@
       "home": "England",
       "away": "Croatia",
       "homeScore": 3,
-      "awayScore": 1,
+      "awayScore": 0,
       "completed": true,
       "status": "FT"
     },
@@ -283,12 +283,12 @@
       "id": 68,
       "home": "Ghana",
       "away": "Panama",
-      "homeScore": 2,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 3,
       "completed": true,
       "status": "FT"
     }
   ],
-  "lastUpdated": "2026-06-20T12:43:37.056Z",
+  "lastUpdated": "2026-06-20T13:01:04.152Z",
   "source": "mock-scraper"
 }
