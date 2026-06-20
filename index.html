@@ -167,8 +167,8 @@ const groupsData = {
     "K": ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
     "L": ["England", "Croatia", "Ghana", "Panama"]
 };
-const teamsData = {
-    "Mexico": { flag: "🇲🇽", group: "A", coach: "Javier Aguirre", fifaRank: 15, keyPlayers: ["Edson Álvarez", "Santiago Giménez", "Raúl Jiménez"], squad: [
+    const teamsData = {
+    "Mexico": { flag: "🇲🇽", group: "A", coach: "Javier Aguirre", fifaRank: 14, keyPlayers: ["Edson Álvarez", "Santiago Giménez", "Raúl Jiménez"], squad: [
         { name: "Raul Rangel", pos: "GK", age: 25, club: "Guadalajara", caps: 12, rating: 78 },
         { name: "Guillermo Ochoa", pos: "GK", age: 40, club: "AEL Limassol", caps: 147, rating: 82 },
         { name: "Carlos Acevedo", pos: "GK", age: 28, club: "Santos Laguna", caps: 8, rating: 77 },
@@ -196,7 +196,7 @@ const teamsData = {
         { name: "Santiago Gimenez", pos: "ST", age: 25, club: "AC Milan", caps: 25, rating: 86 },
         { name: "Raul Jimenez", pos: "ST", age: 34, club: "Fulham", caps: 100, rating: 82 }
     ] },
-    "South Africa": { flag: "🇿🇦", group: "A", coach: "Hugo Broos", fifaRank: 64, keyPlayers: ["Percy Tau", "Ronwen Williams", "Themba Zwane"], squad: [
+    "South Africa": { flag: "🇿🇦", group: "A", coach: "Hugo Broos", fifaRank: 60, keyPlayers: ["Percy Tau", "Ronwen Williams", "Themba Zwane"], squad: [
         { name: "Ronwen Williams", pos: "GK", age: 32, club: "Al-Ahli", caps: 60, rating: 82 },
         { name: "Veli Mothwa", pos: "GK", age: 28, club: "AmaZulu", caps: 12, rating: 74 },
         { name: "Ricardo Goss", pos: "GK", age: 30, club: "SuperSport United", caps: 5, rating: 73 },
@@ -217,7 +217,7 @@ const teamsData = {
         { name: "Evidence Makgopa", pos: "ST", age: 24, club: "Orlando Pirates", caps: 8, rating: 75 },
         { name: "Oswin Appollis", pos: "LW", age: 22, club: "Polokwane City", caps: 5, rating: 74 }
     ] },
-    "South Korea": { flag: "🇰🇷", group: "A", coach: "Hong Myung-bo", fifaRank: 23, keyPlayers: ["Son Heung-min", "Kim Min-jae", "Lee Kang-in"], squad: [
+    "South Korea": { flag: "🇰🇷", group: "A", coach: "Hong Myung-bo", fifaRank: 25, keyPlayers: ["Son Heung-min", "Kim Min-jae", "Lee Kang-in"], squad: [
         { name: "Kim Seung-gyu", pos: "GK", age: 36, club: "Ulsan HD", caps: 55, rating: 79 },
         { name: "Jo Hyeon-woo", pos: "GK", age: 33, club: "Ulsan HD", caps: 28, rating: 78 },
         { name: "Song Bum-keun", pos: "GK", age: 27, club: "Shonan Bellmare", caps: 5, rating: 76 },
@@ -239,7 +239,7 @@ const teamsData = {
         { name: "Jeong Woo-yeong", pos: "AM", age: 24, club: "Freiburg", caps: 22, rating: 79 },
         { name: "Kwon Chang-hoon", pos: "AM", age: 29, club: "Gimcheon Sangmu", caps: 55, rating: 78 }
     ] },
-    "Czechia": { flag: "🇨🇿", group: "A", coach: "Miroslav Koubek", fifaRank: 36, keyPlayers: ["Patrik Schick", "Tomáš Souček", "Vladimír Coufal"], squad: [
+    "Czechia": { flag: "🇨🇿", group: "A", coach: "Miroslav Koubek", fifaRank: 40, keyPlayers: ["Patrik Schick", "Tomáš Souček", "Vladimír Coufal"], squad: [
         { name: "Jindřich Staněk", pos: "GK", age: 28, club: "Slavia Prague", caps: 12, rating: 79 },
         { name: "Matej Kovář", pos: "GK", age: 24, club: "Manchester United", caps: 3, rating: 77 },
         { name: "Vítězslav Jaroš", pos: "GK", age: 23, club: "Liverpool", caps: 2, rating: 76 },
@@ -260,7 +260,7 @@ const teamsData = {
         { name: "Tomáš Chorý", pos: "ST", age: 29, club: "Viktoria Plzeň", caps: 28, rating: 78 },
         { name: "Jan Kuchta", pos: "ST", age: 27, club: "Sparta Prague", caps: 15, rating: 77 }
     ] },
-    "Canada": { flag: "🇨🇦", group: "B", coach: "Jesse Marsch", fifaRank: 48, keyPlayers: ["Alphonso Davies", "Jonathan David", "Stephen Eustáquio"], squad: [
+    "Canada": { flag: "🇨🇦", group: "B", coach: "Jesse Marsch", fifaRank: 30, keyPlayers: ["Alphonso Davies", "Jonathan David", "Stephen Eustáquio"], squad: [
         { name: "Maxime Crépeau", pos: "GK", age: 30, club: "LA Galaxy", caps: 35, rating: 80 },
         { name: "Dayne St. Clair", pos: "GK", age: 27, club: "Minnesota United", caps: 12, rating: 78 },
         { name: "Tom McGill", pos: "GK", age: 24, club: "Brighton", caps: 2, rating: 75 },
@@ -284,7 +284,7 @@ const teamsData = {
         { name: "Tani Oluwaseyi", pos: "ST", age: 24, club: "Minnesota United", caps: 5, rating: 75 },
         { name: "Theo Bair", pos: "ST", age: 25, club: "Motherwell", caps: 8, rating: 74 }
     ] },
-    "Bosnia": { flag: "🇧🇦", group: "B", coach: "Sergej Barbarez", fifaRank: 74, keyPlayers: ["Edin Džeko", "Miralem Pjanić", "Sead Kolašinac"], squad: [
+    "Bosnia": { flag: "🇧🇦", group: "B", coach: "Sergej Barbarez", fifaRank: 64, keyPlayers: ["Edin Džeko", "Miralem Pjanić", "Sead Kolašinac"], squad: [
         { name: "Nikola Vasilj", pos: "GK", age: 28, club: "St. Pauli", caps: 12, rating: 77 },
         { name: "Kenan Pirić", pos: "GK", age: 30, club: "AEK Athens", caps: 8, rating: 76 },
         { name: "Osman Hadžikić", pos: "GK", age: 26, club: "Velež", caps: 3, rating: 74 },
@@ -320,7 +320,7 @@ const teamsData = {
         { name: "Ismaeel Mohammad", pos: "RW", age: 34, club: "Al-Duhail", caps: 70, rating: 78 },
         { name: "Yusuf Abdurisag", pos: "ST", age: 25, club: "Al-Sadd", caps: 25, rating: 76 }
     ] },
-    "Switzerland": { flag: "🇨🇭", group: "B", coach: "Murat Yakin", fifaRank: 20, keyPlayers: ["Granit Xhaka", "Manuel Akanji", "Breel Embolo"], squad: [
+    "Switzerland": { flag: "🇨🇭", group: "B", coach: "Murat Yakin", fifaRank: 19, keyPlayers: ["Granit Xhaka", "Manuel Akanji", "Breel Embolo"], squad: [
         { name: "Yann Sommer", pos: "GK", age: 37, club: "Inter Milan", caps: 88, rating: 86 },
         { name: "Gregor Kobel", pos: "GK", age: 27, club: "Borussia Dortmund", caps: 12, rating: 84 },
         { name: "Yvon Mvogo", pos: "GK", age: 30, club: "Lorient", caps: 8, rating: 79 },
@@ -340,7 +340,7 @@ const teamsData = {
         { name: "Dan Ndoye", pos: "RW", age: 24, club: "Bologna", caps: 18, rating: 79 },
         { name: "Zeki Amdouni", pos: "ST", age: 24, club: "Burnley", caps: 15, rating: 78 }
     ] },
-    "Brazil": { flag: "🇧🇷", group: "C", coach: "Carlo Ancelotti", fifaRank: 5, keyPlayers: ["Vinícius Júnior", "Neymar", "Marquinhos"], squad: [
+    "Brazil": { flag: "🇧🇷", group: "C", coach: "Carlo Ancelotti", fifaRank: 6, keyPlayers: ["Vinícius Júnior", "Neymar", "Marquinhos"], squad: [
         { name: "Alisson Becker", pos: "GK", age: 33, club: "Liverpool", caps: 72, rating: 91 },
         { name: "Ederson", pos: "GK", age: 31, club: "Fenerbahçe", caps: 30, rating: 89 },
         { name: "Weverton", pos: "GK", age: 37, club: "Grêmio", caps: 18, rating: 81 },
@@ -365,7 +365,7 @@ const teamsData = {
         { name: "Igor Thiago", pos: "ST", age: 23, club: "Brentford", caps: 5, rating: 80 },
         { name: "Luiz Henrique", pos: "RW", age: 25, club: "Zenit", caps: 10, rating: 80 }
     ] },
-    "Morocco": { flag: "🇲🇦", group: "C", coach: "Walid Regragui", fifaRank: 14, keyPlayers: ["Achraf Hakimi", "Hakim Ziyech", "Youssef En-Nesyri"], squad: [
+    "Morocco": { flag: "🇲🇦", group: "C", coach: "Walid Regragui", fifaRank: 7, keyPlayers: ["Achraf Hakimi", "Hakim Ziyech", "Youssef En-Nesyri"], squad: [
         { name: "Yassine Bounou", pos: "GK", age: 34, club: "Al-Hilal", caps: 60, rating: 86 },
         { name: "Munir Mohamedi", pos: "GK", age: 34, club: "Al-Wehda", caps: 48, rating: 80 },
         { name: "El Mehdi Benabid", pos: "GK", age: 27, club: "AS FAR", caps: 5, rating: 76 },
@@ -386,7 +386,7 @@ const teamsData = {
         { name: "Soufiane Rahimi", pos: "RW", age: 27, club: "Al-Ain", caps: 25, rating: 78 },
         { name: "Abde Ezzalzouli", pos: "LW", age: 21, club: "Real Betis", caps: 18, rating: 80 }
     ] },
-    "Haiti": { flag: "🇭🇹", group: "C", coach: "Gabriel Calderón", fifaRank: 85, keyPlayers: ["Duckens Nazon", "Frantzdy Pierrot", "Bryan Alceus"], squad: [
+    "Haiti": { flag: "🇭🇹", group: "C", coach: "Gabriel Calderón", fifaRank: 83, keyPlayers: ["Duckens Nazon", "Frantzdy Pierrot", "Bryan Alceus"], squad: [
         { name: "Johny Placide", pos: "GK", age: 36, club: "Rodez", caps: 50, rating: 76 },
         { name: "Alexandre Pierre", pos: "GK", age: 24, club: "Strasbourg", caps: 8, rating: 73 },
         { name: "Garissone Innocent", pos: "GK", age: 25, club: "Carlisle", caps: 15, rating: 72 },
@@ -412,7 +412,7 @@ const teamsData = {
         { name: "Mondy Prunier", pos: "ST", age: 25, club: "Stade Lavallois", caps: 5, rating: 70 },
         { name: "Bryan Labissiere", pos: "RW", age: 23, club: "Angers", caps: 4, rating: 69 }
     ] },
-    "Scotland": { flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", coach: "Steve Clarke", fifaRank: 38, keyPlayers: ["Scott McTominay", "John McGinn", "Andy Robertson"], squad: [
+    "Scotland": { flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", coach: "Steve Clarke", fifaRank: 42, keyPlayers: ["Scott McTominay", "John McGinn", "Andy Robertson"], squad: [
         { name: "Angus Gunn", pos: "GK", age: 29, club: "Norwich", caps: 18, rating: 80 },
         { name: "Zander Clark", pos: "GK", age: 31, club: "Hearts", caps: 5, rating: 76 },
         { name: "Liam Kelly", pos: "GK", age: 28, club: "Motherwell", caps: 2, rating: 74 },
@@ -436,7 +436,7 @@ const teamsData = {
         { name: "Lawrence Shankland", pos: "ST", age: 29, club: "Hearts", caps: 10, rating: 79 },
         { name: "Ben Doak", pos: "RW", age: 19, club: "Liverpool", caps: 4, rating: 76 }
     ] },
-    "USA": { flag: "🇺🇸", group: "D", coach: "Mauricio Pochettino", fifaRank: 11, keyPlayers: ["Christian Pulisic", "Tyler Adams", "Weston McKennie"], squad: [
+    "USA": { flag: "🇺🇸", group: "D", coach: "Mauricio Pochettino", fifaRank: 17, keyPlayers: ["Christian Pulisic", "Tyler Adams", "Weston McKennie"], squad: [
         { name: "Matt Turner", pos: "GK", age: 30, club: "Crystal Palace", caps: 42, rating: 83 },
         { name: "Ethan Horvath", pos: "GK", age: 29, club: "Cardiff", caps: 18, rating: 78 },
         { name: "Patrick Schulte", pos: "GK", age: 24, club: "Columbus Crew", caps: 5, rating: 75 },
@@ -459,7 +459,7 @@ const teamsData = {
         { name: "Folarin Balogun", pos: "ST", age: 24, club: "Monaco", caps: 18, rating: 82 },
         { name: "Ricardo Pepi", pos: "ST", age: 22, club: "PSV", caps: 25, rating: 81 }
     ] },
-    "Paraguay": { flag: "🇵🇾", group: "D", coach: "Guillermo Barros Schelotto", fifaRank: 52, keyPlayers: ["Miguel Almirón", "Julio Enciso", "Gustavo Gómez"], squad: [
+    "Paraguay": { flag: "🇵🇾", group: "D", coach: "Guillermo Barros Schelotto", fifaRank: 41, keyPlayers: ["Miguel Almirón", "Julio Enciso", "Gustavo Gómez"], squad: [
         { name: "Carlos Coronel", pos: "GK", age: 28, club: "New York Red Bulls", caps: 15, rating: 79 },
         { name: "Antony Silva", pos: "GK", age: 41, club: "Puebla", caps: 55, rating: 77 },
         { name: "Alfredo Aguilar", pos: "GK", age: 36, club: "Olimpia", caps: 8, rating: 75 },
@@ -479,7 +479,7 @@ const teamsData = {
         { name: "Carlos González", pos: "ST", age: 31, club: "Tigres", caps: 20, rating: 78 },
         { name: "Adam Bareiro", pos: "ST", age: 28, club: "San Lorenzo", caps: 12, rating: 77 }
     ] },
-    "Australia": { flag: "🇦🇺", group: "D", coach: "Tony Popovic", fifaRank: 25, keyPlayers: ["Mathew Ryan", "Harry Souttar", "Jackson Irvine"], squad: [
+    "Australia": { flag: "🇦🇺", group: "D", coach: "Tony Popovic", fifaRank: 27, keyPlayers: ["Mathew Ryan", "Harry Souttar", "Jackson Irvine"], squad: [
         { name: "Mathew Ryan", pos: "GK", age: 32, club: "AZ Alkmaar", caps: 90, rating: 84 },
         { name: "Joe Gauci", pos: "GK", age: 24, club: "Aston Villa", caps: 8, rating: 77 },
         { name: "Paul Izzo", pos: "GK", age: 29, club: "Melbourne Victory", caps: 5, rating: 74 },
@@ -498,7 +498,7 @@ const teamsData = {
         { name: "Mitchell Duke", pos: "ST", age: 33, club: "Machida Zelvia", caps: 35, rating: 78 },
         { name: "Adam Taggart", pos: "ST", age: 31, club: "Cerezo Osaka", caps: 18, rating: 77 }
     ] },
-    "Türkiye": { flag: "🇹🇷", group: "D", coach: "Şenol Güneş", fifaRank: 40, keyPlayers: ["Hakan Çalhanoğlu", "Arda Güler", "Kenan Yıldız"], squad: [
+    "Türkiye": { flag: "🇹🇷", group: "D", coach: "Şenol Güneş", fifaRank: 22, keyPlayers: ["Hakan Çalhanoğlu", "Arda Güler", "Kenan Yıldız"], squad: [
         { name: "Mert Günok", pos: "GK", age: 35, club: "Beşiktaş", caps: 32, rating: 80 },
         { name: "Altay Bayındır", pos: "GK", age: 27, club: "Manchester United", caps: 10, rating: 79 },
         { name: "Uğurcan Çakır", pos: "GK", age: 28, club: "Trabzonspor", caps: 28, rating: 81 },
@@ -519,7 +519,7 @@ const teamsData = {
         { name: "Cenk Tosun", pos: "ST", age: 33, club: "Beşiktaş", caps: 50, rating: 79 },
         { name: "Enes Ünal", pos: "ST", age: 27, club: "Bournemouth", caps: 32, rating: 80 }
     ] },
-    "Germany": { flag: "🇩🇪", group: "E", coach: "Julian Nagelsmann", fifaRank: 13, keyPlayers: ["Jamal Musiala", "Florian Wirtz", "Kai Havertz"], squad: [
+    "Germany": { flag: "🇩🇪", group: "E", coach: "Julian Nagelsmann", fifaRank: 10, keyPlayers: ["Jamal Musiala", "Florian Wirtz", "Kai Havertz"], squad: [
         { name: "Manuel Neuer", pos: "GK", age: 40, club: "Bayern Munich", caps: 124, rating: 87 },
         { name: "Marc-André ter Stegen", pos: "GK", age: 32, club: "Barcelona", caps: 42, rating: 88 },
         { name: "Oliver Baumann", pos: "GK", age: 34, club: "Hoffenheim", caps: 6, rating: 80 },
@@ -541,7 +541,7 @@ const teamsData = {
         { name: "Antonio Rüdiger", pos: "CB", age: 31, club: "Real Madrid", caps: 68, rating: 87 },
         { name: "Jonathan Tah", pos: "CB", age: 28, club: "Bayer Leverkusen", caps: 28, rating: 84 }
     ] },
-    "Curaçao": { flag: "🇨🇼", group: "E", coach: "Remy Reynierse", fifaRank: 92, keyPlayers: ["Leandro Bacuna", "Juninho Bacuna", "Eloy Room"], squad: [
+    "Curaçao": { flag: "🇨🇼", group: "E", coach: "Remy Reynierse", fifaRank: 82, keyPlayers: ["Leandro Bacuna", "Juninho Bacuna", "Eloy Room"], squad: [
         { name: "Eloy Room", pos: "GK", age: 35, club: "Vitesse", caps: 40, rating: 78 },
         { name: "Trevor Doornbusch", pos: "GK", age: 25, club: "Cambuur", caps: 5, rating: 72 },
         { name: "Cuco Martina", pos: "CB", age: 35, club: "FC Twente", caps: 55, rating: 76 },
@@ -551,7 +551,7 @@ const teamsData = {
         { name: "Juninho Bacuna", pos: "CM", age: 27, club: "Birmingham", caps: 25, rating: 77 },
         { name: "Rangelo Janga", pos: "ST", age: 32, club: "Apollon", caps: 20, rating: 75 }
     ] },
-    "Ivory Coast": { flag: "🇨🇮", group: "E", coach: "Emerse Faé", fifaRank: 41, keyPlayers: ["Franck Kessié", "Sébastien Haller", "Nicolas Pépé"], squad: [
+    "Ivory Coast": { flag: "🇨🇮", group: "E", coach: "Emerse Faé", fifaRank: 33, keyPlayers: ["Franck Kessié", "Sébastien Haller", "Nicolas Pépé"], squad: [
         { name: "Yahia Fofana", pos: "GK", age: 24, club: "Angers", caps: 10, rating: 78 },
         { name: "Badra Ali Sangaré", pos: "GK", age: 38, club: "ASEC", caps: 35, rating: 75 },
         { name: "Evan Ndicka", pos: "CB", age: 25, club: "AS Roma", caps: 20, rating: 83 },
@@ -565,7 +565,7 @@ const teamsData = {
         { name: "Nicolas Pépé", pos: "RW", age: 29, club: "Trabzonspor", caps: 45, rating: 80 },
         { name: "Sébastien Haller", pos: "ST", age: 30, club: "Borussia Dortmund", caps: 25, rating: 83 }
     ] },
-    "Ecuador": { flag: "🇪🇨", group: "E", coach: "Félix Sánchez", fifaRank: 35, keyPlayers: ["Moisés Caicedo", "Piero Hincapié", "Enner Valencia"], squad: [
+    "Ecuador": { flag: "🇪🇨", group: "E", coach: "Félix Sánchez", fifaRank: 23, keyPlayers: ["Moisés Caicedo", "Piero Hincapié", "Enner Valencia"], squad: [
         { name: "Hernán Galíndez", pos: "GK", age: 37, club: "Aucas", caps: 45, rating: 78 },
         { name: "Alexander Domínguez", pos: "GK", age: 37, club: "LDU", caps: 65, rating: 77 },
         { name: "Piero Hincapié", pos: "CB", age: 22, club: "Bayer Leverkusen", caps: 28, rating: 84 },
@@ -580,7 +580,7 @@ const teamsData = {
         { name: "Enner Valencia", pos: "ST", age: 34, club: "Internacional", caps: 75, rating: 83 },
         { name: "Jordy Caicedo", pos: "ST", age: 27, club: "Atlas", caps: 18, rating: 77 }
     ] },
-    "Netherlands": { flag: "🇳🇱", group: "F", coach: "Ronald Koeman", fifaRank: 7, keyPlayers: ["Virgil van Dijk", "Frenkie de Jong", "Cody Gakpo"], squad: [
+    "Netherlands": { flag: "🇳🇱", group: "F", coach: "Ronald Koeman", fifaRank: 8, keyPlayers: ["Virgil van Dijk", "Frenkie de Jong", "Cody Gakpo"], squad: [
         { name: "Bart Verbruggen", pos: "GK", age: 22, club: "Brighton", caps: 12, rating: 83 },
         { name: "Mark Flekken", pos: "GK", age: 31, club: "Brentford", caps: 10, rating: 81 },
         { name: "Nick Olij", pos: "GK", age: 28, club: "Sparta", caps: 5, rating: 78 },
@@ -622,7 +622,7 @@ const teamsData = {
         { name: "Kyogo Furuhashi", pos: "ST", age: 29, club: "Celtic", caps: 20, rating: 82 },
         { name: "Daizen Maeda", pos: "ST", age: 27, club: "Celtic", caps: 18, rating: 80 }
     ] },
-    "Sweden": { flag: "🇸🇪", group: "F", coach: "Janne Andersson", fifaRank: 27, keyPlayers: ["Alexander Isak", "Dejan Kulusevski", "Victor Lindelöf"], squad: [
+    "Sweden": { flag: "🇸🇪", group: "F", coach: "Janne Andersson", fifaRank: 38, keyPlayers: ["Alexander Isak", "Dejan Kulusevski", "Victor Lindelöf"], squad: [
         { name: "Robin Olsen", pos: "GK", age: 34, club: "Aston Villa", caps: 72, rating: 80 },
         { name: "Viktor Johansson", pos: "GK", age: 26, club: "Rotherham", caps: 10, rating: 77 },
         { name: "Kristoffer Nordfeldt", pos: "GK", age: 35, club: "AIK", caps: 18, rating: 75 },
@@ -639,7 +639,7 @@ const teamsData = {
         { name: "Viktor Gyökeres", pos: "ST", age: 26, club: "Sporting", caps: 28, rating: 87 },
         { name: "Anthony Elanga", pos: "LW", age: 22, club: "Nottingham Forest", caps: 15, rating: 81 }
     ] },
-    "Tunisia": { flag: "🇹🇳", group: "F", coach: "Mondher Kebaier", fifaRank: 34, keyPlayers: ["Ellyes Skhiri", "Wahbi Khazri", "Youssef Msakni"], squad: [
+    "Tunisia": { flag: "🇹🇳", group: "F", coach: "Mondher Kebaier", fifaRank: 45, keyPlayers: ["Ellyes Skhiri", "Wahbi Khazri", "Youssef Msakni"], squad: [
         { name: "Aymen Dahmen", pos: "GK", age: 27, club: "CS Sfaxien", caps: 15, rating: 76 },
         { name: "Bechir Ben Saïd", pos: "GK", age: 30, club: "Monastir", caps: 10, rating: 75 },
         { name: "Montassar Talbi", pos: "CB", age: 26, club: "Lorient", caps: 20, rating: 80 },
@@ -654,7 +654,7 @@ const teamsData = {
         { name: "Elias Achouri", pos: "RW", age: 25, club: "Copenhagen", caps: 10, rating: 78 },
         { name: "Seifeddine Jaziri", pos: "ST", age: 31, club: "Zamalek", caps: 30, rating: 77 }
     ] },
-    "Belgium": { flag: "🇧🇪", group: "G", coach: "Domenico Tedesco", fifaRank: 3, keyPlayers: ["Kevin De Bruyne", "Romelu Lukaku", "Jeremy Doku"], squad: [
+    "Belgium": { flag: "🇧🇪", group: "G", coach: "Domenico Tedesco", fifaRank: 9, keyPlayers: ["Kevin De Bruyne", "Romelu Lukaku", "Jeremy Doku"], squad: [
         { name: "Thibaut Courtois", pos: "GK", age: 32, club: "Real Madrid", caps: 108, rating: 92 },
         { name: "Koen Casteels", pos: "GK", age: 32, club: "Al-Qadsiah", caps: 28, rating: 82 },
         { name: "Matz Sels", pos: "GK", age: 32, club: "Nottingham", caps: 12, rating: 80 },
@@ -691,7 +691,7 @@ const teamsData = {
         { name: "Mohamed Salah", pos: "RW", age: 32, club: "Liverpool", caps: 95, rating: 91 },
         { name: "Ahmed Sayed Zizo", pos: "RW", age: 28, club: "Zamalek", caps: 30, rating: 79 }
     ] },
-    "Iran": { flag: "🇮🇷", group: "G", coach: "Amir Ghalenoei", fifaRank: 22, keyPlayers: ["Mehdi Taremi", "Sardar Azmoun", "Alireza Jahanbakhsh"], squad: [
+    "Iran": { flag: "🇮🇷", group: "G", coach: "Amir Ghalenoei", fifaRank: 20, keyPlayers: ["Mehdi Taremi", "Sardar Azmoun", "Alireza Jahanbakhsh"], squad: [
         { name: "Alireza Beiranvand", pos: "GK", age: 32, club: "Antwerp", caps: 70, rating: 81 },
         { name: "Payam Niazmand", pos: "GK", age: 28, club: "Sepahan", caps: 12, rating: 77 },
         { name: "Hossein Kanaanizadegan", pos: "CB", age: 30, club: "Persepolis", caps: 45, rating: 78 },
@@ -705,7 +705,7 @@ const teamsData = {
         { name: "Sardar Azmoun", pos: "ST", age: 29, club: "Bayer Leverkusen", caps: 65, rating: 84 },
         { name: "Mehdi Ghayedi", pos: "LW", age: 26, club: "Al-Ittihad", caps: 20, rating: 78 }
     ] },
-    "New Zealand": { flag: "🇳🇿", group: "G", coach: "Darren Bazeley", fifaRank: 100, keyPlayers: ["Chris Wood", "Joe Bell", "Liborato Cacace"], squad: [
+    "New Zealand": { flag: "🇳🇿", group: "G", coach: "Darren Bazeley", fifaRank: 85, keyPlayers: ["Chris Wood", "Joe Bell", "Liborato Cacace"], squad: [
         { name: "Max Crocombe", pos: "GK", age: 30, club: "Burton", caps: 15, rating: 73 },
         { name: "Oliver Sail", pos: "GK", age: 27, club: "Wellington", caps: 8, rating: 72 },
         { name: "Michael Boxall", pos: "CB", age: 35, club: "Minnesota", caps: 40, rating: 75 },
@@ -718,7 +718,7 @@ const teamsData = {
         { name: "Chris Wood", pos: "ST", age: 33, club: "Nottingham", caps: 70, rating: 82 },
         { name: "Ben Waine", pos: "ST", age: 23, club: "Plymouth", caps: 5, rating: 73 }
     ] },
-    "Spain": { flag: "🇪🇸", group: "H", coach: "Luis de la Fuente", fifaRank: 8, keyPlayers: ["Pedri", "Lamine Yamal", "Rodri"], squad: [
+    "Spain": { flag: "🇪🇸", group: "H", coach: "Luis de la Fuente", fifaRank: 2, keyPlayers: ["Pedri", "Lamine Yamal", "Rodri"], squad: [
         { name: "Unai Simón", pos: "GK", age: 27, club: "Athletic", caps: 30, rating: 85 },
         { name: "David Raya", pos: "GK", age: 29, club: "Arsenal", caps: 15, rating: 86 },
         { name: "Álex Remiro", pos: "GK", age: 29, club: "Real Sociedad", caps: 8, rating: 83 },
@@ -752,7 +752,7 @@ const teamsData = {
         { name: "Garry Rodrigues", pos: "LW", age: 34, club: "Ankaragücü", caps: 50, rating: 79 },
         { name: "Bebé", pos: "ST", age: 34, club: "Rayo", caps: 20, rating: 77 }
     ] },
-    "Saudi Arabia": { flag: "🇸🇦", group: "H", coach: "Roberto Mancini", fifaRank: 56, keyPlayers: ["Salem Al-Dawsari", "Firas Al-Buraikan", "Ali Al-Bulaihi"], squad: [
+    "Saudi Arabia": { flag: "🇸🇦", group: "H", coach: "Roberto Mancini", fifaRank: 61, keyPlayers: ["Salem Al-Dawsari", "Firas Al-Buraikan", "Ali Al-Bulaihi"], squad: [
         { name: "Mohammed Al-Owais", pos: "GK", age: 33, club: "Al-Hilal", caps: 55, rating: 80 },
         { name: "Nawaf Al-Aqidi", pos: "GK", age: 26, club: "Al-Nassr", caps: 8, rating: 75 },
         { name: "Ali Al-Bulaihi", pos: "CB", age: 33, club: "Al-Hilal", caps: 60, rating: 79 },
@@ -780,7 +780,7 @@ const teamsData = {
         { name: "Luis Suárez", pos: "ST", age: 37, club: "Inter Miami", caps: 140, rating: 83 },
         { name: "Brian Rodríguez", pos: "LW", age: 24, club: "América", caps: 22, rating: 79 }
     ] },
-    "France": { flag: "🇫🇷", group: "I", coach: "Didier Deschamps", fifaRank: 2, keyPlayers: ["Kylian Mbappé", "Antoine Griezmann", "Aurélien Tchouaméni"], squad: [
+    "France": { flag: "🇫🇷", group: "I", coach: "Didier Deschamps", fifaRank: 3, keyPlayers: ["Kylian Mbappé", "Antoine Griezmann", "Aurélien Tchouaméni"], squad: [
         { name: "Mike Maignan", pos: "GK", age: 29, club: "AC Milan", caps: 25, rating: 88 },
         { name: "Brice Samba", pos: "GK", age: 30, club: "Lens", caps: 5, rating: 81 },
         { name: "Alphonse Areola", pos: "GK", age: 31, club: "West Ham", caps: 12, rating: 80 },
@@ -800,7 +800,7 @@ const teamsData = {
         { name: "Ousmane Dembélé", pos: "RW", age: 27, club: "PSG", caps: 48, rating: 86 },
         { name: "Kingsley Coman", pos: "LW", age: 28, club: "Bayern", caps: 60, rating: 85 }
     ] },
-    "Senegal": { flag: "🇸🇳", group: "I", coach: "Aliou Cissé", fifaRank: 19, keyPlayers: ["Sadio Mané", "Kalidou Koulibaly", "Édouard Mendy"], squad: [
+    "Senegal": { flag: "🇸🇳", group: "I", coach: "Aliou Cissé", fifaRank: 15, keyPlayers: ["Sadio Mané", "Kalidou Koulibaly", "Édouard Mendy"], squad: [
         { name: "Édouard Mendy", pos: "GK", age: 32, club: "Al-Ahli", caps: 42, rating: 86 },
         { name: "Seny Dieng", pos: "GK", age: 32, club: "Middlesbrough", caps: 18, rating: 80 },
         { name: "Kalidou Koulibaly", pos: "CB", age: 33, club: "Al-Hilal", caps: 80, rating: 87 },
@@ -815,7 +815,7 @@ const teamsData = {
         { name: "Nicolas Jackson", pos: "ST", age: 23, club: "Chelsea", caps: 18, rating: 84 },
         { name: "Boulaye Dia", pos: "ST", age: 27, club: "Lazio", caps: 22, rating: 82 }
     ] },
-    "Iraq": { flag: "🇮🇶", group: "I", coach: "Jesús Casas", fifaRank: 62, keyPlayers: ["Aymen Hussein", "Ali Jassim", "Zidane Iqbal"], squad: [
+    "Iraq": { flag: "🇮🇶", group: "I", coach: "Jesús Casas", fifaRank: 57, keyPlayers: ["Aymen Hussein", "Ali Jassim", "Zidane Iqbal"], squad: [
         { name: "Jalal Hassan", pos: "GK", age: 33, club: "Al-Zawraa", caps: 60, rating: 76 },
         { name: "Fahad Talib", pos: "GK", age: 28, club: "Al-Quwa", caps: 15, rating: 73 },
         { name: "Rebin Sulaka", pos: "CB", age: 32, club: "BK Häcken", caps: 30, rating: 75 },
@@ -827,7 +827,7 @@ const teamsData = {
         { name: "Aymen Hussein", pos: "ST", age: 28, club: "Al-Quwa", caps: 50, rating: 80 },
         { name: "Mohanad Ali", pos: "ST", age: 24, club: "Portsmouth", caps: 35, rating: 78 }
     ] },
-    "Norway": { flag: "🇳🇴", group: "I", coach: "Ståle Solbakken", fifaRank: 44, keyPlayers: ["Erling Haaland", "Martin Ødegaard", "Alexander Sørloth"], squad: [
+    "Norway": { flag: "🇳🇴", group: "I", coach: "Ståle Solbakken", fifaRank: 31, keyPlayers: ["Erling Haaland", "Martin Ødegaard", "Alexander Sørloth"], squad: [
         { name: "Ørjan Nyland", pos: "GK", age: 34, club: "Sevilla", caps: 35, rating: 79 },
         { name: "Egil Selvik", pos: "GK", age: 27, club: "Haugesund", caps: 8, rating: 75 },
         { name: "Leo Østigård", pos: "CB", age: 24, club: "Napoli", caps: 15, rating: 80 },
@@ -862,7 +862,7 @@ const teamsData = {
         { name: "Lautaro Martínez", pos: "ST", age: 27, club: "Inter", caps: 62, rating: 88 },
         { name: "Alejandro Garnacho", pos: "LW", age: 20, club: "Man United", caps: 18, rating: 84 }
     ] },
-    "Algeria": { flag: "🇩🇿", group: "J", coach: "Djamel Belmadi", fifaRank: 31, keyPlayers: ["Riyad Mahrez", "Youcef Belaïli", "Ismaël Bennacer"], squad: [
+    "Algeria": { flag: "🇩🇿", group: "J", coach: "Djamel Belmadi", fifaRank: 28, keyPlayers: ["Riyad Mahrez", "Youcef Belaïli", "Ismaël Bennacer"], squad: [
         { name: "Anthony Mandrea", pos: "GK", age: 27, club: "Caen", caps: 15, rating: 78 },
         { name: "Alexandre Oukidja", pos: "GK", age: 36, club: "Metz", caps: 10, rating: 76 },
         { name: "Ramy Bensebaini", pos: "LB", age: 29, club: "Borussia Dortmund", caps: 60, rating: 83 },
@@ -877,7 +877,7 @@ const teamsData = {
         { name: "Baghdad Bounedjah", pos: "ST", age: 33, club: "Al-Sadd", caps: 70, rating: 82 },
         { name: "Mohamed Amoura", pos: "ST", age: 24, club: "Wolfsburg", caps: 15, rating: 81 }
     ] },
-    "Austria": { flag: "🇦🇹", group: "J", coach: "Ralf Rangnick", fifaRank: 25, keyPlayers: ["David Alaba", "Marcel Sabitzer", "Christoph Baumgartner"], squad: [
+    "Austria": { flag: "🇦🇹", group: "J", coach: "Ralf Rangnick", fifaRank: 24, keyPlayers: ["David Alaba", "Marcel Sabitzer", "Christoph Baumgartner"], squad: [
         { name: "Patrick Pentz", pos: "GK", age: 27, club: "Brøndby", caps: 10, rating: 78 },
         { name: "Niklas Hedl", pos: "GK", age: 23, club: "Rapid", caps: 5, rating: 75 },
         { name: "David Alaba", pos: "CB", age: 32, club: "Real Madrid", caps: 108, rating: 87 },
@@ -891,7 +891,7 @@ const teamsData = {
         { name: "Michael Gregoritsch", pos: "ST", age: 30, club: "Freiburg", caps: 35, rating: 80 },
         { name: "Marko Arnautović", pos: "ST", age: 35, club: "Inter", caps: 102, rating: 82 }
     ] },
-    "Jordan": { flag: "🇯🇴", group: "J", coach: "Hussein Ammouta", fifaRank: 87, keyPlayers: ["Musa Al-Taamari", "Yazan Al-Naimat", "Ali Olwan"], squad: [
+    "Jordan": { flag: "🇯🇴", group: "J", coach: "Hussein Ammouta", fifaRank: 63, keyPlayers: ["Musa Al-Taamari", "Yazan Al-Naimat", "Ali Olwan"], squad: [
         { name: "Yazeed Abulaila", pos: "GK", age: 31, club: "Al-Faisaly", caps: 30, rating: 75 },
         { name: "Abdallah Al-Fakhouri", pos: "GK", age: 26, club: "Al-Wehdat", caps: 10, rating: 72 },
         { name: "Yazan Al-Arab", pos: "CB", age: 29, club: "Al-Faisaly", caps: 40, rating: 74 },
@@ -903,7 +903,7 @@ const teamsData = {
         { name: "Yazan Al-Naimat", pos: "ST", age: 25, club: "Al-Ahli", caps: 30, rating: 79 },
         { name: "Ali Olwan", pos: "ST", age: 24, club: "Al-Faisaly", caps: 20, rating: 76 }
     ] },
-    "Portugal": { flag: "🇵🇹", group: "K", coach: "Roberto Martínez", fifaRank: 6, keyPlayers: ["Cristiano Ronaldo", "Bruno Fernandes", "Rúben Dias"], squad: [
+    "Portugal": { flag: "🇵🇹", group: "K", coach: "Roberto Martínez", fifaRank: 5, keyPlayers: ["Cristiano Ronaldo", "Bruno Fernandes", "Rúben Dias"], squad: [
         { name: "Diogo Costa", pos: "GK", age: 25, club: "Porto", caps: 25, rating: 86 },
         { name: "José Sá", pos: "GK", age: 31, club: "Wolves", caps: 8, rating: 82 },
         { name: "Rui Silva", pos: "GK", age: 30, club: "Betis", caps: 5, rating: 80 },
@@ -923,7 +923,7 @@ const teamsData = {
         { name: "Diogo Jota", pos: "ST", age: 27, club: "Liverpool", caps: 40, rating: 86 },
         { name: "Gonçalo Ramos", pos: "ST", age: 23, club: "PSG", caps: 25, rating: 85 }
     ] },
-    "DR Congo": { flag: "🇨🇩", group: "K", coach: "Sébastien Desabre", fifaRank: 65, keyPlayers: ["Yoane Wissa", "Cédric Bakambu", "Chancel Mbemba"], squad: [
+    "DR Congo": { flag: "🇨🇩", group: "K", coach: "Sébastien Desabre", fifaRank: 46, keyPlayers: ["Yoane Wissa", "Cédric Bakambu", "Chancel Mbemba"], squad: [
         { name: "Lionel Mpasi", pos: "GK", age: 30, club: "Rodez", caps: 15, rating: 76 },
         { name: "Dimitry Bertaud", pos: "GK", age: 26, club: "Montpellier", caps: 5, rating: 74 },
         { name: "Chancel Mbemba", pos: "CB", age: 30, club: "Marseille", caps: 70, rating: 84 },
@@ -936,7 +936,7 @@ const teamsData = {
         { name: "Cédric Bakambu", pos: "ST", age: 33, club: "Galatasaray", caps: 45, rating: 80 },
         { name: "Simon Banza", pos: "ST", age: 27, club: "Trabzonspor", caps: 10, rating: 79 }
     ] },
-    "Uzbekistan": { flag: "🇺🇿", group: "K", coach: "Srečko Katanec", fifaRank: 73, keyPlayers: ["Eldor Shomurodov", "Jaloliddin Masharipov", "Abbosbek Fayzullaev"], squad: [
+    "Uzbekistan": { flag: "🇺🇿", group: "K", coach: "Srečko Katanec", fifaRank: 50, keyPlayers: ["Eldor Shomurodov", "Jaloliddin Masharipov", "Abbosbek Fayzullaev"], squad: [
         { name: "Utkir Yusupov", pos: "GK", age: 33, club: "Navbahor", caps: 30, rating: 75 },
         { name: "Abduvohid Nematov", pos: "GK", age: 27, club: "Nasaf", caps: 15, rating: 73 },
         { name: "Abdukodir Khusanov", pos: "CB", age: 20, club: "Lens", caps: 8, rating: 79 },
@@ -948,7 +948,7 @@ const teamsData = {
         { name: "Eldor Shomurodov", pos: "ST", age: 29, club: "AS Roma", caps: 70, rating: 82 },
         { name: "Igor Sergeev", pos: "ST", age: 31, club: "Pakhtakor", caps: 50, rating: 77 }
     ] },
-    "Colombia": { flag: "🇨🇴", group: "K", coach: "Néstor Lorenzo", fifaRank: 12, keyPlayers: ["Luis Díaz", "James Rodríguez", "Dávinson Sánchez"], squad: [
+    "Colombia": { flag: "🇨🇴", group: "K", coach: "Néstor Lorenzo", fifaRank: 13, keyPlayers: ["Luis Díaz", "James Rodríguez", "Dávinson Sánchez"], squad: [
         { name: "Camilo Vargas", pos: "GK", age: 33, club: "Atlas", caps: 40, rating: 81 },
         { name: "Álvaro Montero", pos: "GK", age: 29, club: "Millonarios", caps: 12, rating: 77 },
         { name: "Dávinson Sánchez", pos: "CB", age: 28, club: "Galatasaray", caps: 62, rating: 83 },
@@ -984,7 +984,7 @@ const teamsData = {
         { name: "Harry Kane", pos: "ST", age: 31, club: "Bayern", caps: 95, rating: 92 },
         { name: "Ollie Watkins", pos: "ST", age: 29, club: "Aston Villa", caps: 18, rating: 85 }
     ] },
-    "Croatia": { flag: "🇭🇷", group: "L", coach: "Zlatko Dalić", fifaRank: 10, keyPlayers: ["Luka Modrić", "Mateo Kovačić", "Joško Gvardiol"], squad: [
+    "Croatia": { flag: "🇭🇷", group: "L", coach: "Zlatko Dalić", fifaRank: 11, keyPlayers: ["Luka Modrić", "Mateo Kovačić", "Joško Gvardiol"], squad: [
         { name: "Dominik Livaković", pos: "GK", age: 29, club: "Fenerbahçe", caps: 42, rating: 85 },
         { name: "Ivica Ivušić", pos: "GK", age: 29, club: "Osijek", caps: 10, rating: 78 },
         { name: "Joško Gvardiol", pos: "CB", age: 22, club: "Man City", caps: 32, rating: 88 },
@@ -999,7 +999,7 @@ const teamsData = {
         { name: "Bruno Petković", pos: "ST", age: 30, club: "Dinamo", caps: 40, rating: 80 },
         { name: "Lovro Majer", pos: "AM", age: 26, club: "Wolfsburg", caps: 28, rating: 82 }
     ] },
-    "Ghana": { flag: "🇬🇭", group: "L", coach: "Otto Addo", fifaRank: 50, keyPlayers: ["Mohammed Kudus", "Thomas Partey", "Jordan Ayew"], squad: [
+    "Ghana": { flag: "🇬🇭", group: "L", coach: "Otto Addo", fifaRank: 73, keyPlayers: ["Mohammed Kudus", "Thomas Partey", "Jordan Ayew"], squad: [
         { name: "Lawrence Ati-Zigi", pos: "GK", age: 28, club: "St. Gallen", caps: 20, rating: 78 },
         { name: "Joseph Wollacott", pos: "GK", age: 28, club: "Swindon", caps: 15, rating: 76 },
         { name: "Mohammed Salisu", pos: "CB", age: 25, club: "Monaco", caps: 15, rating: 81 },
@@ -1013,7 +1013,7 @@ const teamsData = {
         { name: "Antoine Semenyo", pos: "ST", age: 24, club: "Bournemouth", caps: 15, rating: 82 },
         { name: "Ernest Nuamah", pos: "LW", age: 21, club: "Lyon", caps: 10, rating: 80 }
     ] },
-    "Panama": { flag: "🇵🇦", group: "L", coach: "Thomas Christiansen", fifaRank: 44, keyPlayers: ["Adalberto Carrasquilla", "José Fajardo", "Yoel Bárcenas"], squad: [
+    "Panama": { flag: "🇵🇦", group: "L", coach: "Thomas Christiansen", fifaRank: 34, keyPlayers: ["Adalberto Carrasquilla", "José Fajardo", "Yoel Bárcenas"], squad: [
         { name: "Orlando Mosquera", pos: "GK", age: 29, club: "Maccabi Tel Aviv", caps: 15, rating: 76 },
         { name: "César Samudio", pos: "GK", age: 27, club: "Independiente", caps: 8, rating: 73 },
         { name: "Fidel Escobar", pos: "CB", age: 29, club: "Al-Markhiya", caps: 45, rating: 78 },
