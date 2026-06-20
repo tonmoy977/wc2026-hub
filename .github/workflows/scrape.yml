@@ -27,19 +27,15 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies (if package.json exists)
-        run: |
-          if [ -f package.json ]; then npm ci; fi
-
       - name: Generate results
         env:
+          DEMO_MODE: ${{ secrets.DEMO_MODE }}
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           SPORTMONKS_KEY: ${{ secrets.SPORTMONKS_KEY }}
           LIVESCORE_API_KEY: ${{ secrets.LIVESCORE_API_KEY }}
           LIVESCORE_API_SECRET: ${{ secrets.LIVESCORE_API_SECRET }}
           THESPORTSDB_KEY: ${{ secrets.THESPORTSDB_KEY }}
-          SPORTSOPENDATA_KEY: ${{ secrets.SPORTSOPENDATA_KEY }}
         run: node scraper.js
 
       - name: Commit and push
