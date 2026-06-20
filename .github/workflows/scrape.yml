@@ -30,6 +30,7 @@ jobs:
       - name: Generate results
         env:
           DEMO_MODE: ${{ secrets.DEMO_MODE }}
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node scraper.js
 
       - name: Commit and push
