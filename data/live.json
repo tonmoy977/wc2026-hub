@@ -265,8 +265,8 @@
       "id": 33,
       "home": "Netherlands",
       "away": "Sweden",
-      "homeScore": null,
-      "awayScore": null,
+      "homeScore": 2,
+      "awayScore": 0,
       "status": "Scheduled",
       "completed": false
     },
@@ -595,7 +595,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-20T16:43:36.601Z",
+  "lastUpdated": "2026-06-20T18:00:08.566Z",
   "source": "Football-Data",
   "sourceCount": 1,
   "sourcesUsed": [
