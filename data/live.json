@@ -25,7 +25,7 @@
       "home": "Czechia",
       "away": "South Africa",
       "homeScore": 0,
-      "awayScore": 0,
+      "awayScore": 4,
       "completed": true,
       "status": "FT",
       "group": "A"
@@ -614,7 +614,7 @@
       "id": 62,
       "home": "Uzbekistan",
       "away": "Colombia",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 2,
       "completed": true,
       "status": "FT",
@@ -721,7 +721,7 @@
       "group": "L"
     }
   ],
-  "lastUpdated": "2026-06-20T09:53:38.236Z",
+  "lastUpdated": "2026-06-20T11:22:04.177Z",
   "source": "wc2026-live-engine",
   "totalMatches": 72,
   "simulated": true
