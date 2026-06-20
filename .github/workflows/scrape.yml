@@ -1,8 +1,8 @@
-name: Scrape live results
+name: Generate live results
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # Every 30 minutes
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 concurrency:
@@ -13,9 +13,8 @@ permissions:
   contents: write
 
 jobs:
-  scrape:
+  generate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,45 +27,21 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run scraper
-        id: scraper
+      - name: Generate results
         run: node scraper.js
-        env:
-          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
-        continue-on-error: true
 
-      - name: Upload debug artifact on failure
-        if: steps.scraper.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: scraper-failure-debug
-          path: data/live.json
-          retention-days: 3
-
-      - name: Validate JSON output
-        if: always()
-        run: |
-          if [ -f data/live.json ]; then
-            node -e "JSON.parse(require('fs').readFileSync('data/live.json'))" && echo "✅ JSON valid"
-          else
-            echo '{"meta":{"lastUpdated":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","success":false,"error":"File missing"},"games":[]}' > data/live.json
-          fi
-
-      - name: Commit and push results
-        if: always()
+      - name: Commit and push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git pull origin ${{ github.ref_name }} --rebase || true
           git add data/live.json
           if git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No changes."
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
             for i in 1 2 3; do
               git push origin ${{ github.ref_name }} && break
-              echo "Push attempt $i failed, retrying..."
               sleep 2
               git pull origin ${{ github.ref_name }} --rebase || true
             done
