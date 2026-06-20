@@ -4,131 +4,82 @@
       "id": 1,
       "home": "Mexico",
       "away": "South Africa",
-      "homeScore": 1,
-      "awayScore": 0,
+      "homeScore": 0,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "A"
+      "status": "FT"
     },
     {
       "id": 2,
       "home": "South Korea",
       "away": "Czechia",
-      "homeScore": 0,
-      "awayScore": 2,
+      "homeScore": 1,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "A"
+      "status": "FT"
     },
     {
       "id": 3,
       "home": "Czechia",
       "away": "South Africa",
-      "homeScore": 0,
-      "awayScore": 4,
+      "homeScore": 1,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "A"
+      "status": "FT"
     },
     {
       "id": 4,
       "home": "Mexico",
       "away": "South Korea",
-      "homeScore": 3,
-      "awayScore": 2,
+      "homeScore": 2,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "A"
-    },
-    {
-      "id": 5,
-      "home": "Czechia",
-      "away": "Mexico",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "A"
-    },
-    {
-      "id": 6,
-      "home": "South Africa",
-      "away": "South Korea",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "A"
+      "status": "FT"
     },
     {
       "id": 7,
       "home": "Canada",
       "away": "Bosnia",
       "homeScore": 2,
-      "awayScore": 0,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "B"
+      "status": "FT"
     },
     {
       "id": 8,
       "home": "Qatar",
       "away": "Switzerland",
-      "homeScore": 0,
-      "awayScore": 4,
+      "homeScore": 2,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "B"
+      "status": "FT"
     },
     {
       "id": 9,
       "home": "Switzerland",
       "away": "Bosnia",
-      "homeScore": 3,
+      "homeScore": 0,
       "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "B"
+      "status": "FT"
     },
     {
       "id": 10,
       "home": "Canada",
       "away": "Qatar",
-      "homeScore": 3,
-      "awayScore": 0,
+      "homeScore": 1,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "B"
-    },
-    {
-      "id": 11,
-      "home": "Switzerland",
-      "away": "Canada",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "B"
-    },
-    {
-      "id": 12,
-      "home": "Bosnia",
-      "away": "Qatar",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "B"
+      "status": "FT"
     },
     {
       "id": 13,
       "home": "Brazil",
       "away": "Morocco",
-      "homeScore": 2,
-      "awayScore": 1,
+      "homeScore": 3,
+      "awayScore": 3,
       "completed": true,
-      "status": "FT",
-      "group": "C"
+      "status": "FT"
     },
     {
       "id": 14,
@@ -137,592 +88,207 @@
       "homeScore": 3,
       "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "C"
+      "status": "FT"
     },
     {
       "id": 15,
       "home": "Scotland",
       "away": "Morocco",
-      "homeScore": 3,
-      "awayScore": 2,
+      "homeScore": 1,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "C"
+      "status": "FT"
     },
     {
       "id": 16,
       "home": "Brazil",
       "away": "Haiti",
-      "homeScore": 5,
-      "awayScore": 0,
+      "homeScore": 3,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "C"
-    },
-    {
-      "id": 17,
-      "home": "Scotland",
-      "away": "Brazil",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "C"
-    },
-    {
-      "id": 18,
-      "home": "Morocco",
-      "away": "Haiti",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "C"
+      "status": "FT"
     },
     {
       "id": 19,
       "home": "USA",
       "away": "Paraguay",
-      "homeScore": 3,
-      "awayScore": 0,
+      "homeScore": 0,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "D"
+      "status": "FT"
     },
     {
       "id": 20,
       "home": "Australia",
       "away": "Türkiye",
-      "homeScore": 2,
-      "awayScore": 5,
+      "homeScore": 1,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "D"
+      "status": "FT"
     },
     {
       "id": 21,
       "home": "USA",
       "away": "Australia",
-      "homeScore": 1,
-      "awayScore": 5,
+      "homeScore": 0,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "D"
+      "status": "FT"
     },
     {
       "id": 22,
       "home": "Türkiye",
       "away": "Paraguay",
-      "homeScore": 2,
-      "awayScore": 3,
+      "homeScore": 0,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "D"
-    },
-    {
-      "id": 23,
-      "home": "Türkiye",
-      "away": "USA",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "D"
-    },
-    {
-      "id": 24,
-      "home": "Paraguay",
-      "away": "Australia",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "D"
+      "status": "FT"
     },
     {
       "id": 25,
       "home": "Germany",
       "away": "Curaçao",
-      "homeScore": 1,
+      "homeScore": 3,
       "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "E"
+      "status": "FT"
     },
     {
       "id": 26,
       "home": "Ivory Coast",
       "away": "Ecuador",
-      "homeScore": 1,
-      "awayScore": 1,
+      "homeScore": 0,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "E"
-    },
-    {
-      "id": 27,
-      "home": "Germany",
-      "away": "Ivory Coast",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "E"
-    },
-    {
-      "id": 28,
-      "home": "Ecuador",
-      "away": "Curaçao",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "E"
-    },
-    {
-      "id": 29,
-      "home": "Curaçao",
-      "away": "Ivory Coast",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "E"
-    },
-    {
-      "id": 30,
-      "home": "Ecuador",
-      "away": "Germany",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "E"
+      "status": "FT"
     },
     {
       "id": 31,
       "home": "Netherlands",
       "away": "Japan",
-      "homeScore": 5,
-      "awayScore": 3,
+      "homeScore": 1,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "F"
+      "status": "FT"
     },
     {
       "id": 32,
       "home": "Sweden",
       "away": "Tunisia",
-      "homeScore": 5,
+      "homeScore": 0,
       "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "F"
-    },
-    {
-      "id": 33,
-      "home": "Netherlands",
-      "away": "Sweden",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "F"
-    },
-    {
-      "id": 34,
-      "home": "Tunisia",
-      "away": "Japan",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "F"
-    },
-    {
-      "id": 35,
-      "home": "Japan",
-      "away": "Sweden",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "F"
-    },
-    {
-      "id": 36,
-      "home": "Tunisia",
-      "away": "Netherlands",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "F"
+      "status": "FT"
     },
     {
       "id": 37,
       "home": "Belgium",
       "away": "Egypt",
       "homeScore": 0,
-      "awayScore": 3,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "G"
+      "status": "FT"
     },
     {
       "id": 38,
       "home": "Iran",
       "away": "New Zealand",
-      "homeScore": 2,
-      "awayScore": 0,
+      "homeScore": 1,
+      "awayScore": 3,
       "completed": true,
-      "status": "FT",
-      "group": "G"
-    },
-    {
-      "id": 39,
-      "home": "Belgium",
-      "away": "Iran",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "G"
-    },
-    {
-      "id": 40,
-      "home": "New Zealand",
-      "away": "Egypt",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "G"
-    },
-    {
-      "id": 41,
-      "home": "Egypt",
-      "away": "Iran",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "G"
-    },
-    {
-      "id": 42,
-      "home": "New Zealand",
-      "away": "Belgium",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "G"
+      "status": "FT"
     },
     {
       "id": 43,
       "home": "Spain",
       "away": "Cape Verde",
-      "homeScore": 1,
-      "awayScore": 0,
+      "homeScore": 2,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "H"
+      "status": "FT"
     },
     {
       "id": 44,
       "home": "Saudi Arabia",
       "away": "Uruguay",
-      "homeScore": 0,
+      "homeScore": 2,
       "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "H"
-    },
-    {
-      "id": 45,
-      "home": "Spain",
-      "away": "Saudi Arabia",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "H"
-    },
-    {
-      "id": 46,
-      "home": "Uruguay",
-      "away": "Cape Verde",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "H"
-    },
-    {
-      "id": 47,
-      "home": "Cape Verde",
-      "away": "Saudi Arabia",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "H"
-    },
-    {
-      "id": 48,
-      "home": "Uruguay",
-      "away": "Spain",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "H"
+      "status": "FT"
     },
     {
       "id": 49,
       "home": "France",
       "away": "Senegal",
-      "homeScore": 1,
-      "awayScore": 1,
+      "homeScore": 0,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "I"
+      "status": "FT"
     },
     {
       "id": 50,
       "home": "Iraq",
       "away": "Norway",
       "homeScore": 0,
-      "awayScore": 0,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "I"
-    },
-    {
-      "id": 51,
-      "home": "France",
-      "away": "Iraq",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "I"
-    },
-    {
-      "id": 52,
-      "home": "Norway",
-      "away": "Senegal",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "I"
-    },
-    {
-      "id": 53,
-      "home": "Norway",
-      "away": "France",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "I"
-    },
-    {
-      "id": 54,
-      "home": "Senegal",
-      "away": "Iraq",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "I"
+      "status": "FT"
     },
     {
       "id": 55,
       "home": "Argentina",
       "away": "Algeria",
       "homeScore": 1,
-      "awayScore": 0,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "J"
+      "status": "FT"
     },
     {
       "id": 56,
       "home": "Austria",
       "away": "Jordan",
       "homeScore": 0,
-      "awayScore": 4,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "J"
-    },
-    {
-      "id": 57,
-      "home": "Argentina",
-      "away": "Austria",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "J"
-    },
-    {
-      "id": 58,
-      "home": "Jordan",
-      "away": "Algeria",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "J"
-    },
-    {
-      "id": 59,
-      "home": "Algeria",
-      "away": "Austria",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "J"
-    },
-    {
-      "id": 60,
-      "home": "Jordan",
-      "away": "Argentina",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "J"
+      "status": "FT"
     },
     {
       "id": 61,
       "home": "Portugal",
       "away": "DR Congo",
-      "homeScore": 2,
-      "awayScore": 0,
+      "homeScore": 1,
+      "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "K"
+      "status": "FT"
     },
     {
       "id": 62,
       "home": "Uzbekistan",
       "away": "Colombia",
-      "homeScore": 1,
+      "homeScore": 3,
       "awayScore": 2,
       "completed": true,
-      "status": "FT",
-      "group": "K"
-    },
-    {
-      "id": 63,
-      "home": "Portugal",
-      "away": "Uzbekistan",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "K"
-    },
-    {
-      "id": 64,
-      "home": "Colombia",
-      "away": "DR Congo",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "K"
-    },
-    {
-      "id": 65,
-      "home": "Colombia",
-      "away": "Portugal",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "K"
-    },
-    {
-      "id": 66,
-      "home": "DR Congo",
-      "away": "Uzbekistan",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "K"
+      "status": "FT"
     },
     {
       "id": 67,
       "home": "England",
       "away": "Croatia",
-      "homeScore": 0,
-      "awayScore": 3,
+      "homeScore": 3,
+      "awayScore": 1,
       "completed": true,
-      "status": "FT",
-      "group": "L"
+      "status": "FT"
     },
     {
       "id": 68,
       "home": "Ghana",
       "away": "Panama",
-      "homeScore": 1,
-      "awayScore": 1,
+      "homeScore": 2,
+      "awayScore": 0,
       "completed": true,
-      "status": "FT",
-      "group": "L"
-    },
-    {
-      "id": 69,
-      "home": "England",
-      "away": "Ghana",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "L"
-    },
-    {
-      "id": 70,
-      "home": "Panama",
-      "away": "Croatia",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "L"
-    },
-    {
-      "id": 71,
-      "home": "Panama",
-      "away": "England",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "L"
-    },
-    {
-      "id": 72,
-      "home": "Croatia",
-      "away": "Ghana",
-      "homeScore": null,
-      "awayScore": null,
-      "completed": false,
-      "status": "Scheduled",
-      "group": "L"
+      "status": "FT"
     }
   ],
-  "lastUpdated": "2026-06-20T11:22:04.177Z",
-  "source": "wc2026-live-engine",
-  "totalMatches": 72,
-  "simulated": true
+  "lastUpdated": "2026-06-20T12:43:37.056Z",
+  "source": "mock-scraper"
 }
