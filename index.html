@@ -1462,8 +1462,7 @@ function updateLiveHeader() {
     const lastUpdatedEl = document.getElementById('lastUpdated');
     const sourceEl = document.getElementById('dataSource');
     if (liveData.lastUpdated) {
-        lastUpdatedEl.textContent = `Last updated: ${new Date(liveData.lastUpdated).toLocaleString()}`;
-    }
+                lastUpdatedEl.textContent = `Last updated: ${formatLocalTime(m.date)}`;
     if (liveData.source) {
         sourceEl.textContent = `Source: ${liveData.source}`;
     }
@@ -1653,9 +1652,9 @@ function renderFixturesByDate() {
         ...appData.knockout.map(m => ({ ...m, type: 'knockout', label: m.isThirdPlace ? '3rd Place' : (m.stage === 'final' ? 'Final' : m.stage.replace('round','Round ').replace('quarter','Quarter').replace('semi','Semi')) }))
     ].sort((a,b) => new Date(a.date) - new Date(b.date));
     let html = `<div class="group-grid"><div class="group-box"><div class="group-title">📅 All Matches by Date</div>
-    <table class="match-table"><thead><tr><th>#</th><th>BST Time</th><th>Stage</th><th>Match</th><th>Score</th><th></th></tr></thead><tbody>`;
+    <table class="match-table"><thead><tr><th>#</th><th>Local Time</th><th>Stage</th><th>Match</th><th>Score</th><th></th></formatBSd><tbody>`;
     for (let m of allMatches) {
-        let timeStr = formatBST(m.date);
+        let timeStr = formatLocalTime(m.date);
         let scoreDisplay = m.completed ? `${m.score1} – ${m.score2}${m.penaltyWinner ? ` (P: ${m.penaltyWinner})` : ""}` : "–";
         let t1 = m.team1 || `<span class="slot-placeholder">${m.team1Slot}</span>`;
         let t2 = m.team2 || `<span class="slot-placeholder">${m.team2Slot}</span>`;
@@ -1676,8 +1675,14 @@ function renderFixturesByDate() {
 }
 
 // ==================== ORIGINAL FUNCTIONS ====================
-function formatBST(dateStr) {
-    return new Date(dateStr).toLocaleString("en-BD", { timeZone: "Asia/Dhaka", hour12: true, month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+function formatLocalTime(dateStr) {
+    return new Date(dateStr).toLocaleString(undefined, { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
 }
 
 function getGroupStandings() {
@@ -1808,9 +1813,9 @@ function renderGroupStage() {
     for (let grp of ["A","B","C","D","E","F","G","H","I","J","K","L"]) {
         let matches = appData.fixtures.filter(m => m.group === grp);
         html += `<div class="group-box"><div class="group-title">Group ${grp}</div>
-        <table class="match-table"><thead><tr><th>#</th><th>BST Time</th><th>Match</th><th>Score</th><th></th></tr></thead><tbody>`;
+        <table class="match-table"><thead><tr><th>#</th><th>Local Time</th><th>Match</th><th>Score</th><th></th></tr></thead><tbody>`;
         for (let m of matches) {
-            let timeStr = formatBST(m.date);
+            let timeStr = formatLocalTime(m.date);
             let scoreDisplay = (m.score1 !== null && m.score2 !== null) ? `${m.score1} – ${m.score2}` : `<span class="soon-badge">SOON</span>`;
             let btnHtml = "";
             if (m.completed && (matchDetails[m.id] || m.syncFinalized)) {
@@ -1893,7 +1898,7 @@ function renderKnockout() {
             let matchLabel = m.isThirdPlace ? "3rd Place" : (m.stage === "final" ? "Final" : `Match ${m.id}`);
             let detailBtn = m.completed ? `<button class="btn match-detail-btn" onclick="showMatchDetails(${m.id})">Details</button>` : "";
             html += `<div class="match-card ${m.completed ? "completed" : ""}">
-                <div style="width:100%;margin-bottom:0.3rem;font-size:0.85rem;color:var(--accent-secondary);"><b>${matchLabel}</b> · ${formatBST(m.date)} · ${m.venue}</div>
+                <div style="width:100%;margin-bottom:0.3rem;font-size:0.85rem;color:var(--accent-secondary);"><b>${matchLabel}</b> · ${formatLocalTime(m.date)} · ${m.venue}</div>
                 <div class="match-teams" style="width:100%;">
                     <div style="flex:1;text-align:right;padding-right:0.5rem;">
                         <span class="team-name" title="${t1Tooltip}" onclick="${m.team1 ? `showTeamDetails('${escapeJsString(m.team1)}')` : ''}">${t1Display}</span>${t1Edit}
@@ -2241,7 +2246,7 @@ function showMatchDetails(matchId) {
     if (!m) return;
     let html = `<h3>Match ${matchId} Details</h3>
     <p><strong>${teamsData[m.team1]?.flag||"🏴"} ${m.team1}</strong> ${m.score1 ?? "–"} – ${m.score2 ?? "–"} <strong>${teamsData[m.team2]?.flag||"🏴"} ${m.team2}</strong></p>
-    <p style="color:var(--text-secondary);font-size:0.85rem;">${formatBST(m.date)} · ${m.venue || m.group || m.stage}</p><hr>`;
+    <p style="color:var(--text-secondary);font-size:0.85rem;">${formatLocalTime(m.date)} · ${m.venue || m.group || m.stage}</p><hr>`;
     if (details && details.scorers && details.scorers.length > 0) {
         html += `<h4 style="color:var(--accent);margin-bottom:0.5rem;">⚽ Goal Scorers</h4><ul style="list-style:none;padding:0;">`;
         details.scorers.forEach(s => {
