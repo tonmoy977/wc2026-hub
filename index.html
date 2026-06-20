@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -97,6 +97,7 @@ body { background: var(--bg-primary); color: var(--text-primary); min-height: 10
 .empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
 .sync-btn.loading { opacity: 0.7; cursor: wait; }
 .soon-badge { background: var(--warning); color: #1e1e1e; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+.tz-badge { background: var(--accent-secondary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 0.5rem; }
 </style>
 <base target="_blank">
 </head>
@@ -137,6 +138,7 @@ body { background: var(--bg-primary); color: var(--text-primary); min-height: 10
                 <div>
                     <span class="live-last-updated" id="lastUpdated">Last updated: Never</span>
                     <span class="live-source" id="dataSource"></span>
+                    <span class="tz-badge" id="tzBadge">Detecting timezone...</span>
                 </div>
             </div>
             <div id="liveMatchesContainer"></div>
@@ -1239,6 +1241,37 @@ const STORAGE_SYNC_STATE = "fifa2026_sync_state";
 const STORAGE_TEAM_DATA = "fifa2026_team_data";
 const WC_END_DATE = new Date("2026-07-22T23:59:59Z");
 
+// ==================== USER TIMEZONE & GPS ====================
+let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+let userLocationName = userTimeZone;
+
+function detectUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log("GPS detected:", position.coords.latitude, position.coords.longitude);
+                userLocationName = "Your Local Time (" + userTimeZone + ")";
+                updateTimeDisplay();
+            },
+            (error) => {
+                console.log("GPS unavailable, using browser timezone:", userTimeZone);
+                userLocationName = userTimeZone;
+                updateTimeDisplay();
+            },
+            { timeout: 10000, enableHighAccuracy: false }
+        );
+    } else {
+        updateTimeDisplay();
+    }
+}
+
+function updateTimeDisplay() {
+    const tzBadge = document.getElementById('tzBadge');
+    if (tzBadge) {
+        tzBadge.textContent = userLocationName;
+    }
+}
+
 const defaultFixtures = allFixtures.map(f => ({ ...f, score1: null, score2: null, completed: false, syncFinalized: false }));
 const defaultKnockout = knockoutSlots.map(s => ({ ...s, team1: null, team2: null, score1: null, score2: null, completed: false, penaltyWinner: null, syncFinalized: false }));
 
@@ -1509,7 +1542,9 @@ function updateLiveHeader() {
         lastUpdatedEl.textContent = `Last updated: ${formatLocalTime(liveData.lastUpdated)}`;
     }
     if (liveData.source) {
-        sourceEl.textContent = `Source: ${liveData.source}`;
+        sourceEl.textContent = `${liveData.source} · ${userLocationName}`;
+    } else {
+        sourceEl.textContent = `Source: ${userLocationName}`;
     }
 }
 
@@ -1721,28 +1756,24 @@ function renderFixturesByDate() {
     document.getElementById("dateGrid").innerHTML = html;
 }
 
-// ==================== ORIGINAL FUNCTIONS ====================
+// ==================== USER LOCAL TIME (GPS/BROWSER TIMEZONE) ====================
 function formatLocalTime(dateStr, venue) {
+    // Convert match UTC time to USER's local timezone (detected via browser/GPS)
     const options = { 
         month: 'short', 
         day: 'numeric', 
         hour: '2-digit', 
         minute: '2-digit',
-        hour12: true 
+        hour12: true,
+        timeZone: userTimeZone
     };
-    if (venue && VENUE_TIMEZONES[venue]) {
-        options.timeZone = VENUE_TIMEZONES[venue];
-    }
     const date = new Date(dateStr);
     const timeStr = date.toLocaleString(undefined, options);
-    if (venue && VENUE_TIMEZONES[venue]) {
-        const tzAbbr = date.toLocaleString('en-US', {
-            timeZone: VENUE_TIMEZONES[venue],
-            timeZoneName: 'short'
-        }).split(',').pop().trim();
-        return `${timeStr} ${tzAbbr}`;
-    }
-    return timeStr;
+    const tzAbbr = date.toLocaleString('en-US', {
+        timeZone: userTimeZone,
+        timeZoneName: 'short'
+    }).split(',').pop().trim();
+    return `${timeStr} ${tzAbbr}`;
 }
 
 function getGroupStandings() {
@@ -2347,7 +2378,6 @@ function isMatchOngoing(fixture) {
 
 function startBackgroundSync() {
     if (bgSyncInterval) clearInterval(bgSyncInterval);
-    // Client-side: fetch every 60 seconds when online
     bgSyncInterval = setInterval(() => {
         if (!navigator.onLine || manualHelperActive) return;
         fetchOnlineResults(true);
@@ -2362,8 +2392,14 @@ function stopBackgroundSync() {
 document.getElementById("resetBtn").addEventListener("click", resetAllData);
 loadManualHelperState();
 loadData();
+detectUserLocation();
 initPullToRefresh();
-if (!manualHelperActive) startBackgroundSync();
+if (!manualHelperActive) {
+    startBackgroundSync();
+    if (navigator.onLine) {
+        fetchOnlineResults(true);
+    }
+}
 firstRenderDone = true;
 </script>
 </body>
