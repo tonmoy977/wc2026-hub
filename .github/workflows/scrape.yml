@@ -7,7 +7,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -27,6 +27,10 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies (if package.json exists)
+        run: |
+          if [ -f package.json ]; then npm ci; fi
+
       - name: Generate results
         run: node scraper.js
 
@@ -34,15 +38,11 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull origin ${{ github.ref_name }} --rebase || true
           git add data/live.json
           if git diff --staged --quiet; then
             echo "No changes."
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
-            for i in 1 2 3; do
-              git push origin ${{ github.ref_name }} && break
-              sleep 2
-              git pull origin ${{ github.ref_name }} --rebase || true
-            done
+            git pull origin ${{ github.ref_name }} --rebase
+            git push origin ${{ github.ref_name }}
           fi
