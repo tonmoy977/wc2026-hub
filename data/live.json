@@ -274,7 +274,7 @@
       "id": 27,
       "home": "Germany",
       "away": "Ivory Coast",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 1,
       "status": "LIVE",
       "completed": false
@@ -595,7 +595,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-20T20:55:20.299Z",
+  "lastUpdated": "2026-06-20T22:00:30.101Z",
   "source": "Football-Data",
   "sourceCount": 1,
   "sourcesUsed": [
