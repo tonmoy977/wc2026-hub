@@ -27,9 +27,17 @@ jobs:
         with:
           node-version: 20
 
+      - name: Verify scraper exists
+        run: |
+          if [ ! -f scrape.js ]; then
+            echo "ERROR: scrape.js not found at repo root"
+            echo "Contents of repo root:"
+            ls -la
+            exit 1
+          fi
+
       - name: Generate results
         env:
-          DEMO_MODE: ${{ secrets.DEMO_MODE }}
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node scrape.js
 
