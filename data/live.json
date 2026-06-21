@@ -19,15 +19,6 @@
       "completed": true
     },
     {
-      "id": 7,
-      "home": "Canada",
-      "away": "Bosnia",
-      "homeScore": 1,
-      "awayScore": 1,
-      "status": "FT",
-      "completed": true
-    },
-    {
       "id": 19,
       "home": "United States",
       "away": "Paraguay",
@@ -42,24 +33,6 @@
       "away": "Switzerland",
       "homeScore": 1,
       "awayScore": 1,
-      "status": "FT",
-      "completed": true
-    },
-        {
-      "id": 9,
-      "home": "Switzerland",
-      "away": "Bosnia",
-      "homeScore": 4,
-      "awayScore": 1,
-      "status": "FT",
-      "completed": true
-    },
-        {
-      "id": 43,
-      "home": "Spain",
-      "away": "Cape Verde",
-      "homeScore": 0,
-      "awayScore": 0,
       "status": "FT",
       "completed": true
     },
@@ -622,7 +595,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T01:40:42.156Z",
+  "lastUpdated": "2026-06-21T01:49:02.031Z",
   "source": "Football-Data",
   "sourceCount": 1,
   "sourcesUsed": [
