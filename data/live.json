@@ -382,8 +382,8 @@
       "away": "Iran",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 40,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T20:49:24.775Z",
+  "lastUpdated": "2026-06-21T22:04:25.159Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 37,
+  "finalizedCount": 38,
   "permanentOverrides": 36
 }
