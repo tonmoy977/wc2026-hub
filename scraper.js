@@ -8,6 +8,76 @@ const https = require('https');
 // ============================================================
 
 const DEMO_MODE = process.env.DEMO_MODE === 'true';
+
+// ============================================================
+//  PERMANENT MANUAL OVERRIDES - Hardcoded, never overwritten
+// ============================================================
+const PERMANENT_OVERRIDES = {
+  7:  { homeScore: 1, awayScore: 1, status: 'FT', completed: true, note: 'Canada 1-1 Bosnia' },
+  9:  { homeScore: 4, awayScore: 1, status: 'FT', completed: true, note: 'Switzerland 4-1 Bosnia' },
+  43: { homeScore: 0, awayScore: 0, status: 'FT', completed: true, note: 'Spain 0-0 Cape Verde' }
+};
+
+// ============================================================
+//  LOAD EXISTING live.json to protect finalized matches
+// ============================================================
+function loadExistingLiveData() {
+  const livePath = path.join(__dirname, 'data', 'live.json');
+  if (!fs.existsSync(livePath)) return { games: [] };
+  try {
+    return JSON.parse(fs.readFileSync(livePath, 'utf8'));
+  } catch (e) {
+    console.log('[WARN] Could not parse existing live.json, starting fresh');
+    return { games: [] };
+  }
+}
+
+// ============================================================
+//  MERGE: Protect finalized, apply permanent overrides
+// ============================================================
+function mergeWithProtection(existingGames, newGames) {
+  const resultMap = new Map();
+
+  // First: preserve existing finalized/permanent matches
+  for (const g of existingGames || []) {
+    if (g.completed === true || g.permanent === true) {
+      resultMap.set(g.id, g);
+      console.log(`[PROTECT] Match ${g.id} finalized (${g.homeScore}-${g.awayScore}). Preserving.`);
+    }
+  }
+
+  // Second: add new games, skip if already protected
+  for (const newGame of newGames || []) {
+    if (resultMap.has(newGame.id)) {
+      console.log(`[SKIP] Match ${newGame.id} already finalized, ignoring new data.`);
+      continue;
+    }
+    resultMap.set(newGame.id, newGame);
+    console.log(`[UPDATE] Match ${newGame.id}: ${newGame.home} ${newGame.homeScore ?? '?'} - ${newGame.awayScore ?? '?'} ${newGame.away}`);
+  }
+
+  // Third: apply PERMANENT OVERRIDES (absolute priority)
+  for (const [idStr, override] of Object.entries(PERMANENT_OVERRIDES)) {
+    const id = parseInt(idStr);
+    const fixture = FIXTURES.find(f => f.id === id);
+    if (fixture) {
+      resultMap.set(id, {
+        id: id,
+        home: fixture.team1,
+        away: fixture.team2,
+        homeScore: override.homeScore,
+        awayScore: override.awayScore,
+        status: override.status,
+        completed: override.completed,
+        permanent: true,
+        overrideNote: override.note
+      });
+      console.log(`[PERMANENT] Match ${id} LOCKED: ${fixture.team1} ${override.homeScore}-${override.awayScore} ${fixture.team2}`);
+    }
+  }
+
+  return Array.from(resultMap.values()).sort((a, b) => a.id - b.id);
+}
 const WC_START = '20260611';
 const WC_END   = '20260720';
 
@@ -112,25 +182,41 @@ function pseudoRandom(seed, offset) {
   return x - Math.floor(x);
 }
 
-function generateDemoData() {
+function generateDemoData(existingData) {
   const now = new Date();
-  const games = [];
+  const newGames = [];
   for (const f of FIXTURES) {
+    // Skip if has permanent override (applied later in merge)
+    if (PERMANENT_OVERRIDES[f.id]) continue;
+
     const matchDate = new Date(f.date);
     const matchEnd = new Date(matchDate.getTime() + 3 * 60 * 60 * 1000);
-    if (now < matchDate) continue;
+
+    // Check if already finalized in existing data
+    const existing = (existingData?.games || []).find(g => g.id === f.id);
+    if (existing && existing.completed === true) {
+      console.log(`[DEMO-PROTECT] Match ${f.id} already finalized. Keeping existing.`);
+      continue;
+    }
+
+    if (now < matchDate) continue; // Match hasn't started yet
+
     const seed = f.id * 1337;
     const hs = Math.floor(pseudoRandom(seed, 1) * 5);
     const as = Math.floor(pseudoRandom(seed, 2) * 4);
-    games.push({
+    newGames.push({
       id: f.id, home: f.team1, away: f.team2,
       homeScore: hs, awayScore: as,
       status: now > matchEnd ? 'FT' : 'LIVE', completed: now > matchEnd
     });
   }
+  // Merge with protection (preserves finalized + applies permanent overrides)
+  const merged = mergeWithProtection(existingData?.games || [], newGames);
   return {
-    games, lastUpdated: new Date().toISOString(),
-    source: 'DEMO_MODE', demo: true, sourceCount: 0, sourcesUsed: []
+    games: merged, lastUpdated: new Date().toISOString(),
+    source: 'DEMO_MODE', demo: true, sourceCount: 0, sourcesUsed: [],
+    finalizedCount: merged.filter(g => g.completed).length,
+    permanentOverrides: Object.keys(PERMANENT_OVERRIDES).length
   };
 }
 
@@ -207,33 +293,40 @@ async function fetchFootballData() {
 async function main() {
   let output;
 
+  // Load existing data to protect finalized matches
+  const existingData = loadExistingLiveData();
+  const existingFinalized = (existingData?.games || []).filter(g => g.completed).length;
+  console.log(`[LOAD] Existing live.json: ${existingData?.games?.length || 0} matches, ${existingFinalized} finalized`);
+
   if (DEMO_MODE) {
     console.log('⚠️ DEMO_MODE enabled');
-    output = generateDemoData();
+    output = generateDemoData(existingData);
   } else {
     // Try all sources in parallel
     const [espn, fd] = await Promise.all([fetchEspn(), fetchFootballData()]);
     const results = [espn, fd].filter(r => r.games.length > 0);
 
     if (results.length === 0) {
-      console.log('[WARN] No real data. Writing empty file.');
+      console.log('[WARN] No real data from APIs. Preserving existing finalized matches.');
+      // Preserve existing + apply permanent overrides
+      const preserved = mergeWithProtection(existingData?.games || [], []);
       output = {
-        games: [], lastUpdated: new Date().toISOString(),
-        source: 'No live data', sourceCount: 0, sourcesUsed: [],
-        message: 'No matches found. Set DEMO_MODE=true for demo data.'
-      };
-    } else if (results.length === 1) {
-      output = {
-        games: results[0].games, lastUpdated: new Date().toISOString(),
-        source: results[0].source, sourceCount: 1, sourcesUsed: [results[0].source]
+        games: preserved, lastUpdated: new Date().toISOString(),
+        source: 'No live data - preserved existing', sourceCount: 0, sourcesUsed: [],
+        finalizedCount: preserved.filter(g => g.completed).length,
+        permanentOverrides: Object.keys(PERMANENT_OVERRIDES).length,
+        message: 'No new matches from APIs. Existing finalized matches preserved.'
       };
     } else {
-      // Simple merge: use the source with more matches
+      // Merge: protect finalized + apply permanent overrides
       const best = results.reduce((a, b) => a.games.length > b.games.length ? a : b);
+      const merged = mergeWithProtection(existingData?.games || [], best.games);
       output = {
-        games: best.games, lastUpdated: new Date().toISOString(),
+        games: merged, lastUpdated: new Date().toISOString(),
         source: `Merged (${results.map(r => r.source).join('+')})`,
-        sourceCount: results.length, sourcesUsed: results.map(r => r.source)
+        sourceCount: results.length, sourcesUsed: results.map(r => r.source),
+        finalizedCount: merged.filter(g => g.completed).length,
+        permanentOverrides: Object.keys(PERMANENT_OVERRIDES).length
       };
     }
   }
@@ -241,16 +334,24 @@ async function main() {
   const outDir = path.join(__dirname, 'data');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'live.json'), JSON.stringify(output, null, 2));
+  const finalFinalized = output.games.filter(g => g.completed).length;
+  const permanentCount = output.games.filter(g => g.permanent).length;
   console.log(`✅ Written ${output.games.length} games to data/live.json`);
+  console.log(`   - ${finalFinalized} finalized (protected from future overwrites)`);
+  console.log(`   - ${permanentCount} permanent manual overrides`);
 }
 
 main().catch(err => {
   console.error('Fatal error:', err);
-  // NEVER crash - write fallback
+  // NEVER crash - preserve existing + apply permanent overrides
+  const existingData = loadExistingLiveData();
+  const preserved = mergeWithProtection(existingData?.games || [], []);
   const outDir = path.join(__dirname, 'data');
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'live.json'), JSON.stringify({
-    games: [], lastUpdated: new Date().toISOString(),
-    source: 'Error fallback', error: err.message
+    games: preserved, lastUpdated: new Date().toISOString(),
+    source: 'Error fallback - existing preserved', error: err.message,
+    finalizedCount: preserved.filter(g => g.completed).length,
+    permanentOverrides: Object.keys(PERMANENT_OVERRIDES).length
   }, null, 2));
 });
