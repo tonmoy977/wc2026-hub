@@ -296,9 +296,9 @@
       "id": 34,
       "home": "Tunisia",
       "away": "Japan",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 4,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -628,7 +628,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T03:31:36.648Z",
+  "lastUpdated": "2026-06-21T05:50:45.391Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
