@@ -7,7 +7,9 @@
       "homeScore": 2,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Mexico 2-0 South Africa"
     },
     {
       "id": 2,
@@ -16,7 +18,9 @@
       "homeScore": 2,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "South Korea 2-1 Czechia"
     },
     {
       "id": 3,
@@ -25,7 +29,9 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Czechia 1-1 South Africa"
     },
     {
       "id": 4,
@@ -34,7 +40,9 @@
       "homeScore": 1,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Mexico 1-0 South Korea"
     },
     {
       "id": 5,
@@ -72,7 +80,9 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Switzerland 1-1 Qatar"
     },
     {
       "id": 9,
@@ -92,7 +102,9 @@
       "homeScore": 6,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Canada 6-0 Qatar"
     },
     {
       "id": 11,
@@ -110,16 +122,20 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Brazil 1-1 Morocco"
     },
     {
       "id": 14,
       "home": "Haiti",
       "away": "Scotland",
-      "homeScore": 0,
-      "awayScore": 1,
+      "homeScore": 1,
+      "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Scotland 1-0 Haiti"
     },
     {
       "id": 15,
@@ -128,7 +144,9 @@
       "homeScore": 0,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Scotland 0-1 Morocco"
     },
     {
       "id": 16,
@@ -137,7 +155,9 @@
       "homeScore": 3,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Brazil 3-0 Haiti"
     },
     {
       "id": 17,
@@ -159,39 +179,47 @@
     },
     {
       "id": 19,
-      "home": "United States",
+      "home": "USA",
       "away": "Paraguay",
       "homeScore": 4,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "USA 4-1 Paraguay"
     },
     {
       "id": 20,
       "home": "Australia",
-      "away": "Turkey",
+      "away": "Turkiye",
       "homeScore": 2,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Australia 2-0 Turkiye"
     },
     {
       "id": 21,
-      "home": "United States",
+      "home": "USA",
       "away": "Australia",
       "homeScore": 2,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "USA 2-0 Australia"
     },
     {
       "id": 22,
-      "home": "Turkey",
+      "home": "Turkiye",
       "away": "Paraguay",
       "homeScore": 0,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Turkiye 0-1 Paraguay"
     },
     {
       "id": 23,
@@ -214,11 +242,13 @@
     {
       "id": 25,
       "home": "Germany",
-      "away": "Curaçao",
+      "away": "Curacao",
       "homeScore": 7,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Germany 7-1 Curacao"
     },
     {
       "id": 26,
@@ -227,7 +257,9 @@
       "homeScore": 1,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Ivory Coast 1-0 Ecuador"
     },
     {
       "id": 27,
@@ -236,25 +268,20 @@
       "homeScore": 2,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Germany 2-1 Ivory Coast"
     },
     {
       "id": 28,
       "home": "Ecuador",
-      "away": "Curaçao",
+      "away": "Curacao",
       "homeScore": 0,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
-    },
-    {
-      "id": 29,
-      "home": "Curaçao",
-      "away": "Ivory Coast",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Ecuador 0-0 Curacao"
     },
     {
       "id": 30,
@@ -272,7 +299,9 @@
       "homeScore": 2,
       "awayScore": 2,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Netherlands 2-2 Japan"
     },
     {
       "id": 32,
@@ -281,7 +310,9 @@
       "homeScore": 5,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Sweden 5-1 Tunisia"
     },
     {
       "id": 33,
@@ -290,16 +321,20 @@
       "homeScore": 5,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Netherlands 5-1 Sweden"
     },
     {
       "id": 34,
       "home": "Tunisia",
       "away": "Japan",
-      "homeScore": 0,
-      "awayScore": 4,
+      "homeScore": 4,
+      "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Japan 4-0 Tunisia"
     },
     {
       "id": 35,
@@ -326,7 +361,9 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Belgium 1-1 Egypt"
     },
     {
       "id": 38,
@@ -335,7 +372,9 @@
       "homeScore": 2,
       "awayScore": 2,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Iran 2-2 New Zealand"
     },
     {
       "id": 39,
@@ -391,7 +430,9 @@
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Saudi Arabia 1-1 Uruguay"
     },
     {
       "id": 45,
@@ -418,16 +459,20 @@
       "homeScore": 3,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "France 3-1 Senegal"
     },
     {
       "id": 50,
       "home": "Iraq",
       "away": "Norway",
-      "homeScore": 1,
-      "awayScore": 4,
+      "homeScore": 4,
+      "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Norway 4-1 Iraq"
     },
     {
       "id": 51,
@@ -472,7 +517,9 @@
       "homeScore": 3,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Argentina 3-0 Algeria"
     },
     {
       "id": 56,
@@ -481,7 +528,9 @@
       "homeScore": 3,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Austria 3-1 Jordan"
     },
     {
       "id": 57,
@@ -522,11 +571,13 @@
     {
       "id": 61,
       "home": "Portugal",
-      "away": "Congo DR",
+      "away": "DR Congo",
       "homeScore": 1,
       "awayScore": 1,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Portugal 1-1 DR Congo"
     },
     {
       "id": 62,
@@ -535,7 +586,9 @@
       "homeScore": 1,
       "awayScore": 3,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Uzbekistan 1-3 Colombia"
     },
     {
       "id": 63,
@@ -580,7 +633,9 @@
       "homeScore": 4,
       "awayScore": 2,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "England 4-2 Croatia"
     },
     {
       "id": 68,
@@ -589,7 +644,9 @@
       "homeScore": 1,
       "awayScore": 0,
       "status": "FT",
-      "completed": true
+      "completed": true,
+      "permanent": true,
+      "overrideNote": "Ghana 1-0 Panama"
     },
     {
       "id": 69,
@@ -628,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T10:10:50.079Z",
+  "lastUpdated": "2026-06-21T10:44:47.369Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
   "finalizedCount": 36,
-  "permanentOverrides": 3
+  "permanentOverrides": 36
 }
