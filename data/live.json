@@ -438,7 +438,7 @@
       "id": 45,
       "home": "Spain",
       "away": "Saudi Arabia",
-      "homeScore": 0,
+      "homeScore": 4,
       "awayScore": 0,
       "status": "LIVE",
       "completed": false
@@ -685,7 +685,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T16:17:42.423Z",
+  "lastUpdated": "2026-06-21T17:55:54.799Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
