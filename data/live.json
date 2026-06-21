@@ -298,8 +298,8 @@
       "away": "Japan",
       "homeScore": 0,
       "awayScore": 4,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 35,
@@ -628,12 +628,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-21T05:50:45.391Z",
+  "lastUpdated": "2026-06-21T06:30:54.077Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 35,
+  "finalizedCount": 36,
   "permanentOverrides": 3
 }
