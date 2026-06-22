@@ -3342,18 +3342,67 @@
             }
         }
 
-        // ================================================================
-        //  INIT
-        // ================================================================
-        loadManualHelperState();
-        loadData();
-        detectLocation();
-        initPullToRefresh();
-        if (!manualHelperActive) {
-            startBackgroundSync();
-            if (navigator.onLine) fetchOnlineResults(true);
+       // ================================================================
+//  INIT
+// ================================================================
+loadManualHelperState();
+loadData();
+
+// FIX: Sync UI with internal state - force reset if inconsistent
+const savedHelper = localStorage.getItem(STORAGE_HELPER);
+if (savedHelper) {
+    try {
+        const obj = JSON.parse(savedHelper);
+        // If localStorage says manual but UI shows auto, clear corrupted state
+        if (obj.active === true) {
+            localStorage.removeItem(STORAGE_HELPER);
+            manualHelperActive = false;
+            manualOverrides = {};
+            // Reload auto data from storage
+            const ag = localStorage.getItem(STORAGE_AUTO_GROUP);
+            const ak = localStorage.getItem(STORAGE_AUTO_KO);
+            appData.fixtures = ag ? JSON.parse(ag) : JSON.parse(JSON.stringify(defaultFixtures));
+            appData.knockout = ak ? JSON.parse(ak) : JSON.parse(JSON.stringify(defaultKnockout));
         }
-        renderLiveMatches();
+    } catch (e) {}
+}
+
+// Ensure UI matches corrected state
+if (manualHelperActive) {
+    document.body.classList.add("manual-mode");
+    document.getElementById("btnAutoMode").classList.remove("active");
+    document.getElementById("btnManualMode").classList.add("active");
+    document.getElementById("syncBtn").style.display = "none";
+    document.getElementById("resetBtn").classList.remove("hidden");
+} else {
+    document.body.classList.remove("manual-mode");
+    document.getElementById("btnAutoMode").classList.add("active");
+    document.getElementById("btnManualMode").classList.remove("active");
+    document.getElementById("syncBtn").style.display = "inline-block";
+    document.getElementById("resetBtn").classList.add("hidden");
+}
+
+applyPermanentOverrides();
+detectLocation();
+initPullToRefresh();
+
+// Auto-sync and render
+async function initApp() {
+    if (!manualHelperActive && navigator.onLine) {
+        await fetchOnlineResults(true);
+    }
+    renderGroupStage();
+    renderStandings();
+    renderLiveMatches();
+    updateKnockoutSlots();
+    if (document.getElementById("knockoutView").classList.contains("active")) renderKnockout();
+    if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
+    if (document.getElementById("dateView").classList.contains("active")) renderFixturesByDate();
+}
+
+initApp();
+if (!manualHelperActive) startBackgroundSync();
+ 
     </script>
 </body>
 </html>
