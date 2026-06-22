@@ -32,7 +32,8 @@ jobs:
       - name: Verify scraper exists
         run: |
           if [ ! -f scrape.js ]; then
-            echo "ERROR: scrape.js not found"
+            echo "ERROR: scrape.js not found at repo root"
+            echo "Contents of repo root:"
             ls -la
             exit 1
           fi
@@ -40,12 +41,12 @@ jobs:
       - name: Ensure data directory exists
         run: mkdir -p data
 
-      - name: Debug secret
+      - name: Check secret presence
         run: |
           if [ -z "$FOOTBALL_DATA_KEY" ]; then
-            echo "⚠️ WARNING: FOOTBALL_DATA_KEY is not set. Only ESPN will be used."
+            echo "WARNING: FOOTBALL_DATA_KEY is not set. Only ESPN will be used."
           else
-            echo "✅ FOOTBALL_DATA_KEY is configured"
+            echo "OK: FOOTBALL_DATA_KEY is configured (length: ${#FOOTBALL_DATA_KEY})"
           fi
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
@@ -55,13 +56,13 @@ jobs:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node scrape.js
 
-      - name: Check output
+      - name: Verify output
         run: |
           if [ -f data/live.json ]; then
-            echo "✅ live.json created"
-            cat data/live.json | head -20
+            echo "OK: live.json created"
+            cat data/live.json | head -30
           else
-            echo "❌ live.json NOT created"
+            echo "ERROR: live.json was not created"
             exit 1
           fi
 
@@ -75,5 +76,5 @@ jobs:
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
             git pull --rebase --autostash origin ${{ github.ref_name }} || true
-            git push origin HEAD:${{ github.ref_name }}
+            git push origin ${{ github.ref_name }}
           fi
