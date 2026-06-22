@@ -1,0 +1,5 @@
+# Ignore absolutely everything on the local device
+*
+
+# Do not ignore the gitignore file itself
+!.gitignore
