@@ -9,23 +9,16 @@
 !.gitignore
 !index.html
 !scrape.js
-!live.json
 !data/
-!data/*
+!data/live.json
 !.github/
 !.github/workflows/
 !.github/workflows/*.yml
 
 # ============================================
 # PROTECTION: Lock critical files
-# These can ONLY be edited manually on GitHub desktop
 # ============================================
-
-# Protect index.html from accidental edits
-# To modify: you must intentionally edit on GitHub desktop or local git
 index.html merge=ours
-
-# Protect scrape.js logic
 scrape.js merge=ours
 
 # ============================================
