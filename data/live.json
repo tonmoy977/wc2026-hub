@@ -11,8 +11,7 @@
       "permanent": true,
       "stage": "group",
       "group": "A",
-      "date": "2026-06-11T19:00:00Z",
-      "venue": "Mexico City"
+      "overrideNote": "Mexico 2-0 South Africa"
     },
     {
       "id": 2,
@@ -25,8 +24,7 @@
       "permanent": true,
       "stage": "group",
       "group": "A",
-      "date": "2026-06-12T02:00:00Z",
-      "venue": "Zapopan"
+      "overrideNote": "South Korea 2-1 Czechia"
     },
     {
       "id": 3,
@@ -39,8 +37,7 @@
       "permanent": true,
       "stage": "group",
       "group": "A",
-      "date": "2026-06-18T16:00:00Z",
-      "venue": "Atlanta"
+      "overrideNote": "Czechia 1-1 South Africa"
     },
     {
       "id": 4,
@@ -53,8 +50,7 @@
       "permanent": true,
       "stage": "group",
       "group": "A",
-      "date": "2026-06-19T01:00:00Z",
-      "venue": "Zapopan"
+      "overrideNote": "Mexico 1-0 South Korea"
     },
     {
       "id": 5,
@@ -93,8 +89,7 @@
       "permanent": true,
       "stage": "group",
       "group": "B",
-      "date": "2026-06-12T19:00:00Z",
-      "venue": "Toronto"
+      "overrideNote": "Canada 1-1 Bosnia"
     },
     {
       "id": 8,
@@ -107,8 +102,7 @@
       "permanent": true,
       "stage": "group",
       "group": "B",
-      "date": "2026-06-13T19:00:00Z",
-      "venue": "San Francisco"
+      "overrideNote": "Switzerland 1-1 Qatar"
     },
     {
       "id": 9,
@@ -121,8 +115,7 @@
       "permanent": true,
       "stage": "group",
       "group": "B",
-      "date": "2026-06-18T19:00:00Z",
-      "venue": "Los Angeles"
+      "overrideNote": "Switzerland 4-1 Bosnia"
     },
     {
       "id": 10,
@@ -135,8 +128,7 @@
       "permanent": true,
       "stage": "group",
       "group": "B",
-      "date": "2026-06-19T22:00:00Z",
-      "venue": "Vancouver"
+      "overrideNote": "Canada 6-0 Qatar"
     },
     {
       "id": 11,
@@ -152,19 +144,6 @@
       "venue": "Vancouver"
     },
     {
-      "id": 12,
-      "home": "Bosnia",
-      "away": "Qatar",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false,
-      "stage": "group",
-      "group": "B",
-      "date": "2026-06-24T19:00:00Z",
-      "venue": "Seattle"
-    },
-    {
       "id": 13,
       "home": "Brazil",
       "away": "Morocco",
@@ -175,8 +154,7 @@
       "permanent": true,
       "stage": "group",
       "group": "C",
-      "date": "2026-06-13T22:00:00Z",
-      "venue": "New Jersey"
+      "overrideNote": "Brazil 1-1 Morocco"
     },
     {
       "id": 14,
@@ -189,8 +167,7 @@
       "permanent": true,
       "stage": "group",
       "group": "C",
-      "date": "2026-06-14T01:00:00Z",
-      "venue": "Boston"
+      "overrideNote": "Scotland 1-0 Haiti"
     },
     {
       "id": 15,
@@ -203,8 +180,7 @@
       "permanent": true,
       "stage": "group",
       "group": "C",
-      "date": "2026-06-19T22:00:00Z",
-      "venue": "Boston"
+      "overrideNote": "Scotland 0-1 Morocco"
     },
     {
       "id": 16,
@@ -217,8 +193,7 @@
       "permanent": true,
       "stage": "group",
       "group": "C",
-      "date": "2026-06-20T00:30:00Z",
-      "venue": "Philadelphia"
+      "overrideNote": "Brazil 3-0 Haiti"
     },
     {
       "id": 17,
@@ -257,13 +232,12 @@
       "permanent": true,
       "stage": "group",
       "group": "D",
-      "date": "2026-06-13T01:00:00Z",
-      "venue": "Los Angeles"
+      "overrideNote": "USA 4-1 Paraguay"
     },
     {
       "id": 20,
       "home": "Australia",
-      "away": "Türkiye",
+      "away": "Turkiye",
       "homeScore": 2,
       "awayScore": 0,
       "status": "FT",
@@ -271,8 +245,7 @@
       "permanent": true,
       "stage": "group",
       "group": "D",
-      "date": "2026-06-14T04:00:00Z",
-      "venue": "Vancouver"
+      "overrideNote": "Australia 2-0 Turkiye"
     },
     {
       "id": 21,
@@ -285,12 +258,11 @@
       "permanent": true,
       "stage": "group",
       "group": "D",
-      "date": "2026-06-19T19:00:00Z",
-      "venue": "Seattle"
+      "overrideNote": "USA 2-0 Australia"
     },
     {
       "id": 22,
-      "home": "Türkiye",
+      "home": "Turkiye",
       "away": "Paraguay",
       "homeScore": 0,
       "awayScore": 1,
@@ -299,13 +271,12 @@
       "permanent": true,
       "stage": "group",
       "group": "D",
-      "date": "2026-06-20T03:00:00Z",
-      "venue": "San Francisco"
+      "overrideNote": "Turkiye 0-1 Paraguay"
     },
     {
       "id": 23,
-      "home": "Türkiye",
-      "away": "USA",
+      "home": "Turkey",
+      "away": "United States",
       "homeScore": null,
       "awayScore": null,
       "status": "Scheduled",
@@ -331,7 +302,7 @@
     {
       "id": 25,
       "home": "Germany",
-      "away": "Curaçao",
+      "away": "Curacao",
       "homeScore": 7,
       "awayScore": 1,
       "status": "FT",
@@ -339,8 +310,7 @@
       "permanent": true,
       "stage": "group",
       "group": "E",
-      "date": "2026-06-14T17:00:00Z",
-      "venue": "Houston"
+      "overrideNote": "Germany 7-1 Curacao"
     },
     {
       "id": 26,
@@ -353,8 +323,7 @@
       "permanent": true,
       "stage": "group",
       "group": "E",
-      "date": "2026-06-14T23:00:00Z",
-      "venue": "Philadelphia"
+      "overrideNote": "Ivory Coast 1-0 Ecuador"
     },
     {
       "id": 27,
@@ -367,13 +336,12 @@
       "permanent": true,
       "stage": "group",
       "group": "E",
-      "date": "2026-06-20T20:00:00Z",
-      "venue": "Toronto"
+      "overrideNote": "Germany 2-1 Ivory Coast"
     },
     {
       "id": 28,
       "home": "Ecuador",
-      "away": "Curaçao",
+      "away": "Curacao",
       "homeScore": 0,
       "awayScore": 0,
       "status": "FT",
@@ -381,21 +349,7 @@
       "permanent": true,
       "stage": "group",
       "group": "E",
-      "date": "2026-06-21T00:00:00Z",
-      "venue": "Kansas City"
-    },
-    {
-      "id": 29,
-      "home": "Curaçao",
-      "away": "Ivory Coast",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false,
-      "stage": "group",
-      "group": "E",
-      "date": "2026-06-25T20:00:00Z",
-      "venue": "Philadelphia"
+      "overrideNote": "Ecuador 0-0 Curacao"
     },
     {
       "id": 30,
@@ -421,8 +375,7 @@
       "permanent": true,
       "stage": "group",
       "group": "F",
-      "date": "2026-06-13T20:00:00Z",
-      "venue": "Dallas"
+      "overrideNote": "Netherlands 2-2 Japan"
     },
     {
       "id": 32,
@@ -435,8 +388,7 @@
       "permanent": true,
       "stage": "group",
       "group": "F",
-      "date": "2026-06-14T02:00:00Z",
-      "venue": "Monterrey"
+      "overrideNote": "Sweden 5-1 Tunisia"
     },
     {
       "id": 33,
@@ -449,8 +401,7 @@
       "permanent": true,
       "stage": "group",
       "group": "F",
-      "date": "2026-06-20T17:00:00Z",
-      "venue": "Houston"
+      "overrideNote": "Netherlands 5-1 Sweden"
     },
     {
       "id": 34,
@@ -463,8 +414,7 @@
       "permanent": true,
       "stage": "group",
       "group": "F",
-      "date": "2026-06-21T04:00:00Z",
-      "venue": "Monterrey"
+      "overrideNote": "Japan 4-0 Tunisia"
     },
     {
       "id": 35,
@@ -503,8 +453,7 @@
       "permanent": true,
       "stage": "group",
       "group": "G",
-      "date": "2026-06-14T19:00:00Z",
-      "venue": "Seattle"
+      "overrideNote": "Belgium 1-1 Egypt"
     },
     {
       "id": 38,
@@ -517,8 +466,7 @@
       "permanent": true,
       "stage": "group",
       "group": "G",
-      "date": "2026-06-15T01:00:00Z",
-      "venue": "Los Angeles"
+      "overrideNote": "Iran 2-2 New Zealand"
     },
     {
       "id": 39,
@@ -538,9 +486,9 @@
       "id": 40,
       "home": "New Zealand",
       "away": "Egypt",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "LIVE",
       "completed": false,
       "stage": "group",
       "group": "G",
@@ -584,8 +532,7 @@
       "permanent": true,
       "stage": "group",
       "group": "H",
-      "date": "2026-06-14T16:00:00Z",
-      "venue": "Atlanta"
+      "overrideNote": "Spain 0-0 Cape Verde"
     },
     {
       "id": 44,
@@ -598,8 +545,7 @@
       "permanent": true,
       "stage": "group",
       "group": "H",
-      "date": "2026-06-14T22:00:00Z",
-      "venue": "Miami"
+      "overrideNote": "Saudi Arabia 1-1 Uruguay"
     },
     {
       "id": 45,
@@ -630,19 +576,6 @@
       "venue": "Miami"
     },
     {
-      "id": 47,
-      "home": "Cape Verde",
-      "away": "Saudi Arabia",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false,
-      "stage": "group",
-      "group": "H",
-      "date": "2026-06-27T00:00:00Z",
-      "venue": "Houston"
-    },
-    {
       "id": 48,
       "home": "Uruguay",
       "away": "Spain",
@@ -666,8 +599,7 @@
       "permanent": true,
       "stage": "group",
       "group": "I",
-      "date": "2026-06-15T19:00:00Z",
-      "venue": "New Jersey"
+      "overrideNote": "France 3-1 Senegal"
     },
     {
       "id": 50,
@@ -680,8 +612,7 @@
       "permanent": true,
       "stage": "group",
       "group": "I",
-      "date": "2026-06-15T22:00:00Z",
-      "venue": "Boston"
+      "overrideNote": "Norway 4-1 Iraq"
     },
     {
       "id": 51,
@@ -746,8 +677,7 @@
       "permanent": true,
       "stage": "group",
       "group": "J",
-      "date": "2026-06-16T01:00:00Z",
-      "venue": "Kansas City"
+      "overrideNote": "Argentina 3-0 Algeria"
     },
     {
       "id": 56,
@@ -760,8 +690,7 @@
       "permanent": true,
       "stage": "group",
       "group": "J",
-      "date": "2026-06-16T04:00:00Z",
-      "venue": "San Francisco"
+      "overrideNote": "Austria 3-1 Jordan"
     },
     {
       "id": 57,
@@ -826,8 +755,7 @@
       "permanent": true,
       "stage": "group",
       "group": "K",
-      "date": "2026-06-16T17:00:00Z",
-      "venue": "Houston"
+      "overrideNote": "Portugal 1-1 DR Congo"
     },
     {
       "id": 62,
@@ -840,8 +768,7 @@
       "permanent": true,
       "stage": "group",
       "group": "K",
-      "date": "2026-06-17T02:00:00Z",
-      "venue": "Mexico City"
+      "overrideNote": "Uzbekistan 1-3 Colombia"
     },
     {
       "id": 63,
@@ -859,7 +786,7 @@
     {
       "id": 64,
       "home": "Colombia",
-      "away": "DR Congo",
+      "away": "Congo DR",
       "homeScore": null,
       "awayScore": null,
       "status": "Scheduled",
@@ -884,7 +811,7 @@
     },
     {
       "id": 66,
-      "home": "DR Congo",
+      "home": "Congo DR",
       "away": "Uzbekistan",
       "homeScore": null,
       "awayScore": null,
@@ -906,8 +833,7 @@
       "permanent": true,
       "stage": "group",
       "group": "L",
-      "date": "2026-06-16T20:00:00Z",
-      "venue": "Dallas"
+      "overrideNote": "England 4-2 Croatia"
     },
     {
       "id": 68,
@@ -920,8 +846,7 @@
       "permanent": true,
       "stage": "group",
       "group": "L",
-      "date": "2026-06-16T23:00:00Z",
-      "venue": "Toronto"
+      "overrideNote": "Ghana 1-0 Panama"
     },
     {
       "id": 69,
@@ -974,402 +899,15 @@
       "group": "L",
       "date": "2026-06-27T21:00:00Z",
       "venue": "Philadelphia"
-    },
-    {
-      "id": 73,
-      "team1Slot": "2A",
-      "team2Slot": "2B",
-      "date": "2026-06-28T19:00:00Z",
-      "stage": "round32",
-      "venue": "SoFi Stadium, Inglewood",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 74,
-      "team1Slot": "1E",
-      "team2Slot": "3rd_ABCDF",
-      "date": "2026-06-29T20:30:00Z",
-      "stage": "round32",
-      "venue": "Gillette Stadium, Foxborough",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 75,
-      "team1Slot": "1F",
-      "team2Slot": "2C",
-      "date": "2026-06-30T01:00:00Z",
-      "stage": "round32",
-      "venue": "Estadio BBVA, Guadalupe",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 76,
-      "team1Slot": "1C",
-      "team2Slot": "2F",
-      "date": "2026-06-29T17:00:00Z",
-      "stage": "round32",
-      "venue": "NRG Stadium, Houston",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 77,
-      "team1Slot": "1I",
-      "team2Slot": "3rd_CDFGH",
-      "date": "2026-06-30T21:00:00Z",
-      "stage": "round32",
-      "venue": "MetLife Stadium, East Rutherford",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 78,
-      "team1Slot": "2E",
-      "team2Slot": "2I",
-      "date": "2026-06-30T17:00:00Z",
-      "stage": "round32",
-      "venue": "AT&T Stadium, Arlington",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 79,
-      "team1Slot": "1A",
-      "team2Slot": "3rd_CEFHI",
-      "date": "2026-07-01T01:00:00Z",
-      "stage": "round32",
-      "venue": "Estadio Azteca, Mexico City",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 80,
-      "team1Slot": "1L",
-      "team2Slot": "3rd_EHIJK",
-      "date": "2026-07-01T16:00:00Z",
-      "stage": "round32",
-      "venue": "Mercedes-Benz Stadium, Atlanta",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 81,
-      "team1Slot": "1D",
-      "team2Slot": "3rd_BEFIJ",
-      "date": "2026-07-02T00:00:00Z",
-      "stage": "round32",
-      "venue": "Levi's Stadium, Santa Clara",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 82,
-      "team1Slot": "1G",
-      "team2Slot": "3rd_AEHIJ",
-      "date": "2026-07-01T20:00:00Z",
-      "stage": "round32",
-      "venue": "Lumen Field, Seattle",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 83,
-      "team1Slot": "2K",
-      "team2Slot": "2L",
-      "date": "2026-07-02T23:00:00Z",
-      "stage": "round32",
-      "venue": "BMO Field, Toronto",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 84,
-      "team1Slot": "1H",
-      "team2Slot": "2J",
-      "date": "2026-07-02T19:00:00Z",
-      "stage": "round32",
-      "venue": "SoFi Stadium, Inglewood",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 85,
-      "team1Slot": "1B",
-      "team2Slot": "3rd_EFGIJ",
-      "date": "2026-07-03T03:00:00Z",
-      "stage": "round32",
-      "venue": "BC Place, Vancouver",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 86,
-      "team1Slot": "1J",
-      "team2Slot": "2H",
-      "date": "2026-07-03T22:00:00Z",
-      "stage": "round32",
-      "venue": "Hard Rock Stadium, Miami Gardens",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 87,
-      "team1Slot": "1K",
-      "team2Slot": "3rd_DEIJL",
-      "date": "2026-07-04T01:30:00Z",
-      "stage": "round32",
-      "venue": "Arrowhead Stadium, Kansas City",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 88,
-      "team1Slot": "2D",
-      "team2Slot": "2G",
-      "date": "2026-07-03T18:00:00Z",
-      "stage": "round32",
-      "venue": "AT&T Stadium, Arlington",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 89,
-      "team1Slot": "W73",
-      "team2Slot": "W75",
-      "date": "2026-07-04T17:00:00Z",
-      "stage": "round16",
-      "venue": "Lincoln Financial Field, Philadelphia",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 90,
-      "team1Slot": "W74",
-      "team2Slot": "W77",
-      "date": "2026-07-04T21:00:00Z",
-      "stage": "round16",
-      "venue": "NRG Stadium, Houston",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 91,
-      "team1Slot": "W76",
-      "team2Slot": "W78",
-      "date": "2026-07-05T20:00:00Z",
-      "stage": "round16",
-      "venue": "MetLife Stadium, East Rutherford",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 92,
-      "team1Slot": "W79",
-      "team2Slot": "W80",
-      "date": "2026-07-06T00:00:00Z",
-      "stage": "round16",
-      "venue": "Estadio Azteca, Mexico City",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 93,
-      "team1Slot": "W83",
-      "team2Slot": "W84",
-      "date": "2026-07-06T19:00:00Z",
-      "stage": "round16",
-      "venue": "AT&T Stadium, Arlington",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 94,
-      "team1Slot": "W81",
-      "team2Slot": "W82",
-      "date": "2026-07-07T00:00:00Z",
-      "stage": "round16",
-      "venue": "Lumen Field, Seattle",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 95,
-      "team1Slot": "W86",
-      "team2Slot": "W88",
-      "date": "2026-07-07T16:00:00Z",
-      "stage": "round16",
-      "venue": "Mercedes-Benz Stadium, Atlanta",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 96,
-      "team1Slot": "W85",
-      "team2Slot": "W87",
-      "date": "2026-07-07T20:00:00Z",
-      "stage": "round16",
-      "venue": "BC Place, Vancouver",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 97,
-      "team1Slot": "W89",
-      "team2Slot": "W90",
-      "date": "2026-07-09T20:00:00Z",
-      "stage": "quarter",
-      "venue": "Gillette Stadium, Foxborough",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 98,
-      "team1Slot": "W93",
-      "team2Slot": "W94",
-      "date": "2026-07-10T19:00:00Z",
-      "stage": "quarter",
-      "venue": "SoFi Stadium, Inglewood",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 99,
-      "team1Slot": "W91",
-      "team2Slot": "W92",
-      "date": "2026-07-11T21:00:00Z",
-      "stage": "quarter",
-      "venue": "Hard Rock Stadium, Miami Gardens",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 100,
-      "team1Slot": "W95",
-      "team2Slot": "W96",
-      "date": "2026-07-12T01:00:00Z",
-      "stage": "quarter",
-      "venue": "Arrowhead Stadium, Kansas City",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 101,
-      "team1Slot": "W97",
-      "team2Slot": "W98",
-      "date": "2026-07-14T19:00:00Z",
-      "stage": "semi",
-      "venue": "AT&T Stadium, Arlington",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 102,
-      "team1Slot": "W99",
-      "team2Slot": "W100",
-      "date": "2026-07-15T19:00:00Z",
-      "stage": "semi",
-      "venue": "Mercedes-Benz Stadium, Atlanta",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 103,
-      "team1Slot": "L101",
-      "team2Slot": "L102",
-      "date": "2026-07-18T21:00:00Z",
-      "stage": "final",
-      "isThirdPlace": true,
-      "venue": "Hard Rock Stadium, Miami Gardens",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
-    },
-    {
-      "id": 104,
-      "team1Slot": "W101",
-      "team2Slot": "W102",
-      "date": "2026-07-19T19:00:00Z",
-      "stage": "final",
-      "venue": "MetLife Stadium, East Rutherford",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
     }
   ],
-  "lastUpdated": "2026-06-22T07:14:00.000Z",
-  "source": "Merged (ESPN+Football-Data+Permanent Overrides)",
-  "sourceCount": 3,
+  "lastUpdated": "2026-06-22T02:26:09.053Z",
+  "source": "Merged (Football-Data)",
+  "sourceCount": 1,
   "sourcesUsed": [
-    "ESPN",
-    "Football-Data",
-    "Permanent Overrides"
+    "Football-Data"
   ],
-  "finalizedCount": 41,
-  "permanentOverrides": 37,
+  "finalizedCount": 39,
+  "permanentOverrides": 36,
   "totalFixtures": 104
 }
