@@ -478,9 +478,9 @@
       "id": 51,
       "home": "France",
       "away": "Iraq",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -536,10 +536,10 @@
       "id": 57,
       "home": "Argentina",
       "away": "Austria",
-      "homeScore": 1,
+      "homeScore": 2,
       "awayScore": 0,
-      "status": "Scheduled",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 58,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-22T18:02:54.737Z",
+  "lastUpdated": "2026-06-22T21:12:06.710Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 39,
+  "finalizedCount": 40,
   "permanentOverrides": 36
 }
