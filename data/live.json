@@ -488,8 +488,8 @@
       "away": "Egypt",
       "homeScore": 1,
       "awayScore": 3,
-      "status": "LIVE",
-      "completed": false,
+      "status": "FT",
+      "completed": true,
       "stage": "group",
       "group": "G",
       "date": "2026-06-22T01:00:00Z",
@@ -901,13 +901,13 @@
       "venue": "Philadelphia"
     }
   ],
-  "lastUpdated": "2026-06-22T03:05:33.502Z",
+  "lastUpdated": "2026-06-22T03:12:00.231Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 39,
+  "finalizedCount": 40,
   "permanentOverrides": 36,
   "totalFixtures": 104
 }
