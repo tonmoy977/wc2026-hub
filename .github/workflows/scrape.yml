@@ -15,8 +15,6 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,43 +36,38 @@ jobs:
             exit 1
           fi
 
-      - name: Ensure data directory exists
-        run: mkdir -p data
-
-      - name: Check secret presence
-        run: |
-          if [ -z "$FOOTBALL_DATA_KEY" ]; then
-            echo "WARNING: FOOTBALL_DATA_KEY is not set. Only ESPN will be used."
-          else
-            echo "OK: FOOTBALL_DATA_KEY is configured (length: ${#FOOTBALL_DATA_KEY})"
-          fi
-        env:
-          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
-
       - name: Generate results
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node scrape.js
 
-      - name: Verify output
+      - name: Verify live.json was created
         run: |
-          if [ -f data/live.json ]; then
-            echo "OK: live.json created"
-            cat data/live.json | head -30
-          else
-            echo "ERROR: live.json was not created"
+          if [ ! -f data/live.json ]; then
+            echo "ERROR: data/live.json was not created by scrape.js"
+            echo "Contents of data directory:"
+            ls -la data/ 2>/dev/null || echo "data/ directory does not exist"
             exit 1
           fi
+          echo "✅ data/live.json exists"
+          echo "File size: $(wc -c < data/live.json) bytes"
+          echo "First 500 chars:"
+          head -c 500 data/live.json
+          echo ""
 
       - name: Commit and push
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/live.json
+          
+          # Force-add live.json even if gitignore blocks it
+          git add -f data/live.json
+          
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
-            git pull --rebase --autostash origin ${{ github.ref_name }} || true
+            git pull origin ${{ github.ref_name }} --rebase
             git push origin ${{ github.ref_name }}
+            echo "✅ Pushed updated live.json"
           fi
