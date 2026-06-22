@@ -32,8 +32,7 @@ jobs:
       - name: Verify scraper exists
         run: |
           if [ ! -f scrape.js ]; then
-            echo "ERROR: scrape.js not found at repo root"
-            echo "Contents of repo root:"
+            echo "ERROR: scrape.js not found"
             ls -la
             exit 1
           fi
@@ -41,18 +40,30 @@ jobs:
       - name: Ensure data directory exists
         run: mkdir -p data
 
+      - name: Debug secret
+        run: |
+          if [ -z "$FOOTBALL_DATA_KEY" ]; then
+            echo "⚠️ WARNING: FOOTBALL_DATA_KEY is not set. Only ESPN will be used."
+          else
+            echo "✅ FOOTBALL_DATA_KEY is configured"
+          fi
+        env:
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+
       - name: Generate results
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node scrape.js
 
-      - name: Upload artifact for debugging
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-data
-          path: data/
-          retention-days: 1
+      - name: Check output
+        run: |
+          if [ -f data/live.json ]; then
+            echo "✅ live.json created"
+            cat data/live.json | head -20
+          else
+            echo "❌ live.json NOT created"
+            exit 1
+          fi
 
       - name: Commit and push
         run: |
@@ -60,9 +71,9 @@ jobs:
           git config --local user.name "GitHub Action"
           git add data/live.json
           if git diff --staged --quiet; then
-            echo "No changes."
+            echo "No changes to commit."
           else
             git commit -m "Update live results $(date -u +%Y-%m-%d_%H:%M) UTC [skip ci]"
-            git pull origin HEAD:${{ github.ref_name || 'main' }} --rebase --ff-only || true
-            git push origin HEAD:${{ github.ref_name || 'main' }} || echo "Push failed, may need manual resolution"
+            git pull --rebase --autostash origin ${{ github.ref_name }} || true
+            git push origin HEAD:${{ github.ref_name }}
           fi
