@@ -536,9 +536,9 @@
       "id": 57,
       "home": "Argentina",
       "away": "Austria",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 0,
-      "status": "LIVE",
+      "status": "Scheduled",
       "completed": false
     },
     {
@@ -685,7 +685,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-22T17:23:21.807Z",
+  "lastUpdated": "2026-06-22T18:02:54.737Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
