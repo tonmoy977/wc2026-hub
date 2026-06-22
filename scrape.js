@@ -209,14 +209,12 @@ const TEAM_ALIASES = {
 
 const FIXTURE_MAP = {};
 FIXTURES.forEach(f=>{
-  // For group matches, map by team names
   if (f.stage === 'group') {
     const k1 = `${norm(f.team1)}_${norm(f.team2)}`;
     const k2 = `${norm(f.team2)}_${norm(f.team1)}`;
     FIXTURE_MAP[k1] = f.id;
     FIXTURE_MAP[k2] = f.id;
   }
-  // For knockout, also map by ID directly
   FIXTURE_MAP[`id_${f.id}`] = f.id;
 });
 
@@ -226,9 +224,6 @@ function norm(n){
   return (TEAM_ALIASES[s]||s).toLowerCase().replace(/[^a-z0-9]/g,''); 
 }
 
-// ============================================================
-//  LOAD EXISTING live.json to protect finalized matches
-// ============================================================
 function loadExistingLiveData() {
   const livePath = path.join(__dirname, 'data', 'live.json');
   if (!fs.existsSync(livePath)) return { games: [] };
@@ -240,14 +235,9 @@ function loadExistingLiveData() {
   }
 }
 
-// ============================================================
-//  MERGE: Protect finalized, apply permanent overrides
-//  KNOCKOUT LOGIC: Same lock/finalize as group stage
-// ============================================================
 function mergeWithProtection(existingGames, newGames) {
   const resultMap = new Map();
 
-  // First: preserve existing finalized/permanent matches (GROUP + KNOCKOUT)
   for (const g of existingGames || []) {
     if (g.completed === true || g.permanent === true) {
       resultMap.set(g.id, g);
@@ -255,7 +245,6 @@ function mergeWithProtection(existingGames, newGames) {
     }
   }
 
-  // Second: add new games from API, skip if already protected
   for (const newGame of newGames || []) {
     if (resultMap.has(newGame.id)) {
       console.log(`[SKIP] Match ${newGame.id} already finalized, ignoring new data.`);
@@ -265,7 +254,6 @@ function mergeWithProtection(existingGames, newGames) {
     console.log(`[UPDATE] Match ${newGame.id}: ${newGame.home} ${newGame.homeScore ?? '?'} - ${newGame.awayScore ?? '?'} ${newGame.away}`);
   }
 
-  // Third: apply PERMANENT OVERRIDES (absolute priority - GROUP STAGE ONLY)
   for (const [idStr, override] of Object.entries(PERMANENT_OVERRIDES)) {
     const id = parseInt(idStr);
     const fixture = FIXTURES.find(f => f.id === id);
@@ -290,7 +278,6 @@ function mergeWithProtection(existingGames, newGames) {
   return Array.from(resultMap.values()).sort((a, b) => a.id - b.id);
 }
 
-// ---------- HTTP HELPER ----------
 function fetchJson(host, path, headers={}) {
   return new Promise((resolve) => {
     const req = https.request({
@@ -309,7 +296,6 @@ function fetchJson(host, path, headers={}) {
   });
 }
 
-// ---------- SOURCE: ESPN ----------
 async function fetchEspn() {
   console.log('[SRC] ESPN...');
   const data = await fetchJson('site.api.espn.com', `/apis/site/v2/sports/soccer/fifa.worldcup/scoreboard?dates=${WC_START}-${WC_END}`);
@@ -328,7 +314,6 @@ async function fetchEspn() {
     if (state === 'in') status = 'LIVE';
     else if (state === 'post') { status = 'FT'; completed = true; }
 
-    // Build game object with ALL fields needed by HTML
     const gameObj = { 
       id, 
       home: h.team.name, 
@@ -343,12 +328,10 @@ async function fetchEspn() {
       venue: fixture?.venue || null
     };
 
-    // Knockout-specific fields from ESPN
     if (fixture?.stage !== 'group') {
       gameObj.etHomeScore = ev.status?.type?.detail?.includes('ET') ? gameObj.homeScore : null;
       gameObj.etAwayScore = ev.status?.type?.detail?.includes('ET') ? gameObj.awayScore : null;
       if (ev.status?.type?.detail?.includes('PEN')) {
-        // Try to extract penalty winner from ESPN data
         const winner = comp.competitors?.find(c => c.winner === true);
         if (winner) gameObj.penaltyWinner = winner.team?.name;
       }
@@ -360,10 +343,13 @@ async function fetchEspn() {
   return { source: 'ESPN', games };
 }
 
-// ---------- SOURCE: FOOTBALL-DATA ----------
 async function fetchFootballData() {
   const key = process.env.FOOTBALL_DATA_KEY;
-  if (!key) return { source: 'Football-Data', games: [] };
+  console.log('[DEBUG] FOOTBALL_DATA_KEY exists:', !!key, 'Length:', key ? key.length : 0);
+  if (!key) {
+    console.log('[WARN] No FOOTBALL_DATA_KEY found, skipping Football-Data');
+    return { source: 'Football-Data', games: [] };
+  }
   console.log('[SRC] Football-Data...');
   const data = await fetchJson('api.football-data.org', '/v4/competitions/WC/matches?season=2026', { 'X-Auth-Token': key });
   const games = [];
@@ -391,7 +377,6 @@ async function fetchFootballData() {
       venue: fixture?.venue || null
     };
 
-    // Knockout-specific fields
     if (fixture?.stage !== 'group') {
       if (m.score?.extraTime) {
         gameObj.etHomeScore = m.score.extraTime.home;
@@ -410,23 +395,17 @@ async function fetchFootballData() {
   return { source: 'Football-Data', games };
 }
 
-// ---------- SOURCE: FIFA API (placeholder for future) ----------
 async function fetchFifaApi() {
-  // FIFA API integration can be added here
-  // For now, returns empty to not break the flow
   return { source: 'FIFA-API', games: [] };
 }
 
-// ---------- MAIN ----------
 async function main() {
   let output;
 
-  // Load existing data to protect finalized matches
   const existingData = loadExistingLiveData();
   const existingFinalized = (existingData?.games || []).filter(g => g.completed).length;
   console.log(`[LOAD] Existing live.json: ${existingData?.games?.length || 0} matches, ${existingFinalized} finalized`);
 
-  // Try all sources in parallel
   const [espn, fd, fifa] = await Promise.all([fetchEspn(), fetchFootballData(), fetchFifaApi()]);
   const results = [espn, fd, fifa].filter(r => r.games.length > 0);
 
@@ -445,7 +424,6 @@ async function main() {
       totalFixtures: FIXTURES.length
     };
   } else {
-    // Merge: protect finalized + apply permanent overrides
     const best = results.reduce((a, b) => a.games.length > b.games.length ? a : b);
     const merged = mergeWithProtection(existingData?.games || [], best.games);
     output = {
@@ -466,7 +444,7 @@ async function main() {
   const finalFinalized = output.games.filter(g => g.completed).length;
   const permanentCount = output.games.filter(g => g.permanent).length;
   const knockoutCount = output.games.filter(g => g.stage && g.stage !== 'group').length;
-  console.log(`✅ Written ${output.games.length} games to data/live.json`);
+  console.log(`Written ${output.games.length} games to data/live.json`);
   console.log(`   - ${finalFinalized} finalized (protected from future overwrites)`);
   console.log(`   - ${permanentCount} permanent manual overrides`);
   console.log(`   - ${knockoutCount} knockout matches`);
@@ -474,7 +452,6 @@ async function main() {
 
 main().catch(err => {
   console.error('Fatal error:', err);
-  // NEVER crash - preserve existing + apply permanent overrides
   const existingData = loadExistingLiveData();
   const preserved = mergeWithProtection(existingData?.games || [], []);
   const outDir = path.join(__dirname, 'data');
