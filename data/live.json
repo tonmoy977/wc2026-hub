@@ -594,10 +594,10 @@
       "id": 63,
       "home": "Portugal",
       "away": "Uzbekistan",
-      "homeScore": 4,
+      "homeScore": 5,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 64,
@@ -652,9 +652,9 @@
       "id": 69,
       "home": "England",
       "away": "Ghana",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-23T18:31:39.380Z",
+  "lastUpdated": "2026-06-23T20:40:40.471Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 43,
+  "finalizedCount": 44,
   "permanentOverrides": 36
 }
