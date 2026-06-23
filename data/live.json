@@ -478,19 +478,19 @@
       "id": 51,
       "home": "France",
       "away": "Iraq",
-      "homeScore": 1,
+      "homeScore": 3,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 52,
       "home": "Norway",
       "away": "Senegal",
-      "homeScore": 0,
-      "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "homeScore": 3,
+      "awayScore": 2,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 53,
@@ -545,9 +545,9 @@
       "id": 58,
       "home": "Jordan",
       "away": "Algeria",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 1,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-23T00:16:05.375Z",
+  "lastUpdated": "2026-06-23T04:34:41.334Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 40,
+  "finalizedCount": 42,
   "permanentOverrides": 36
 }
