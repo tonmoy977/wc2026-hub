@@ -654,16 +654,16 @@
       "away": "Ghana",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 70,
       "home": "Panama",
       "away": "Croatia",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-23T22:05:03.061Z",
+  "lastUpdated": "2026-06-23T23:20:38.424Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 44,
+  "finalizedCount": 45,
   "permanentOverrides": 36
 }
