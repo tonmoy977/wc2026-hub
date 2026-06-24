@@ -110,10 +110,10 @@
       "id": 11,
       "home": "Switzerland",
       "away": "Canada",
-      "homeScore": 1,
-      "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 13,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-24T20:13:23.519Z",
+  "lastUpdated": "2026-06-24T21:49:40.862Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 47,
+  "finalizedCount": 48,
   "permanentOverrides": 36
 }
