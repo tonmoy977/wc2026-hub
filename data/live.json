@@ -48,19 +48,19 @@
       "id": 5,
       "home": "Czechia",
       "away": "Mexico",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 0,
+      "awayScore": 3,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 6,
       "home": "South Africa",
       "away": "South Korea",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 1,
+      "awayScore": 0,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 7,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-25T00:19:26.704Z",
+  "lastUpdated": "2026-06-25T04:39:29.179Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 50,
+  "finalizedCount": 52,
   "permanentOverrides": 36
 }
