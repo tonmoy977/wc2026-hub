@@ -164,18 +164,18 @@
       "home": "Scotland",
       "away": "Brazil",
       "homeScore": 0,
-      "awayScore": 2,
-      "status": "Scheduled",
-      "completed": false
+      "awayScore": 3,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 18,
       "home": "Morocco",
       "away": "Haiti",
-      "homeScore": 2,
+      "homeScore": 4,
       "awayScore": 2,
-      "status": "Scheduled",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 19,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-24T22:58:14.148Z",
+  "lastUpdated": "2026-06-25T00:19:26.704Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 48,
+  "finalizedCount": 50,
   "permanentOverrides": 36
 }
