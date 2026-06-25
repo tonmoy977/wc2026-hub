@@ -287,9 +287,9 @@
       "id": 30,
       "home": "Ecuador",
       "away": "Germany",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -685,7 +685,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-25T18:20:15.841Z",
+  "lastUpdated": "2026-06-25T20:28:32.446Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
