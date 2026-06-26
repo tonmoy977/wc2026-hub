@@ -225,19 +225,19 @@
       "id": 23,
       "home": "Turkey",
       "away": "United States",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 3,
+      "awayScore": 2,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 24,
       "home": "Paraguay",
       "away": "Australia",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 25,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-26T01:54:28.463Z",
+  "lastUpdated": "2026-06-26T04:45:13.896Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 55,
+  "finalizedCount": 57,
   "permanentOverrides": 36
 }
