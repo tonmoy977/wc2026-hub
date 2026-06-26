@@ -497,18 +497,18 @@
       "home": "Norway",
       "away": "France",
       "homeScore": 1,
-      "awayScore": 3,
-      "status": "LIVE",
-      "completed": false
+      "awayScore": 4,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 54,
       "home": "Senegal",
       "away": "Iraq",
-      "homeScore": 4,
+      "homeScore": 5,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 55,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-26T20:46:44.610Z",
+  "lastUpdated": "2026-06-26T21:57:28.404Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 57,
+  "finalizedCount": 59,
   "permanentOverrides": 36
 }
