@@ -670,22 +670,22 @@
       "id": 71,
       "home": "Panama",
       "away": "England",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     },
     {
       "id": 72,
       "home": "Croatia",
       "away": "Ghana",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 0,
+      "status": "LIVE",
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-27T20:12:59.225Z",
+  "lastUpdated": "2026-06-27T21:32:13.467Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
