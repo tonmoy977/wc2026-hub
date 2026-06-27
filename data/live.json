@@ -447,9 +447,9 @@
       "id": 48,
       "home": "Uruguay",
       "away": "Spain",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
+      "homeScore": 0,
+      "awayScore": 1,
+      "status": "LIVE",
       "completed": false
     },
     {
@@ -685,7 +685,7 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-26T23:16:31.660Z",
+  "lastUpdated": "2026-06-27T01:25:56.103Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
