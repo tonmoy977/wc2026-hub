@@ -671,7 +671,7 @@
       "home": "Panama",
       "away": "England",
       "homeScore": 0,
-      "awayScore": 0,
+      "awayScore": 2,
       "status": "LIVE",
       "completed": false
     },
@@ -679,13 +679,13 @@
       "id": 72,
       "home": "Croatia",
       "away": "Ghana",
-      "homeScore": 0,
-      "awayScore": 0,
+      "homeScore": 1,
+      "awayScore": 1,
       "status": "LIVE",
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-27T21:32:13.467Z",
+  "lastUpdated": "2026-06-27T22:40:46.841Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
