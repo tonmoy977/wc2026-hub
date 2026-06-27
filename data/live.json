@@ -398,19 +398,19 @@
       "id": 41,
       "home": "Egypt",
       "away": "Iran",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 42,
       "home": "New Zealand",
       "away": "Belgium",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "Scheduled",
-      "completed": false
+      "homeScore": 1,
+      "awayScore": 5,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 43,
@@ -449,8 +449,8 @@
       "away": "Spain",
       "homeScore": 0,
       "awayScore": 1,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 49,
@@ -685,12 +685,12 @@
       "completed": false
     }
   ],
-  "lastUpdated": "2026-06-27T01:25:56.103Z",
+  "lastUpdated": "2026-06-27T05:30:38.659Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 59,
+  "finalizedCount": 62,
   "permanentOverrides": 36
 }
