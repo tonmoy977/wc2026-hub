@@ -614,17 +614,17 @@
       "away": "Portugal",
       "homeScore": 0,
       "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 66,
       "home": "Congo DR",
       "away": "Uzbekistan",
-      "homeScore": 0,
-      "awayScore": 0,
-      "status": "LIVE",
-      "completed": false
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "FT",
+      "completed": true
     },
     {
       "id": 67,
@@ -685,12 +685,12 @@
       "completed": true
     }
   ],
-  "lastUpdated": "2026-06-27T23:43:09.705Z",
+  "lastUpdated": "2026-06-28T01:55:28.730Z",
   "source": "Merged (Football-Data)",
   "sourceCount": 1,
   "sourcesUsed": [
     "Football-Data"
   ],
-  "finalizedCount": 64,
+  "finalizedCount": 66,
   "permanentOverrides": 36
 }
