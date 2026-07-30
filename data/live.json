@@ -685,11 +685,12 @@
       "completed": true
     }
   ],
-  "lastUpdated": "2026-07-30T13:00:02.730Z",
-  "source": "No live data - preserved existing",
-  "sourceCount": 0,
-  "sourcesUsed": [],
+  "lastUpdated": "2026-07-30T15:19:53.314Z",
+  "source": "Merged (Football-Data)",
+  "sourceCount": 1,
+  "sourcesUsed": [
+    "Football-Data"
+  ],
   "finalizedCount": 68,
-  "permanentOverrides": 36,
-  "message": "No new matches from APIs. Existing finalized matches preserved."
+  "permanentOverrides": 36
 }
